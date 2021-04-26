@@ -1,3 +1,98 @@
-.title {
-  background: rgb(121, 242, 157);
+
+//Header Header.tsx
+.header{
+  position: fixed;
+  display: flex;
+  background: rgb(255,165,79)	;
+  width: 100%;
+  height: 8%;
+  text-align: center;
+  border-bottom: 1px  solid darkgray;
+  font-size: 20px;
+  padding: 10px;
+  -moz-box-shadow: 0 5px 10px #888888; /* 老的 Firefox */
+  box-shadow: 0 5px 10px #888888;
+}
+.header_bookImg{
+  margin: 10px  20px;
+  width: 30px;
+  height: 30px;
+}
+.header_title{
+  position: relative;
+  margin: 10px 0;
+  left: 20px;
+}
+.header_login{
+  position: absolute;
+  margin: 10px 0;
+  padding: 0 25px;
+  right: 150px;
+  color: white;
+  border-left:2px solid whitesmoke ;
+  border-right:2px solid whitesmoke;
+}
+.header_register{
+  position: absolute;
+  margin: 10px 0;
+  padding: 0 25px;
+  color: white;
+  border-left:2px solid whitesmoke ;
+  border-right:2px solid whitesmoke;
+  right: 50px;
+}
+
+//Footer.tsx
+.footer{
+  position: fixed;
+  bottom: 0;
+  font-size: 15px;
+  height: 5%;
+  width: 100%;
+  text-align: center;
+  background: #F5F5DC;
+  border-top: 2px solid darkgray;
+  border-bottom: 1px  solid darkgray;
+  padding-top: 10px;
+  -moz-box-shadow: 5px 0 10px #888888; /* 老的 Firefox */
+  box-shadow: 5px 0 10px #888888;
+}
+
+//欢迎页 index.tsx
+.welcomePage{
+  background: no-repeat center url("../asset/imgs/bookStore.jpg");
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+.middleContent{
+  position: relative;
+  top:8%;
+  //border: 2px solid;
+  height: 87%;
+  padding-top: 10%;
+}
+.welcomeContent {
+  margin-top: 20px;
+  color: gray;
+  font-size: 25px;
+}
+
+//login
+.login{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.login_form{
+  position: absolute;
+  top: 30%;
+  left: 25%;
+  border: 1px solid;
+  padding: 50px;
+  width: 50%;
+}
+.login_form_test{
+  //background: lightgray;
 }
