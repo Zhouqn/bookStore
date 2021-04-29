@@ -1,4 +1,4 @@
-.header {
+.WelcomeHeader {
   position: fixed;
   display: flex;
   background: #ffa54f;
@@ -6,7 +6,7 @@
   height: 8%;
   text-align: center;
   border-bottom: 1px  solid darkgray;
-  font-size: 20px;
+  font-size: 18px;
   padding: 10px;
   -moz-box-shadow: 0 5px 10px #888888;
   /* 老的 Firefox */
@@ -22,7 +22,17 @@
   margin: 10px 0;
   left: 20px;
 }
-.header_login {
+.header_mine {
+  position: absolute;
+  margin: 10px 0;
+  padding: 0 25px;
+  right: 250px;
+  color: white;
+  border-left: 2px solid whitesmoke ;
+  border-right: 2px solid whitesmoke;
+}
+.header_login,
+.header_logout {
   position: absolute;
   margin: 10px 0;
   padding: 0 25px;
@@ -31,14 +41,15 @@
   border-left: 2px solid whitesmoke ;
   border-right: 2px solid whitesmoke;
 }
-.header_register {
+.header_register,
+.header_logoff {
   position: absolute;
   margin: 10px 0;
   padding: 0 25px;
+  right: 50px;
   color: white;
   border-left: 2px solid whitesmoke ;
   border-right: 2px solid whitesmoke;
-  right: 50px;
 }
 .footer {
   position: fixed;
@@ -73,17 +84,34 @@
   color: gray;
   font-size: 25px;
 }
-.login {
+.login,
+.register {
   position: absolute;
+  background: no-repeat center url("../asset/imgs/bookStore.jpg");
   width: 100%;
   height: 100%;
 }
-.login_form {
-  position: absolute;
-  top: 30%;
-  left: 25%;
-  border: 1px solid;
-  padding: 50px;
-  width: 50%;
+.loginForm_title,
+.registerForm_title {
+  position: relative;
+  text-align: center;
+  height: 8%;
+  top: 20%;
+  font-size: 60px;
+  color: #ffa54f;
+}
+.login_bookImg,
+.register_bookImg {
+  width: 50px;
+  height: 50px;
+  margin: 0 20px;
+}
+.login_form,
+.register_form {
+  position: relative;
+  top: 20%;
+  left: 30%;
+  padding: 100px;
+  width: 40%;
 }
 /*# sourceMappingURL=index.css.map */
