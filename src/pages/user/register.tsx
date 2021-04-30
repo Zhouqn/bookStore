@@ -1,7 +1,7 @@
 import { Form, Input, Button, Radio } from 'antd';
 import {connect} from 'umi'
 import styles from '../index.less'
-import Header from '../components/WelcomeHeader'
+import Header from '../components/Header'
 import Footer from '../components/Footer'
 import bookImg from "@/asset/imgs/book.png";
 import React from "react";

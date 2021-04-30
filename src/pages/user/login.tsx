@@ -4,7 +4,7 @@ import { Form, Input, Button, Checkbox} from 'antd';
 import { UserOutlined, LockOutlined,  } from '@ant-design/icons';
 import styles from '../index.less'
 import bookImg from '../../asset/imgs/book.png'
-import WelcomeHeader from "@/pages/components/WelcomeHeader";
+import Header from "@/pages/components/Header";
 import Footer from "@/pages/components/Footer";
 
 
@@ -21,7 +21,7 @@ const Login = () => {
 
   return (
     <div className={styles.login}>
-      <WelcomeHeader/>
+      <Header/>
       <div className={styles.loginForm_title}>
         <img alt="" src={bookImg} className={styles.login_bookImg}/>
         欢迎登陆XX图书系统
