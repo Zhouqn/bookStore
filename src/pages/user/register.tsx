@@ -1,43 +1,48 @@
 import { Form, Input, Button, Radio } from 'antd';
-import {connect} from 'umi'
-import styles from '../index.less'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import bookImg from "@/asset/imgs/book.png";
-import React from "react";
-import {useState} from "react";
-
+import { connect, Link } from 'umi';
+import styles from '@/asset/css/user.css';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import bookImg from '@/asset/imgs/book.png';
+import React from 'react';
+import { useState } from 'react';
+import { appName } from '@/config';
 
 const Register = () => {
-
   const [value, setValue] = useState(1);
   const onFinish = (values: any) => {
     console.log(values);
   };
 
-  const onChange = (e:any) => {
+  const onChange = (e: any) => {
     console.log('radio checked', e.target.value);
     setValue(e.target.value);
   };
 
   return (
     <div className={styles.register}>
-      <Header/>
+      <Header />
       <div className={styles.registerForm_title}>
-        <img alt="" src={bookImg} className={styles.register_bookImg}/>
-        欢迎注册XX图书系统
+        <img alt="" src={bookImg} className={styles.register_bookImg} />
+        欢迎注册{appName}
       </div>
       <div className={styles.register_form}>
-        <Form  name="nest-messages" onFinish={onFinish} size="large"  style={{maxWidth:"450px", margin:"auto"}} >
+        <Form
+          name="nest-messages"
+          onFinish={onFinish}
+          size="large"
+          style={{ maxWidth: '450px', margin: 'auto' }}
+          initialValues={{ sex: 1 }}
+        >
           <Form.Item
             name={['user', 'name']}
             label="用&nbsp;&nbsp;户&nbsp;&nbsp;名"
             rules={[
-                {
-                  required: true,
-                  message:'用户名不能为空！'
-                },
-              ]}
+              {
+                required: true,
+                message: '用户名不能为空！',
+              },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -77,24 +82,33 @@ const Register = () => {
           >
             <Input.Password />
           </Form.Item>
-          <Form.Item name="sex" label="性&emsp;&emsp;别:" style={{marginLeft:"10px"}}>
-            <Radio.Group onChange={onChange} defaultValue={value} value={value}>
+          <Form.Item
+            name="sex"
+            label="性&emsp;&emsp;别:"
+            style={{ marginLeft: '10px' }}
+          >
+            <Radio.Group onChange={onChange} value={value}>
               <Radio value={1}>男</Radio>
               <Radio value={2}>女</Radio>
             </Radio.Group>
           </Form.Item>
-          <Form.Item >
-            <Button type="primary" htmlType="submit" style={{width:"25%", marginLeft:"45%"}}>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{ width: '25%', marginLeft: '45%' }}
+            >
               提交
             </Button>
-
           </Form.Item>
-          <p style={{marginLeft:"45%"}}>已有账号?去<a>登录</a></p>
+          <p style={{ marginLeft: '45%' }}>
+            已有账号?去<Link to="/user/login">登录</Link>
+          </p>
         </Form>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
 
-export default connect()(Register)
+export default connect()(Register);

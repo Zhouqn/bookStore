@@ -8,4 +8,11 @@ export default defineConfig({
   //   { path: '/', component: '@/pages/index' },
   // ],
   fastRefresh: {},
+  proxy: {
+    '/api': {
+      target: 'http://localhost:8000/',
+      changeOrigin: true,
+      // 'pathRewrite': { '^/api' : '' },
+    },
+  },
 });
