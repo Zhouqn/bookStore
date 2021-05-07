@@ -93,7 +93,7 @@ const Login = ({ useroInfo, dispatch }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log('user = ', state);
+  console.log('state = ', state);
   return {
     // userInfo: user.userInfo,
   };
