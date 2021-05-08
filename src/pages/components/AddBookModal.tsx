@@ -1,103 +1,17 @@
-import React, { useState } from 'react';
-import { connect } from 'umi';
-import {
-  Button,
-  Modal,
-  Form,
-  Input,
-  Radio,
-  DatePicker,
-  Upload,
-  message,
-  Select,
-} from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-
-const { Option } = Select;
-
-const Authors = [
-  {
-    name: 'jack',
-  },
-  {
-    name: 'rose',
-  },
-  {
-    name: 'mick',
-  },
-  {
-    name: 'xiXi',
-  },
-  {
-    name: '安徒生',
-  },
-];
-
-interface Values {
-  title: string;
-  description: string;
-  modifier: string;
-}
+import React, { useState, FC } from 'react';
+import { Button, Modal, Form, Input, DatePicker, Upload, message } from 'antd';
+import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
+import { BookRecordValue } from '@/pages/admin/data';
 
 interface AddBookModalProps {
   addBookModalVisible: boolean;
-  onAddBook: (values: Values) => void;
+  onAddBook: (values: BookRecordValue) => void;
   onCancelAddBook: () => void;
 }
 
-const getBase64 = (img: any, callback: any) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file: any) => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('只能上传JPG/PNG格式!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('图片必须小于2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-};
-
-const AddBookModal: React.FC<AddBookModalProps> = (props) => {
+const AddBookModal: FC<AddBookModalProps> = (props) => {
+  //Model
   const { addBookModalVisible, onAddBook, onCancelAddBook } = props;
-  const [form] = Form.useForm();
-  const config = {
-    rules: [{ type: 'object' as const, required: true, message: '选择时间!' }],
-  };
-
-  const layoutFrom = {
-    labelCol: { span: 5 },
-    wrapperCol: { span: 21 },
-  };
-
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
-
-  const handleChange = (info: any) => {
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (imageUrl: string) => {
-        setImageUrl(imageUrl);
-        setLoading(false);
-      });
-    }
-  };
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
-
   const addBookOnOk = () => {
     form
       .validateFields()
@@ -110,8 +24,50 @@ const AddBookModal: React.FC<AddBookModalProps> = (props) => {
       });
   };
 
-  const chooseAuthor = (value: any) => {
-    console.log(`selected ${value}`);
+  //Model Form
+  const [form] = Form.useForm();
+  const layoutFrom = {
+    labelCol: { span: 5 },
+    wrapperCol: { span: 21 },
+  };
+
+  //From Item
+  //上传封面
+  const [bookCoverLoading, setBookCoverLoading] = useState(false);
+  const bookCoverFile = (e: any) => {
+    console.log('Upload event:', e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+  const bookCoverUploadConfig = {
+    beforeUpload: (file: any) => {
+      const isJpgOrPng =
+        file.type === 'image/jpeg' || file.type === 'image/png';
+      if (!isJpgOrPng) {
+        message.error('只能上传JPG/PNG格式!');
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        message.error('图片必须小于2MB!');
+      }
+      return isJpgOrPng && isLt2M ? true : Upload.LIST_IGNORE;
+    },
+    onChange: (info: any) => {
+      console.log(info.fileList);
+      if (info.file.status === 'uploading') {
+        setBookCoverLoading(true);
+        return;
+      }
+      if (info.file.status === 'done') {
+        setBookCoverLoading(false);
+      }
+    },
+  };
+  //选择日期
+  const dateTimeConfig = {
+    rules: [{ type: 'object' as const, required: true, message: '选择时间!' }],
   };
 
   return (
@@ -123,28 +79,30 @@ const AddBookModal: React.FC<AddBookModalProps> = (props) => {
       onCancel={onCancelAddBook}
       onOk={addBookOnOk}
     >
-      <Form
-        form={form}
-        // layout="vertical"
-        name="form_in_modal"
-        initialValues={{ modifier: 'public' }}
-        {...layoutFrom}
-      >
-        <Form.Item label="上传书封面">
+      <Form form={form} name="form_in_modal" {...layoutFrom}>
+        <Form.Item
+          name="cover_uri"
+          label="上传书封面"
+          rules={[{ required: true, message: '请上传书封面!' }]}
+          valuePropName="fileList"
+          getValueFromEvent={bookCoverFile}
+        >
           <Upload
-            name="cover_uri"
-            listType="picture-card"
-            className="bookCover_uploader"
-            showUploadList={false}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            beforeUpload={beforeUpload}
-            onChange={handleChange}
+            name="bookCover"
+            listType="picture"
+            maxCount={1}
+            // action="/upload.do"
+            {...bookCoverUploadConfig}
           >
-            {imageUrl ? (
-              <img src={imageUrl} alt="bookCover" style={{ width: '100%' }} />
-            ) : (
-              uploadButton
-            )}
+            <Button
+              icon={bookCoverLoading ? <LoadingOutlined /> : <UploadOutlined />}
+            >
+              上传
+            </Button>
+            <span style={{ color: 'grey' }}>
+              {' '}
+              只能上传png和jpg格式文件, 大小不超过2M
+            </span>
           </Upload>
         </Form.Item>
         <Form.Item
@@ -161,28 +119,33 @@ const AddBookModal: React.FC<AddBookModalProps> = (props) => {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="author" label="作者">
-          <Select style={{ width: 150 }} onChange={chooseAuthor}>
-            {Authors.map((author, i) => {
-              return (
-                <Option key={i} value={author.name}>
-                  {author.name}
-                </Option>
-              );
-            })}
-          </Select>
+        <Form.Item
+          name="author"
+          label="作者"
+          rules={[{ required: true, message: '作者不能为空!' }]}
+        >
+          <Input />
         </Form.Item>
         <Form.Item
           name="pub"
           label="出版社"
-          rules={[{ required: true, message: '书名不能为空!' }]}
+          rules={[{ required: true, message: '出版社不能为空!' }]}
         >
           <Input />
         </Form.Item>
-        <Form.Item name="date-picker" label="出版日期" {...config}>
+        <Form.Item
+          name="published_time"
+          label="出版日期"
+          {...dateTimeConfig}
+          rules={[{ required: true, message: '请选择出版日期!' }]}
+        >
           <DatePicker placeholder="选择出版日期" />
         </Form.Item>
-        <Form.Item name="description" label="信息描述">
+        <Form.Item
+          name="description"
+          label="信息描述"
+          rules={[{ required: true, message: '请对此书进行简单描述!' }]}
+        >
           <Input type="textarea" />
         </Form.Item>
       </Form>
