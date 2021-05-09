@@ -22,69 +22,74 @@
 }
 
 .rightLayout{
-  /*background: lightgray;*/
   background: url("../imgs/bookStore.jpg");
 
 }
 /*中间栏的头部*/
 .layout_header {
   background: #fff;
-  /*padding:0*/
   text-align: center;
   font-size: 20px;
+  width: 100%;
+}
+.adminUser_logout{
+  position: absolute;
+  right: 100px;
+}
+.adminUser_logoff{
+  position: absolute;
+  right: 40px;
+}
+.adminUser_avatar{
+  position: absolute;
+  right: 200px;
+  top: 15px;
+  background: lightgray;
 }
 .layout_content {
   background: #fff;
-  /*background: url("../imgs/bookStore.jpg");*/
   padding: 24px;
   min-height: 360px;
   min-width: 1000px;
   height: 100%;
   overflow: auto;
-  margin: 24px 16px 0
+  margin: 24px 50px 0;
+  border-radius: 10px 10px 0 0;
 }
 
-/*搜索添加*/
-.contentTop{
+/*书*/
+/*书搜索添加*/
+.book_contentTop{
   width: 100%;
   display: flex;
 }
-.contentSearch{
+.book_contentSearch{
   display: flex;
   flex: 15;
-  /*border: 1px solid;*/
 }
-.addButton{
+.book_addButton{
   position: relative;
   flex: 1;
-  /*width: 100%;*/
 }
 
 /*书列表的一行*/
-.oneLine{
+.book_oneLine{
   position: relative;
   display: flex;
   flex-wrap: wrap;
   height: 255px;
   width: 100%;
   margin: 20px;
-  /*margin: auto;*/
-  /*border-bottom: 2px solid lightgray;*/
-  /*border-top: 2px solid lightgray;*/
-  /*border: 1px solid;*/
 }
 .oneRecord{
   position: relative;
   height: 255px;
   width: 50%;
-  /*background: #F5F5DC;*/
 }
 .oneBookRecord{
   display: flex;
   margin: 20px 40px 5px 100px;
   height: 158px;
-  /*background: #888888;*/
-  /*border-bottom: 1px solid lightgray;*/
 }
 .oneBookRecord img{
   width: 100px;
@@ -109,8 +114,40 @@
   position: relative;
   left: 70%;
   width: 150px;
-  /*background: #985AFF;*/
 }
 .bookAction a{
   margin: 0 20px;
 }
+
+/*管理员用户*/
+.adminUser_content{
+  display: flex;
+  margin: 20px 50px;
+  justify-content: center;
+}
+/*左*/
+.adminUser_contentLeft{
+  width: 400px;
+  margin-left: 50px;
+  margin-right: -8%;
+}
+/*右*/
+.adminUser_contentRight{
+  width: 680px;
+}
+.adminUser_List{
+  margin-left:25px ;
+}
+.adminUser_oneRecord{
+  display: flex;
+  align-items: center;
+  margin: 0 50px;
+}
+.adminUser_oneRecord span{
+  color: gray;
+}
+.adminUser_input{
+  width: 150px;
+  border-radius: 5px;
+}
+

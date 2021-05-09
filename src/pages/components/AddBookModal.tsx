@@ -100,7 +100,6 @@ const AddBookModal: FC<AddBookModalProps> = (props) => {
               上传
             </Button>
             <span style={{ color: 'grey' }}>
-              {' '}
               只能上传png和jpg格式文件, 大小不超过2M
             </span>
           </Upload>

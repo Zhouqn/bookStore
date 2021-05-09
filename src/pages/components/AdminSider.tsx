@@ -5,10 +5,14 @@ import { Layout, Menu } from 'antd';
 import { AlignCenterOutlined, UserOutlined } from '@ant-design/icons';
 import { Link } from 'umi';
 import React from 'react';
-
 const { Sider } = Layout;
 
-const AdminSider = () => {
+interface AdminSiderProps {
+  SiderMenuSelectedKeys: string;
+}
+
+const AdminSider = (props: AdminSiderProps) => {
+  const { SiderMenuSelectedKeys } = props;
   return (
     <Sider
       breakpoint="lg"
@@ -24,7 +28,11 @@ const AdminSider = () => {
         <img alt="" src={bookImg} className={adminStyles.logoImg} />
         <p>{appName}</p>
       </div>
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+      <Menu
+        theme="dark"
+        mode="inline"
+        defaultSelectedKeys={[SiderMenuSelectedKeys]}
+      >
         <Menu.Item
           key="1"
           icon={
@@ -43,7 +51,7 @@ const AdminSider = () => {
           }
           style={{ fontSize: '15px', marginTop: '50px' }}
         >
-          <Link to="/admin/user">个人中心</Link>
+          <Link to="/admin/adminUser">个人中心</Link>
         </Menu.Item>
       </Menu>
     </Sider>

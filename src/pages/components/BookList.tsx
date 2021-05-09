@@ -17,9 +17,9 @@ const BookList: FC<BookListProps> = (props) => {
   const { books, clickAddButton, editBookRecord, deleteBookConfirm } = props;
   return (
     <React.Fragment>
-      <div className={adminStyles.contentTop}>
+      <div className={adminStyles.book_contentTop}>
         {/*这里是搜索添加*/}
-        <div className={adminStyles.contentSearch}>
+        <div className={adminStyles.book_contentSearch}>
           <Search
             placeholder="通过书编号查询书"
             enterButton="搜&emsp;索"
@@ -27,7 +27,7 @@ const BookList: FC<BookListProps> = (props) => {
             style={{ margin: '0 70px', width: '80%' }}
           />
           <Input.Group compact size="large">
-            <Select defaultValue="bookAuthor">
+            <Select defaultValue="bookAuthor" size="large">
               <Option value="bookAuthor">作&emsp;者</Option>
               <Option value="bookTitle名">书&emsp;名</Option>
             </Select>
@@ -42,14 +42,14 @@ const BookList: FC<BookListProps> = (props) => {
         </div>
         <Button
           size="large"
-          className={adminStyles.addButton}
+          className={adminStyles.book_addButton}
           onClick={clickAddButton}
         >
           添加
         </Button>
       </div>
       {/*书列表*/}
-      <div className={adminStyles.oneLine}>
+      <div className={adminStyles.book_oneLine}>
         {books.map((book, i) => {
           return (
             <div key={i} className={adminStyles.oneRecord}>

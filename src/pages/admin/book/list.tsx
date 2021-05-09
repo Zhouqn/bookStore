@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
 import { appName } from '@/config';
-import { Layout } from 'antd';
+import { Avatar, Image, Layout } from 'antd';
 import AddBookModal from '@/pages/components/AddBookModal';
 import AdminSider from '@/pages/components/AdminSider';
 import BookList from '@/pages/components/BookList';
 import { BookRecordValue } from '@/pages/admin/data';
+import bookImg from '@/asset/imgs/book.png';
 
 const { Header, Content, Footer } = Layout;
 
@@ -124,6 +125,8 @@ const books = [
 ];
 
 const List = () => {
+  const SiderMenuSelectedKeys = '1';
+
   const [addBookModalVisible, setAddBookModalVisible] = useState(false);
 
   const clickAddButton = () => {
@@ -149,9 +152,19 @@ const List = () => {
   return (
     <React.Fragment>
       <Layout className={adminStyles.admin}>
-        <AdminSider />
+        <AdminSider SiderMenuSelectedKeys={SiderMenuSelectedKeys} />
         <Layout className={adminStyles.rightLayout}>
-          <Header className={adminStyles.layout_header}>管理员页面</Header>
+          <Header className={adminStyles.layout_header}>
+            管理员页面
+            <Avatar
+              size={35}
+              alt="头像"
+              src={<Image src={bookImg} />}
+              className={adminStyles.adminUser_avatar}
+            />
+            <a className={adminStyles.adminUser_logout}>退出登录</a>
+            <a className={adminStyles.adminUser_logoff}>注销</a>
+          </Header>
           <Content className={adminStyles.layout_content}>
             <BookList
               books={books}
