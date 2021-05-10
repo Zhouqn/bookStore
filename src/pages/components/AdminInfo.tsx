@@ -5,17 +5,11 @@ import {
   Divider,
   Image,
   Input,
-  Menu,
   message,
   Radio,
   Upload,
 } from 'antd';
-import {
-  DesktopOutlined,
-  LoadingOutlined,
-  PieChartOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
+import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import bookImg from '@/asset/imgs/book.png';
 import React, { useState } from 'react';
 const { TextArea } = Input;
@@ -27,36 +21,26 @@ const AdminInfo = () => {
     setSexValue(e.target.value);
   };
 
-  //上传封面
-  const [bookCoverLoading, setBookCoverLoading] = useState(false);
-  const bookCoverFile = (e: any) => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
+  //更换头像
+  const [avatarChangeLoading, setAvatarChangeLoading] = useState(false);
   const bookCoverUploadConfig = {
     beforeUpload: (file: any) => {
       const isJpgOrPng =
         file.type === 'image/jpeg' || file.type === 'image/png';
-      if (!isJpgOrPng) {
-        message.error('只能上传JPG/PNG格式!');
-      }
       const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        message.error('图片必须小于2MB!');
+      if (!isJpgOrPng || !isLt2M) {
+        message.error('只能上传JPG/PNG格式!且图片必须小于2MB!');
       }
       return isJpgOrPng && isLt2M ? true : Upload.LIST_IGNORE;
     },
     onChange: (info: any) => {
       console.log(info.fileList);
       if (info.file.status === 'uploading') {
-        setBookCoverLoading(true);
+        setAvatarChangeLoading(true);
         return;
       }
       if (info.file.status === 'done') {
-        setBookCoverLoading(false);
+        setAvatarChangeLoading(false);
       }
     },
   };
@@ -73,6 +57,7 @@ const AdminInfo = () => {
                 border: '1px solid',
                 backgroundColor: 'whitesmoke',
                 marginLeft: '10px',
+                marginRight: '15px',
               }}
             />
             <Upload
@@ -84,12 +69,11 @@ const AdminInfo = () => {
             >
               <Button
                 icon={
-                  bookCoverLoading ? <LoadingOutlined /> : <UploadOutlined />
+                  avatarChangeLoading ? <LoadingOutlined /> : <UploadOutlined />
                 }
                 style={{
-                  marginLeft: '50px',
                   marginRight: '15px',
-                  border: '1px solid black',
+                  border: '1px solid grey',
                 }}
               >
                 更换头像
@@ -102,12 +86,18 @@ const AdminInfo = () => {
           <Divider style={{ borderColor: 'whitesmoke' }} />
           <div className={adminStyles.adminUser_oneRecord}>
             <span style={{ width: '100px' }}>用户名</span>
-            <Input className={adminStyles.adminUser_input} value="default" />
+            <Input
+              className={adminStyles.adminUser_input}
+              style={{ width: '130px', borderRadius: '5px' }}
+            />
           </div>
           <Divider style={{ borderColor: 'whitesmoke' }} />
           <div className={adminStyles.adminUser_oneRecord}>
             <span style={{ width: '100px' }}>昵称</span>
-            <Input className={adminStyles.adminUser_input} value="default" />
+            <Input
+              className={adminStyles.adminUser_input}
+              style={{ width: '130px', borderRadius: '5px' }}
+            />
           </div>
           <Divider style={{ borderColor: 'whitesmoke' }} />
           <div style={{ marginLeft: '50px' }}>

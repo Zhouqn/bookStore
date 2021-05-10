@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Form, Input, Button } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import adminStyles from '@/asset/css/admin.css';
@@ -36,7 +36,6 @@ const tailFormItemLayout = {
 };
 
 const ChangePassword: FC<ChangePasswordProps> = (props) => {
-  // const [verifyFlag, setVerifyFlag] = useState(false)
   const [formVerify] = Form.useForm();
   const [formRegister] = Form.useForm();
   const {
@@ -67,33 +66,41 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
                 message: '请输入原密码!',
               },
             ]}
-            hasFeedback
           >
-            <Input.Password
-              onBlur={(e) => {
-                onBlurVerifyPassword(e);
-              }}
-              onChange={(e) => {
-                onChangeVerifyPassword(e);
-              }}
-            />
-            <div style={{ display: verifyTrueFlag ? '' : 'none' }}>
-              <CheckCircleOutlined style={{ color: 'darkgreen' }} />
-              <a
-                style={{
-                  color: 'darkgreen',
-                  marginLeft: '5px',
-                  cursor: 'default',
+            <div>
+              <Input.Password
+                placeholder="请先验证旧密码，失焦自动验证"
+                onBlur={(e) => {
+                  onBlurVerifyPassword(e);
                 }}
+                onChange={(e) => {
+                  onChangeVerifyPassword(e);
+                }}
+                allowClear
+              />
+              <div
+                className="1"
+                style={{ display: verifyTrueFlag ? '' : 'none' }}
               >
-                验证成功
-              </a>
-            </div>
-            <div style={{ display: verifyFalseFlag ? '' : 'none' }}>
-              <CloseCircleOutlined style={{ color: 'red' }} />
-              <a style={{ color: 'red', marginLeft: '5px', cursor: 'default' }}>
-                密码错误
-              </a>
+                <CheckCircleOutlined style={{ color: 'darkgreen' }} />
+                <a
+                  style={{
+                    color: 'darkgreen',
+                    marginLeft: '5px',
+                    cursor: 'default',
+                  }}
+                >
+                  验证成功
+                </a>
+              </div>
+              <div key={1} style={{ display: verifyFalseFlag ? '' : 'none' }}>
+                <CloseCircleOutlined style={{ color: 'red' }} />
+                <a
+                  style={{ color: 'red', marginLeft: '5px', cursor: 'default' }}
+                >
+                  密码错误
+                </a>
+              </div>
             </div>
           </Form.Item>
         </Form>
@@ -115,16 +122,14 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
                 message: '请输入新密码!',
               },
             ]}
-            hasFeedback
           >
-            <Input.Password />
+            <Input.Password allowClear />
           </Form.Item>
 
           <Form.Item
             name="confirm"
             label="确认新密码"
             dependencies={['password']}
-            hasFeedback
             rules={[
               {
                 required: true,
@@ -140,10 +145,10 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
               }),
             ]}
           >
-            <Input.Password />
+            <Input.Password allowClear />
           </Form.Item>
-          <Form.Item {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit">
+          <Form.Item name="submit" {...tailFormItemLayout}>
+            <Button type="primary" htmlType="submit" disabled={!verifyTrueFlag}>
               提交修改
             </Button>
           </Form.Item>

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, Divider, Input, Popconfirm, Rate, Select } from 'antd';
 import bookCover from '@/asset/imgs/bookCover.png';
 import adminStyles from '@/asset/css/admin.css';
@@ -15,13 +15,17 @@ interface BookListProps {
 
 const BookList: FC<BookListProps> = (props) => {
   const { books, clickAddButton, editBookRecord, deleteBookConfirm } = props;
+
+  // 单个书信息
+  // const [bookRecord, setBookRecord] = useState(undefined)
+
   return (
     <React.Fragment>
       <div className={adminStyles.book_contentTop}>
         {/*这里是搜索添加*/}
         <div className={adminStyles.book_contentSearch}>
           <Search
-            placeholder="通过书编号查询书"
+            placeholder="通过id查询书"
             enterButton="搜&emsp;索"
             size="large"
             style={{ margin: '0 70px', width: '80%' }}
@@ -50,37 +54,37 @@ const BookList: FC<BookListProps> = (props) => {
       </div>
       {/*书列表*/}
       <div className={adminStyles.book_oneLine}>
-        {books.map((book, i) => {
+        {books.map((bookRecord, i) => {
           return (
             <div key={i} className={adminStyles.oneRecord}>
               <div className={adminStyles.oneBookRecord}>
                 <img alt="book" src={bookCover} />
                 <div className={adminStyles.bookAut_and_pub}>
                   <div>
-                    <a style={{ fontSize: '15px' }}>{book.title}</a>
+                    <a style={{ fontSize: '15px' }}>{bookRecord.title}</a>
                     <Rate
                       className={adminStyles.bookRate}
                       allowHalf
                       // defaultValue={4.3}
-                      value={book.rate}
+                      value={bookRecord.rate}
                     />
-                    &emsp;{book.rate}
+                    &emsp;{bookRecord.rate}
                   </div>
-                  <div>作者: {book.author}</div>
-                  <div>出版社: {book.pub}</div>
+                  <div>作者: {bookRecord.author}</div>
+                  <div>出版社: {bookRecord.pub}</div>
                   <div>出版时间: ""</div>
                   <div className={adminStyles.bookDescribe}>
-                    {book.description}
+                    {bookRecord.description}
                   </div>
                 </div>
               </div>
               <div className={adminStyles.bookAction}>
-                <a onClick={() => editBookRecord(book)}>编辑</a>
+                <a onClick={() => editBookRecord(bookRecord)}>编辑</a>
                 <Popconfirm
                   title="确定删除吗?"
                   okText="确认"
                   cancelText="取消"
-                  onConfirm={() => deleteBookConfirm(book)}
+                  onConfirm={() => deleteBookConfirm(bookRecord)}
                 >
                   <a>删除</a>
                 </Popconfirm>
