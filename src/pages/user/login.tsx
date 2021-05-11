@@ -9,19 +9,20 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 // @ts-ignore
 import md5 from 'md5';
+import { UserModelState } from '@/models/user';
 
-const Login = ({ useroInfo, dispatch }) => {
+const Login = ({ isLogin }: { isLogin: boolean }) => {
   // console.log("userInfo= ", userInfo)
 
   const onFinish = (values: any) => {
     console.log('Success:', values);
-    dispatch({
-      type: 'user/goLogin',
-      payload: {
-        username: values.username,
-        password: md5(values.password),
-      },
-    });
+    // dispatch({
+    //   type: 'user/goLogin',
+    //   payload: {
+    //     username: values.username,
+    //     password: md5(values.password),
+    //   },
+    // });
   };
 
   // const onFinishFailed = (errorInfo: any) => {
@@ -30,7 +31,8 @@ const Login = ({ useroInfo, dispatch }) => {
 
   return (
     <div className={styles.login}>
-      <Header />
+      <Header isLogin={isLogin} />
+
       <div className={styles.loginForm_title}>
         <img alt="" src={bookImg} className={styles.login_bookImg} />
         欢迎登陆{appName}
@@ -92,11 +94,9 @@ const Login = ({ useroInfo, dispatch }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  console.log('state = ', state);
+export default connect(({ user }: { user: UserModelState }) => {
+  console.log('user = ', user);
   return {
-    // userInfo: user.userInfo,
+    isLogin: user.isLogin,
   };
-};
-
-export default connect(mapStateToProps)(Login);
+})(Login);

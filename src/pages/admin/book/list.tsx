@@ -19,7 +19,7 @@ interface ListProps {
   dispatch: Dispatch;
 }
 
-const List: FC<ListProps> = ({ books, dispatch }) => {
+const AdminBookList: FC<ListProps> = ({ books, dispatch }) => {
   const SiderMenuSelectedKeys = '1';
 
   const [add_edit_BookModalVisible, setAdd_edit_BookModalVisible] = useState(
@@ -147,4 +147,4 @@ export default connect(({ book }: { book: BookState }) => {
   return {
     books: book.books,
   };
-})(List);
+})(AdminBookList);

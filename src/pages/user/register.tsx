@@ -7,8 +7,9 @@ import bookImg from '@/asset/imgs/book.png';
 import React from 'react';
 import { useState } from 'react';
 import { appName } from '@/config';
+import { UserModelState } from '@/models/user';
 
-const Register = () => {
+const Register = ({ isLogin }: { isLogin: boolean }) => {
   const [value, setValue] = useState(1);
   const onFinish = (values: any) => {
     console.log(values);
@@ -21,7 +22,7 @@ const Register = () => {
 
   return (
     <div className={styles.register}>
-      <Header />
+      <Header isLogin={isLogin} />
       <div className={styles.registerForm_title}>
         <img alt="" src={bookImg} className={styles.register_bookImg} />
         欢迎注册{appName}
@@ -111,4 +112,9 @@ const Register = () => {
   );
 };
 
-export default connect()(Register);
+export default connect(({ user }: { user: UserModelState }) => {
+  console.log('user = ', user);
+  return {
+    isLogin: user.isLogin,
+  };
+})(Register);
