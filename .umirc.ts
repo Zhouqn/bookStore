@@ -10,7 +10,7 @@ export default defineConfig({
   fastRefresh: {},
   proxy: {
     '/api': {
-      target: 'http://localhost:8000/',
+      target: 'http://123.56.82.247/api/',
       changeOrigin: true,
       // 'pathRewrite': { '^/api' : '' },
     },

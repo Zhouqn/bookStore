@@ -2,22 +2,20 @@ import React, { FC, useState } from 'react';
 import { Button, Divider, Input, Popconfirm, Rate, Select } from 'antd';
 import bookCover from '@/asset/imgs/bookCover.png';
 import adminStyles from '@/asset/css/admin.css';
-import { BookRecordValue } from '@/pages/admin/data';
+import { bookRecordValue } from '@/pages/admin/data';
+import moment from 'moment';
 const { Search } = Input;
 const { Option } = Select;
 
 interface BookListProps {
-  books: BookRecordValue[];
+  books: bookRecordValue[];
   clickAddButton: () => void;
-  editBookRecord: (book: BookRecordValue) => void;
-  deleteBookConfirm: (book: BookRecordValue) => void;
+  clickEditBook: (book: bookRecordValue) => void;
+  deleteBookConfirm: (book: bookRecordValue) => void;
 }
 
 const BookList: FC<BookListProps> = (props) => {
-  const { books, clickAddButton, editBookRecord, deleteBookConfirm } = props;
-
-  // 单个书信息
-  // const [bookRecord, setBookRecord] = useState(undefined)
+  const { books, clickAddButton, clickEditBook, deleteBookConfirm } = props;
 
   return (
     <React.Fragment>
@@ -70,16 +68,16 @@ const BookList: FC<BookListProps> = (props) => {
                     />
                     &emsp;{bookRecord.rate}
                   </div>
-                  <div>作者: {bookRecord.author}</div>
+                  <div>作者: {bookRecord.authors}</div>
                   <div>出版社: {bookRecord.pub}</div>
-                  <div>出版时间: ""</div>
+                  <div>出版时间: {moment(bookRecord.pub_date)}</div>
                   <div className={adminStyles.bookDescribe}>
-                    {bookRecord.description}
+                    {bookRecord.describe}
                   </div>
                 </div>
               </div>
               <div className={adminStyles.bookAction}>
-                <a onClick={() => editBookRecord(bookRecord)}>编辑</a>
+                <a onClick={() => clickEditBook(bookRecord)}>编辑</a>
                 <Popconfirm
                   title="确定删除吗?"
                   okText="确认"

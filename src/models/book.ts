@@ -1,15 +1,20 @@
 import { Reducer, Effect, Subscription } from 'umi';
+import { bookRecordValue } from '@/pages/admin/data';
+import { deleteBookRecord } from '@/services/book';
+
+export interface BookState {
+  books: bookRecordValue[];
+}
 
 interface BookModelType {
   namespace: string;
-  state: {
-    list: [];
-  };
+  state: BookState;
   reducers: {
-    // showList: Reducer  //getList的类型是Reducer, 返回值是UserState类型
+    // getBookList: Reducer  //getList的类型是Reducer, 返回值是UserState类型
   };
   effects: {
-    showList: Effect;
+    getBookList: Effect;
+    deleteBook: Effect;
   };
   subscriptions: {
     // setup: Subscription;
@@ -19,11 +24,17 @@ interface BookModelType {
 const BookModel: BookModelType = {
   namespace: 'book',
   state: {
-    list: [],
+    books: [],
   },
   reducers: {},
   effects: {
-    *showList({ payload }, { call }) {},
+    *getBookList({ payload }, { call }) {
+      console.log('getBookList_payload', payload);
+    },
+    *deleteBook({ payload }, { call }) {
+      console.log('deleteBook_payload', payload);
+      yield call({ type: deleteBookRecord, payload: { payload } });
+    },
   },
   subscriptions: {},
 };

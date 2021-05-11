@@ -1,159 +1,34 @@
-import React, { useState } from 'react';
-import { connect } from 'umi';
+import React, { useState, FC } from 'react';
+import { connect, Dispatch } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
 import { appName } from '@/config';
-import { Avatar, Image, Layout } from 'antd';
+import { Avatar, Image, Layout, message } from 'antd';
 import Add_Edit_BookModal from '@/pages/components/Add_Edit_BookModal';
 import AdminSider from '@/pages/components/AdminSider';
 import BookList from '@/pages/components/BookList';
-import { BookRecordValue } from '@/pages/admin/data';
+import { bookRecordValue } from '@/pages/admin/data';
+import { BookState } from '@/models/book';
 import bookImg from '@/asset/imgs/book.png';
+import moment from 'moment';
+import { addBookRecord, editBookRecord } from '@/services/book';
 
 const { Header, Content, Footer } = Layout;
 
-const books = [
-  {
-    id: 1,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    author: '安徒生',
-    pub: '大地出版社',
-    published_time: '2020-3-21',
-    price: 40.5,
-    retail_price: 35.8,
-    description:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 2,
-    cover_uri: '/image/book1',
-    title: 'python',
-    author: 'jack',
-    pub: '大地出版社',
-    published_time: '2020-3-21',
-    price: 30,
-    retail_price: 25.5,
-    description:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 3,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    author: '安徒生',
-    pub: '大地出版社',
-    published_time: '2020-3-21',
-    price: 47.5,
-    retail_price: 36,
-    description:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 4,
-    cover_uri: '/image/book1',
-    title: 'Java',
-    author: 'nick',
-    pub: '大地出版社',
-    published_time: '2020-3-21',
-    price: 35.8,
-    retail_price: 34.8,
-    description:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 5,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    author: '安徒生',
-    pub: '大地出版社',
-    published_time: '2020-3-21',
-    price: 45.8,
-    retail_price: 32.5,
-    description:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 6,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    author: '安徒生',
-    pub: '大地出版社',
-    published_time: '2020-3-21',
-    price: 55.0,
-    retail_price: 37.8,
-    description:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 7,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    author: '安徒生',
-    pub: '大地出版社',
-    published_time: '2020-3-21',
-    price: 40.5,
-    retail_price: 35.8,
-    description:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 8,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    author: '安徒生',
-    pub: '大地出版社',
-    published_time: '2020-3-21',
-    price: 35.8,
-    retail_price: 34.8,
-    description:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 9,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    author: '安徒生',
-    pub: '大地出版社',
-    published_time: '2020-3-21',
-    price: 30,
-    retail_price: 25.8,
-    description:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 10,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    author: '安徒生',
-    pub: '大地出版社',
-    published_time: '2020-3-21',
-    price: 40.5,
-    retail_price: 30.2,
-    description:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-];
+interface ListProps {
+  books: bookRecordValue[];
+  dispatch: Dispatch;
+}
 
-const List = () => {
+const List: FC<ListProps> = ({ books, dispatch }) => {
   const SiderMenuSelectedKeys = '1';
 
-  //添加书Modal是否可见
   const [add_edit_BookModalVisible, setAdd_edit_BookModalVisible] = useState(
     false,
-  );
-  const [bookRecord, setBookRecord] = useState<BookRecordValue | undefined>(
+  ); //添加书Modal是否可见
+  const [bookRecord, setBookRecord] = useState<bookRecordValue | undefined>(
     undefined,
-  );
+  ); //一条书信息
+  const [bookSubmitLoading, setBookSubmitLoading] = useState(false);
 
   //点击添加按钮
   const clickAddButton = () => {
@@ -165,20 +40,69 @@ const List = () => {
     setAdd_edit_BookModalVisible(false);
   };
   //提交
-  const onSubmitBookModal = (bookRecord: BookRecordValue) => {
-    console.log('Received values of form: ', bookRecord);
-    setAdd_edit_BookModalVisible(false);
-    setBookRecord(bookRecord);
+  const onSubmitBookModal = async (formValues: any) => {
+    // setConfirmLoading(true);
+
+    const {
+      title,
+      price,
+      retail_price,
+      pub,
+      authors,
+      book_cover,
+      pub_dateTime,
+    } = formValues;
+    console.log('pub_date', moment(pub_dateTime).format('YYYY-MM-DD'));
+
+    const cover_uri = book_cover[0].name;
+    const pub_date = moment(pub_dateTime).format('YYYY-MM-DD');
+    const values = {
+      title,
+      price,
+      retail_price,
+      pub,
+      authors,
+      cover_uri,
+      pub_date,
+    };
+
+    let book_id = 0;
+    if (bookRecord) {
+      book_id = bookRecord.book_id;
+    }
+
+    let serviceFun;
+    if (book_id) {
+      serviceFun = editBookRecord;
+    } else {
+      serviceFun = addBookRecord;
+    }
+    const result = serviceFun({ book_id, values });
+    if (result) {
+      setAdd_edit_BookModalVisible(false);
+      setBookRecord(bookRecord);
+      message.success(`${book_id ? '编辑' : '添加'} 成功！`);
+    } else {
+      // setConfirmLoading(false);
+      message.error(`${book_id ? '编辑' : '添加'} 失败！`);
+    }
   };
   //删除书
-  const deleteBookConfirm = (bookRecord: BookRecordValue) => {
+  const deleteBookConfirm = (bookRecord: bookRecordValue) => {
     console.log('deleteBookConfirm = ', bookRecord);
+    const { book_id } = bookRecord;
+    dispatch({
+      type: 'book/deleteBook',
+      payload: {
+        book_id,
+      },
+    });
   };
   // 编辑书
-  const editBookRecord = (bookRecord: BookRecordValue) => {
+  const clickEditBook = (bookRecord: bookRecordValue) => {
     setAdd_edit_BookModalVisible(true);
     setBookRecord(bookRecord);
-    console.log('editBookRecord', bookRecord);
+    console.log('clickEditBook', bookRecord);
   };
   return (
     <React.Fragment>
@@ -201,7 +125,7 @@ const List = () => {
               books={books}
               clickAddButton={clickAddButton}
               deleteBookConfirm={deleteBookConfirm}
-              editBookRecord={editBookRecord}
+              clickEditBook={clickEditBook}
             />
           </Content>
           <Footer style={{ textAlign: 'center' }}>
@@ -219,7 +143,8 @@ const List = () => {
   );
 };
 
-export default connect((state) => {
-  console.log(state);
-  return {};
+export default connect(({ book }: { book: BookState }) => {
+  return {
+    books: book.books,
+  };
 })(List);

@@ -1,14 +1,14 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Button, Modal, Form, Input, DatePicker, Upload, message } from 'antd';
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
-import { BookRecordValue } from '@/pages/admin/data';
+import { bookRecordValue } from '@/pages/admin/data';
 import moment from 'moment';
 
 interface Add_Edit_BookModalProps {
   add_edit_BookModalVisible: boolean;
-  onSubmitBookModal: (values: BookRecordValue) => void;
+  onSubmitBookModal: (values: bookRecordValue) => void;
   onCancelBookModal: () => void;
-  bookRecord: BookRecordValue | undefined;
+  bookRecord: bookRecordValue | undefined;
 }
 
 const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
@@ -32,12 +32,12 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
     } else {
       form.setFieldsValue({
         title: bookRecord.title,
-        author: bookRecord.author,
+        author: bookRecord.authors,
         pub: bookRecord.pub,
-        published_time: moment(bookRecord.published_time),
+        published_time: moment(bookRecord.pub_date),
         price: bookRecord.price,
         retail_price: bookRecord.retail_price,
-        description: bookRecord.description,
+        description: bookRecord.describe,
         rate: bookRecord.rate,
       });
       console.log('useEffectEditBookRecord', bookRecord);
@@ -45,7 +45,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
   }, [add_edit_BookModalVisible]);
 
   //提交
-  const submitBookModalOnOk = () => {
+  const submitBookModalOnFinish = () => {
     form
       .validateFields()
       .then((values) => {
@@ -54,6 +54,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
       })
       .catch((info) => {
         console.log('Validate Failed:', info);
+        message.error('请检查你的表单是否填写正确');
       });
   };
 
@@ -94,21 +95,33 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
     rules: [{ type: 'object' as const, required: true, message: '选择时间!' }],
   };
 
+  //提交
+  const onOk = () => {
+    form.submit();
+  };
+
   return (
     <Modal
       visible={add_edit_BookModalVisible}
       title={
-        bookRecord ? `当前编辑的编号为 ${bookRecord.id} 的书籍` : '添加新书'
+        bookRecord
+          ? `当前编辑的编号为 ${bookRecord.book_id} 的书籍`
+          : '添加新书'
       }
       okText="提交"
       cancelText="取消"
       onCancel={onCancelBookModal}
-      onOk={submitBookModalOnOk}
+      onOk={onOk}
       forceRender
     >
-      <Form form={form} name="form_in_modal" {...layoutFrom}>
+      <Form
+        form={form}
+        name="form_in_modal"
+        {...layoutFrom}
+        onFinish={submitBookModalOnFinish}
+      >
         <Form.Item
-          name="cover_uri"
+          name="book_cover"
           label="上传书封面"
           rules={[{ required: true, message: '请上传书封面!' }]}
           valuePropName="fileList"
@@ -145,7 +158,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
           <Input />
         </Form.Item>
         <Form.Item
-          name="author"
+          name="authors"
           label="作者"
           rules={[{ required: true, message: '作者不能为空!' }]}
         >
@@ -159,7 +172,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
           <Input />
         </Form.Item>
         <Form.Item
-          name="published_time"
+          name="pub_dateTime"
           label="出版日期"
           {...dateTimeConfig}
           rules={[{ required: true, message: '请选择出版日期!' }]}
@@ -181,7 +194,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
           <Input />
         </Form.Item>
         <Form.Item
-          name="description"
+          name="describe"
           label="信息描述"
           rules={[{ required: true, message: '请对此书进行简单描述!' }]}
         >
