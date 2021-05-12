@@ -30,17 +30,17 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
       console.log('useEffectAddBookRecord', bookRecord);
       form.resetFields();
     } else {
+      console.log('useEffectEditBookRecord', bookRecord);
       form.setFieldsValue({
         title: bookRecord.title,
-        author: bookRecord.authors,
+        authors: bookRecord.authors,
         pub: bookRecord.pub,
-        published_time: moment(bookRecord.pub_date),
+        pub_date: moment(bookRecord.pub_date),
         price: bookRecord.price,
         retail_price: bookRecord.retail_price,
-        description: bookRecord.describe,
+        describe: bookRecord.describe,
         rate: bookRecord.rate,
       });
-      console.log('useEffectEditBookRecord', bookRecord);
     }
   }, [add_edit_BookModalVisible]);
 
@@ -49,8 +49,8 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
     form
       .validateFields()
       .then((values) => {
-        form.resetFields();
         onSubmitBookModal(values);
+        // form.resetFields();
       })
       .catch((info) => {
         console.log('Validate Failed:', info);
@@ -100,13 +100,16 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
     form.submit();
   };
 
+  const submitBookModalFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+    // message.error(errorInfo.errorFields[0].errors[0])
+  };
+
   return (
     <Modal
       visible={add_edit_BookModalVisible}
       title={
-        bookRecord
-          ? `当前编辑的编号为 ${bookRecord.book_id} 的书籍`
-          : '添加新书'
+        bookRecord ? `当前编辑的编号为 ${bookRecord.id} 的书籍` : '添加新书'
       }
       okText="提交"
       cancelText="取消"
@@ -119,9 +122,10 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
         name="form_in_modal"
         {...layoutFrom}
         onFinish={submitBookModalOnFinish}
+        onFinishFailed={submitBookModalFailed}
       >
         <Form.Item
-          name="book_cover"
+          name="cover_uri"
           label="上传书封面"
           rules={[{ required: true, message: '请上传书封面!' }]}
           valuePropName="fileList"
@@ -143,13 +147,6 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
             </span>
           </Upload>
         </Form.Item>
-        {/*<Form.Item*/}
-        {/*  name="number"*/}
-        {/*  label="书id"*/}
-        {/*  rules={[{ required: true, message: '书id不能为空!' }]}*/}
-        {/*>*/}
-        {/*  <Input />*/}
-        {/*</Form.Item>*/}
         <Form.Item
           name="title"
           label="书名"
@@ -172,7 +169,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
           <Input />
         </Form.Item>
         <Form.Item
-          name="pub_dateTime"
+          name="pub_date" //最后要转换成string形式 -> pub_date
           label="出版日期"
           {...dateTimeConfig}
           rules={[{ required: true, message: '请选择出版日期!' }]}
@@ -195,7 +192,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
         </Form.Item>
         <Form.Item
           name="describe"
-          label="信息描述"
+          label="描述"
           rules={[{ required: true, message: '请对此书进行简单描述!' }]}
         >
           <Input type="textarea" />

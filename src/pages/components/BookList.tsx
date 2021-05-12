@@ -1,6 +1,16 @@
 import React, { FC, useState } from 'react';
-import { Button, Divider, Input, Popconfirm, Rate, Select } from 'antd';
-import bookCover from '@/asset/imgs/bookCover.png';
+import {
+  Button,
+  Divider,
+  Empty,
+  Input,
+  Pagination,
+  Popconfirm,
+  Rate,
+  Select,
+  Image,
+} from 'antd';
+import noBookCover from '@/asset/imgs/noBookCover.png';
 import adminStyles from '@/asset/css/admin.css';
 import { bookRecordValue } from '@/pages/admin/data';
 import moment from 'moment';
@@ -12,10 +22,24 @@ interface BookListProps {
   clickAddButton: () => void;
   clickEditBook: (book: bookRecordValue) => void;
   deleteBookConfirm: (book: bookRecordValue) => void;
+  page: number;
+  page_size: number;
+  total_count: number;
+  onPageChange: (page: number) => void;
 }
 
 const BookList: FC<BookListProps> = (props) => {
-  const { books, clickAddButton, clickEditBook, deleteBookConfirm } = props;
+  const {
+    books,
+    clickAddButton,
+    clickEditBook,
+    deleteBookConfirm,
+    page,
+    page_size,
+    total_count,
+    onPageChange,
+  } = props;
+  // const [thatBooks, setThatBooks] = useState([])
 
   return (
     <React.Fragment>
@@ -56,23 +80,28 @@ const BookList: FC<BookListProps> = (props) => {
           return (
             <div key={i} className={adminStyles.oneRecord}>
               <div className={adminStyles.oneBookRecord}>
-                <img alt="book" src={bookCover} />
-                <div className={adminStyles.bookAut_and_pub}>
+                <Image
+                  alt="book"
+                  src={bookRecord.cover_url}
+                  fallback={noBookCover}
+                />
+                <div className={adminStyles.bookInfo}>
                   <div>
-                    <a style={{ fontSize: '15px' }}>{bookRecord.title}</a>
+                    <span style={{ fontSize: '15px', color: 'cornflowerblue' }}>
+                      {bookRecord.title}
+                    </span>
                     <Rate
-                      className={adminStyles.bookRate}
+                      style={{ marginLeft: '15px' }}
                       allowHalf
-                      // defaultValue={4.3}
                       value={bookRecord.rate}
                     />
                     &emsp;{bookRecord.rate}
                   </div>
                   <div>作者: {bookRecord.authors}</div>
                   <div>出版社: {bookRecord.pub}</div>
-                  <div>出版时间: {moment(bookRecord.pub_date)}</div>
+                  <div>出版时间: {bookRecord.pub_date}</div>
                   <div className={adminStyles.bookDescribe}>
-                    {bookRecord.describe}
+                    描述: {bookRecord.describe}
                   </div>
                 </div>
               </div>
@@ -92,6 +121,19 @@ const BookList: FC<BookListProps> = (props) => {
           );
         })}
       </div>
+      {total_count ? (
+        <Pagination
+          className={adminStyles.bookList_pagination}
+          current={page}
+          pageSize={page_size}
+          total={total_count}
+          showTotal={(total) => `共 ${total} 条`}
+          onChange={onPageChange}
+          pageSizeOptions={['4', '6', '8', '10', '20', '50', '100']}
+          showSizeChanger
+        />
+      ) : null}
+      {total_count ? null : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
     </React.Fragment>
   );
 };

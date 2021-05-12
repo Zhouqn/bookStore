@@ -15,7 +15,10 @@
   height: 35px;
   margin: auto;
 }
-.logo p{
+.logo img:hover{
+  cursor: pointer;
+}
+.logo a{
   color: white;
   font-size: 20px;
   margin: auto;
@@ -52,6 +55,7 @@
   min-height: 360px;
   min-width: 1000px;
   height: 100%;
+  /*width: 100%;*/
   overflow: auto;
   margin: 24px 50px 0;
   border-radius: 10px 10px 0 0;
@@ -77,14 +81,14 @@
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  height: 255px;
+  /*height: 255px;*/
   width: 100%;
   margin: 20px;
 }
 .oneRecord{
   position: relative;
   height: 255px;
-  width: 50%;
+  width: 49%;
 }
 .oneBookRecord{
   display: flex;
@@ -94,15 +98,13 @@
 .oneBookRecord img{
   width: 100px;
   height: 160px;
+  border:1px solid lightgray;
 }
-.bookAut_and_pub{
+.bookInfo{
   margin: 0 10px;
 }
-.bookAut_and_pub div{
+.bookInfo div{
   margin-bottom: 7px;
-}
-.bookRate{
-  margin-left: 20px;
 }
 .bookDescribe{
   width: 450px;
@@ -117,6 +119,13 @@
 }
 .bookAction a{
   margin: 0 20px;
+}
+.bookList_pagination{
+  position:relative;
+  /*background: #F5F5DC;*/
+  left: 60%;
+  width: 550px;
+  margin:auto;
 }
 
 /*管理员用户*/

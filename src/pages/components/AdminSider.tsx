@@ -3,7 +3,7 @@ import bookImg from '@/asset/imgs/book.png';
 import { appName } from '@/config';
 import { Layout, Menu } from 'antd';
 import { AlignCenterOutlined, UserOutlined } from '@ant-design/icons';
-import { Link } from 'umi';
+import { history, Link } from 'umi';
 import React from 'react';
 const { Sider } = Layout;
 
@@ -12,6 +12,10 @@ interface AdminSiderProps {
 }
 
 const AdminSider = (props: AdminSiderProps) => {
+  const goToIndex = () => {
+    history.push('/');
+  };
+
   const { SiderMenuSelectedKeys } = props;
   return (
     <Sider
@@ -25,8 +29,13 @@ const AdminSider = (props: AdminSiderProps) => {
       }}
     >
       <div className={adminStyles.logo}>
-        <img alt="" src={bookImg} className={adminStyles.logoImg} />
-        <p>{appName}</p>
+        <img
+          alt=""
+          src={bookImg}
+          className={adminStyles.logoImg}
+          onClick={goToIndex}
+        />
+        <a onClick={goToIndex}>{appName}</a>
       </div>
       <Menu
         theme="dark"

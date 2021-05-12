@@ -1,6 +1,7 @@
 export interface bookRecordValue {
-  book_id: number;
+  id: number;
   cover_uri: string;
+  cover_url: string;
   title: string;
   authors: string;
   pub: string;
@@ -9,6 +10,7 @@ export interface bookRecordValue {
   retail_price: number;
   describe: string;
   rate: number;
+  comment_count: number;
 }
 
 export interface FormValues {
