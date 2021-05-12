@@ -7,17 +7,5 @@ export interface singleUserType {
   gender: number;
   role: boolean;
   status: number;
+  extendInfo: string;
 }
-
-// export interface singleUserPartMsgType{
-//   id: number,
-//   username: string,
-//   password: string,
-//   gender: number,
-//   status: number
-// }
-
-//不知道是不是可以这么用
-// export interface singleUserAllMsgType extends singleUserPartMsgType{
-//   extendInfo:string,
-// }

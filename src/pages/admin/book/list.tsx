@@ -2,26 +2,16 @@ import React, { useState, FC } from 'react';
 import { connect, Dispatch } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
 import { appName } from '@/config';
-import {
-  Avatar,
-  Image,
-  Layout,
-  message,
-  Pagination,
-  Empty,
-  Popconfirm,
-  Modal,
-} from 'antd';
+import { Avatar, Image, Layout, message, Popconfirm, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import Add_Edit_BookModal from '@/pages/components/Add_Edit_BookModal';
-import AdminSider from '@/pages/components/AdminSider';
-import BookList from '@/pages/components/BookList';
+import Add_Edit_BookModal from '@/components/admin/Add_Edit_BookModal';
+import AdminSider from '@/components/admin/AdminSider';
+import BookList from '@/components/admin/BookList';
 import { bookRecordValue } from '@/pages/admin/data';
-import { BookState } from '@/models/book';
+import { BookModelState } from '@/models/book';
 import bookImg from '@/asset/imgs/book.png';
 import moment from 'moment';
 import { addBookRecord, editBookRecord } from '@/services/book';
-import { render } from 'react-dom';
 
 const { Header, Content, Footer } = Layout;
 
@@ -208,7 +198,7 @@ const AdminBookList: FC<ListProps> = (props) => {
   );
 };
 
-export default connect(({ book }: { book: BookState }) => {
+export default connect(({ book }: { book: BookModelState }) => {
   return {
     books: book.books,
     page: book.page,

@@ -1,30 +1,44 @@
 import React, { useState, FC } from 'react';
 import { connect, Dispatch } from 'umi';
-import adminStyles from '@/asset/css/admin.css';
-import { appName } from '@/config';
-import { Avatar, Image, Layout, message } from 'antd';
-import Add_Edit_BookModal from '@/pages/components/Add_Edit_BookModal';
-import AdminSider from '@/pages/components/AdminSider';
-import BookList from '@/pages/components/BookList';
-import { bookRecordValue } from '@/pages/admin/data';
-import { BookState } from '@/models/book';
-import bookImg from '@/asset/imgs/book.png';
-import moment from 'moment';
-import { addBookRecord, editBookRecord } from '@/services/book';
+import {} from 'antd';
+import { UserModelState } from '@/models/user';
+import { BookModelState } from '@/models/book';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import userStyles from '@/asset/css/user.css';
+import NewBookList from '@/components/user/NewBookList';
+import HotBookList from '@/components/user/HotBookList';
 
-const { Header, Content, Footer } = Layout;
-
-interface ListProps {
-  books: bookRecordValue[];
-  dispatch: Dispatch;
+interface UserBookList {
+  isLogin: boolean;
 }
 
-const UserBookList: FC<ListProps> = ({ books, dispatch }) => {
-  return <React.Fragment></React.Fragment>;
+const UserBookList: FC<UserBookList> = (props) => {
+  const { isLogin } = props;
+  return (
+    <React.Fragment>
+      <Header isLogin={isLogin} />
+      <div className={userStyles.userBookList}>
+        <div className={userStyles.newBookList}>
+          {/*<NewBookList newBooks={newBooks}/>*/}
+          <NewBookList />
+        </div>
+        <div className={userStyles.hotBookList}>
+          <HotBookList />
+        </div>
+      </div>
+
+      <Footer />
+    </React.Fragment>
+  );
 };
 
-export default connect(({ book }: { book: BookState }) => {
-  return {
-    books: book.books,
-  };
-})(UserBookList);
+export default connect(
+  ({ user, book }: { user: UserModelState; book: BookModelState }) => {
+    return {
+      //user
+      isLogin: user.isLogin,
+      //book
+    };
+  },
+)(UserBookList);

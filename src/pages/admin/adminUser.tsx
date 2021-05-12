@@ -4,9 +4,9 @@ import adminStyles from '@/asset/css/admin.css';
 import { appName } from '@/config';
 import { Layout, Avatar, Image, Menu, Input, message } from 'antd';
 import { SnippetsOutlined, EditOutlined } from '@ant-design/icons';
-import AdminSider from '@/pages/components/AdminSider';
-import AdminInfo from '@/pages/components/AdminInfo';
-import ChangePassword from '@/pages/components/ChangePassword';
+import AdminSider from '@/components/admin/AdminSider';
+import AdminInfo from '@/components/admin/AdminInfo';
+import ChangePassword from '@/components/admin/ChangePassword';
 const { Header, Content, Footer } = Layout;
 
 import bookImg from '@/asset/imgs/book.png'; //头像之后会是从数据库取出

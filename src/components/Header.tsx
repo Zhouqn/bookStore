@@ -14,7 +14,6 @@ const Header: FC<HeaderProps> = (props) => {
     <React.Fragment>
       <div className="header">
         <Link to="/">
-          {' '}
           <img className="header_bookImg" alt="book" src={bookImg} />
         </Link>
         <Link className="header_title" to="/">

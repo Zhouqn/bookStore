@@ -2,7 +2,7 @@ import { Reducer, Effect, Subscription } from 'umi';
 import { bookRecordValue } from '@/pages/admin/data';
 import { deleteBookRecord, getBooks } from '@/services/book';
 
-export interface BookState {
+export interface BookModelState {
   books: bookRecordValue[];
   page: number;
   page_size: number;
@@ -11,9 +11,9 @@ export interface BookState {
 
 interface BookModelType {
   namespace: string;
-  state: BookState;
+  state: BookModelState;
   reducers: {
-    setBookList: Reducer<BookState>; //getList的类型是Reducer, 返回值是UserState类型
+    setBookList: Reducer<BookModelState>; //getList的类型是Reducer, 返回值是UserState类型
   };
   effects: {
     getBookList: Effect;

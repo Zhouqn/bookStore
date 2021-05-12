@@ -1,8 +1,8 @@
 import { Reducer, Effect, Subscription } from 'umi';
-import { goLogin } from '@/services/user';
+import { singleUserType } from '@/pages/user/data';
 
 export interface UserModelState {
-  userInfo: {};
+  userInfo: singleUserType | {};
   isLogin: boolean;
 }
 
@@ -10,10 +10,10 @@ interface UserModelType {
   namespace: string;
   state: UserModelState;
   reducers: {
-    // getList: Reducer  //getList的类型是Reducer，返回值是UserState类型
+    // : Reducer  //getList的类型是Reducer，返回值是UserState类型
   };
   effects: {
-    goLogin: Effect;
+    // goLogin: Effect;
   };
   subscriptions: {
     // setup: Subscription;
@@ -27,12 +27,7 @@ const UserModel: UserModelType = {
     isLogin: false,
   },
   reducers: {},
-  effects: {
-    *goLogin({ payload }, { call }) {
-      const res = yield call(goLogin, payload);
-      console.log(res);
-    },
-  },
+  effects: {},
   subscriptions: {},
 };
 

@@ -26,3 +26,36 @@
   padding: 100px;
   width: 40%;
 }
+
+/*userBookList*/
+.userBookList{
+  position: absolute;
+  /*background: #888888;*/
+  margin-top: 100px ;
+  width: 100%;
+}
+
+/*newBookList*/
+.newBookList{
+  width: 750px;
+  /*background: white;*/
+  margin: auto;
+}
+.newBooks{
+  display: flex;
+  flex-wrap: wrap;
+}
+.newBookRecord{
+  width: 100px;
+  height: 160px;
+  margin: 10px 25px 80px;
+  border: 1px solid gray;
+  /*background: gray;*/
+}
+
+/*hotBookList*/
+.hotBookList{
+  width: 750px;
+  /*background: white;*/
+  margin: auto;
+}
