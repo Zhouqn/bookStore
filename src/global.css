@@ -1,5 +1,5 @@
 body{
-  background: no-repeat center url("./asset/imgs/bookStore.jpg");
+  background:  center url("./asset/imgs/bookStore.jpg");
 
 }
 
@@ -36,32 +36,22 @@ body{
   right: 50px;
   color: gray;
 }
-.header_mine{
+.header_mine, .header_logout, .header_logoff{
   position: absolute;
   margin: 1px 0;
   padding: 0 25px;
-  right: 250px;
   color: white;
   border-left:2px solid whitesmoke ;
   border-right:2px solid whitesmoke;
+}
+.header_mine{
+  right: 250px;
 }
 .header_logout{
-  position: absolute;
-  margin: 1px 0;
-  padding: 0 25px;
   right: 150px;
-  color: white;
-  border-left:2px solid whitesmoke ;
-  border-right:2px solid whitesmoke;
 }
 .header_logoff{
-  position: absolute;
-  margin: 1px 0;
-  padding: 0 25px;
   right: 50px;
-  color: white;
-  border-left:2px solid whitesmoke ;
-  border-right:2px solid whitesmoke;
 }
 
 /*Footer.tsx*/
