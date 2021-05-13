@@ -1,12 +1,12 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Button, Modal, Form, Input, DatePicker, Upload, message } from 'antd';
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
-import { bookRecordValue } from '@/pages/admin/data';
+import { bookRecordValue, FormValues } from '@/pages/data';
 import moment from 'moment';
 
 interface Add_Edit_BookModalProps {
   add_edit_BookModalVisible: boolean;
-  onSubmitBookModal: (values: bookRecordValue) => void;
+  onSubmitBookModal: (formValues: FormValues) => void;
   onCancelBookModal: () => void;
   bookRecord: bookRecordValue | undefined;
 }
@@ -43,20 +43,6 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
       });
     }
   }, [add_edit_BookModalVisible]);
-
-  //提交
-  const submitBookModalOnFinish = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        onSubmitBookModal(values);
-        // form.resetFields();
-      })
-      .catch((info) => {
-        console.log('Validate Failed:', info);
-        message.error('请检查你的表单是否填写正确');
-      });
-  };
 
   //From Item
   //上传封面
@@ -98,6 +84,18 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
   //提交
   const onOk = () => {
     form.submit();
+  };
+  const submitBookModalOnFinish = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        onSubmitBookModal(values);
+        // form.resetFields();
+      })
+      .catch((info) => {
+        console.log('Validate Failed:', info);
+        message.error('请检查你的表单是否填写正确');
+      });
   };
 
   const submitBookModalFailed = (errorInfo: any) => {

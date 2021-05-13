@@ -29,29 +29,22 @@ body{
   left: 20px;
   color: dimgray;
 }
-.header_enter{
+.header_mine, .header_logout, .header_logoff, .header_login, .header_register{
   position: absolute;
   margin: 1px 0;
-  padding: 0 25px;
-  right: 50px;
-  color: gray;
-}
-.header_mine, .header_logout, .header_logoff{
-  position: absolute;
-  margin: 1px 0;
-  padding: 0 25px;
+  padding: 0 20px;
   color: white;
-  border-left:2px solid whitesmoke ;
-  border-right:2px solid whitesmoke;
+  border-left:1px solid whitesmoke ;
+  border-right:1px solid whitesmoke;
 }
 .header_mine{
-  right: 250px;
+  right: 230px;
 }
-.header_logout{
-  right: 150px;
+.header_logout, .header_login{
+  right: 130px;
 }
-.header_logoff{
-  right: 50px;
+.header_logoff, .header_register{
+  right: 30px;
 }
 
 /*Footer.tsx*/

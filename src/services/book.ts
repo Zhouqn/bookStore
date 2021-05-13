@@ -1,7 +1,7 @@
 // import {request} from "umi";
 import request, { extend } from 'umi-request';
 import { message } from 'antd';
-import { FormValues } from '@/pages/admin/data';
+import { FormValues } from '@/pages/data';
 import { errorHandler } from '@/config';
 
 //箭头函数写异步函数

@@ -7,7 +7,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import Add_Edit_BookModal from '@/components/admin/Add_Edit_BookModal';
 import AdminSider from '@/components/admin/AdminSider';
 import BookList from '@/components/admin/BookList';
-import { bookRecordValue } from '@/pages/admin/data';
+import { bookRecordValue, FormValues } from '@/pages/data';
 import { BookModelState } from '@/models/book';
 import bookImg from '@/asset/imgs/book.png';
 import moment from 'moment';
@@ -67,7 +67,7 @@ const AdminBookList: FC<ListProps> = (props) => {
     setAdd_edit_BookModalVisible(false);
   };
   //提交
-  const onSubmitBookModal = async (formValues: any) => {
+  const onSubmitBookModal = async (formValues: FormValues) => {
     setBookSubmitLoading(true);
     console.log('addFormValues = ', formValues);
     const values = {

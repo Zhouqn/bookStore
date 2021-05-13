@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import { Divider, Image, Tooltip } from 'antd';
-import { DoubleRightOutlined } from '@ant-design/icons';
 import userStyles from '@/asset/css/user.css';
 import noBookCover from '@/asset/imgs/noBookCover.png';
-import { bookRecordValue } from '@/pages/admin/data';
+import { bookRecordValue } from '@/pages/data';
 
 interface NewBooksProps {
   books: bookRecordValue[];
@@ -18,7 +17,7 @@ const BookList: FC<NewBooksProps> = (props) => {
       <div className={userStyles.new_hot_Books}>
         {books.map((bookRecord, i) => {
           return (
-            <div className={userStyles.new_hot_BookRecord}>
+            <div key={i} className={userStyles.new_hot_BookRecord}>
               <Tooltip
                 placement="right"
                 title={() => {
@@ -30,7 +29,12 @@ const BookList: FC<NewBooksProps> = (props) => {
                       <div>作者：{bookRecord.authors}</div>
                       <div>出版社：{bookRecord.pub}</div>
                       <div>出版日期：{bookRecord.pub_date}</div>
-                      <div>原价：{bookRecord.price}</div>
+                      <div>
+                        原价：
+                        <span style={{ textDecoration: 'line-through' }}>
+                          {bookRecord.price}
+                        </span>
+                      </div>
                       <div>零售价：{bookRecord.retail_price}</div>
                       <div className={userStyles.tooltipDescribe}>
                         描述：{bookRecord.describe}
@@ -50,7 +54,6 @@ const BookList: FC<NewBooksProps> = (props) => {
             </div>
           );
         })}
-        ;
       </div>
     </React.Fragment>
   );

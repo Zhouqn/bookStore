@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
 import { appName } from '@/config';
-import { Layout, Avatar, Image, Menu, Input, message } from 'antd';
+import { Layout, Avatar, Image, Menu, message } from 'antd';
 import { SnippetsOutlined, EditOutlined } from '@ant-design/icons';
 import AdminSider from '@/components/admin/AdminSider';
 import AdminInfo from '@/components/admin/AdminInfo';

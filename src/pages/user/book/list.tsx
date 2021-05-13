@@ -39,7 +39,7 @@ const UserBookList: FC<UserBookList> = (props) => {
         <div className={userStyles.allTypesBookList}>
           {booksType.map((oneBooksType, i) => {
             return (
-              <div className={userStyles.differentTypesBookList}>
+              <div key={i} className={userStyles.differentTypesBookList}>
                 <p>
                   <span style={{ fontSize: '20px' }}>
                     {oneBooksType.type}：

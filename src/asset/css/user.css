@@ -64,8 +64,11 @@
 .tooltipDescribe{
   width:230px;
   overflow: hidden;
-  white-space:nowrap;
+  /*white-space:nowrap;*/ /*只能显示一行*/
+  display: -webkit-box;
   text-overflow:ellipsis;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 .bookTitle{
   font-size: 15px;

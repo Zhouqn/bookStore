@@ -12,7 +12,7 @@ import {
 } from 'antd';
 import noBookCover from '@/asset/imgs/noBookCover.png';
 import adminStyles from '@/asset/css/admin.css';
-import { bookRecordValue } from '@/pages/admin/data';
+import { bookRecordValue } from '@/pages/data';
 const { Search } = Input;
 const { Option } = Select;
 

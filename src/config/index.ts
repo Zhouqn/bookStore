@@ -45,8 +45,7 @@ export const newBooks = [
     pub_date: '2020-3-21',
     price: 30,
     retail_price: 25.5,
-    describe:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
+    describe: '这本书讲了很多适合小朋友的故事, 生动有趣！',
     rate: 4.3,
   },
   {

@@ -10,11 +10,12 @@ import Footer from '@/components/Footer';
 // @ts-ignore
 import md5 from 'md5';
 import { UserModelState } from '@/models/user';
+import { userLoginType } from '@/pages/data';
 
 const Login = ({ isLogin }: { isLogin: boolean }) => {
   // console.log("userInfo= ", userInfo)
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: userLoginType) => {
     console.log('Success:', values);
     // dispatch({
     //   type: 'user/goLogin',

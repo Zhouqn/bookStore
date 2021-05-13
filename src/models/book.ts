@@ -1,5 +1,5 @@
 import { Reducer, Effect, Subscription } from 'umi';
-import { bookRecordValue } from '@/pages/admin/data';
+import { bookRecordValue } from '@/pages/data';
 import { deleteBookRecord, getBooks } from '@/services/book';
 
 export interface BookModelState {
