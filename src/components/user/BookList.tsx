@@ -10,6 +10,7 @@ interface NewBooksProps {
 
 const BookList: FC<NewBooksProps> = (props) => {
   const { books } = props;
+  console.log('user_BookList_books = ', books);
 
   return (
     <React.Fragment>

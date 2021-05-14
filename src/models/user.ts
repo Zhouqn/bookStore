@@ -1,5 +1,5 @@
 import { Reducer, Effect, Subscription } from 'umi';
-import { singleUserType } from '@/pages/user/data';
+import { singleUserType } from '@/pages/data';
 
 export interface UserModelState {
   userInfo: singleUserType | {};

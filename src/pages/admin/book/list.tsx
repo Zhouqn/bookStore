@@ -11,7 +11,7 @@ import { bookRecordValue, FormValues } from '@/pages/data';
 import { BookModelState } from '@/models/book';
 import bookImg from '@/asset/imgs/book.png';
 import moment from 'moment';
-import { addBookRecord, editBookRecord } from '@/services/book';
+import { admin_addBookRecord, admin_editBookRecord } from '@/services/book';
 
 const { Header, Content, Footer } = Layout;
 
@@ -83,9 +83,9 @@ const AdminBookList: FC<ListProps> = (props) => {
 
     let serviceFun;
     if (book_id) {
-      serviceFun = editBookRecord;
+      serviceFun = admin_editBookRecord;
     } else {
-      serviceFun = addBookRecord;
+      serviceFun = admin_addBookRecord;
     }
     const result = await serviceFun({ book_id, values });
     console.log('addResult = ', result);

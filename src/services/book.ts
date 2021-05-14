@@ -1,5 +1,5 @@
 // import {request} from "umi";
-import request, { extend } from 'umi-request';
+import { extend } from 'umi-request';
 import { message } from 'antd';
 import { FormValues } from '@/pages/data';
 import { errorHandler } from '@/config';
@@ -13,33 +13,10 @@ import { errorHandler } from '@/config';
 
 const extendRequest = extend({ errorHandler });
 
-export const getBooks = async ({
-  page,
-  page_size,
-}: {
-  page: number;
-  page_size: number;
-}) => {
-  // console.log('getBooks = ', page, page_size);
-  return extendRequest(
-    `/api/book/fetch_books?page=${page}&page_size=${page_size}`,
-    {
-      method: 'get',
-    },
-  )
-    .then(function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      return false;
-    });
-};
-
-export const addBookRecord = async ({ values }: { values: FormValues }) => {
-  console.log('service_addBookRecord_values = ', values);
-  return extendRequest(`/api/book/add`, {
-    method: 'post',
-    data: values,
+const doRequest = (url: string, options?: object) => {
+  return extendRequest(url, {
+    method: 'get',
+    ...options,
   })
     .then(function (response) {
       return response;
@@ -49,7 +26,34 @@ export const addBookRecord = async ({ values }: { values: FormValues }) => {
     });
 };
 
-export const editBookRecord = async ({
+export const getBooks = async ({
+  page,
+  page_size,
+}: {
+  page: number;
+  page_size: number;
+}) => {
+  console.log('getBooks = ', page, page_size);
+  const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}`;
+  return doRequest(url);
+};
+//管理员
+//添加
+export const admin_addBookRecord = async ({
+  values,
+}: {
+  values: FormValues;
+}) => {
+  console.log('service_addBookRecord_values = ', values);
+  const url = `/api/book/add`;
+  const options = {
+    method: 'post',
+    data: values,
+  };
+  return doRequest(url, options);
+};
+//编辑
+export const admin_editBookRecord = async ({
   book_id,
   values,
 }: {
@@ -57,32 +61,28 @@ export const editBookRecord = async ({
   values: FormValues;
 }) => {
   console.log('service_editBookRecord_id&values = ', book_id, values);
-
-  // return extendRequest(``, {
-  //   method: 'post',
-  //   data: {
-  //   },
-  // })
-  //   .then(function (response) {
-  //     return response;
-  //   })
-  //   .catch(function (error) {
-  //     return false;
-  //   });
+};
+//删除
+export const admin_deleteBookRecord = async ({
+  book_id,
+}: {
+  book_id: number;
+}) => {
+  console.log('deleteBookRecord_id= ', book_id);
 };
 
-export const deleteBookRecord = async ({ book_id }: { book_id: number }) => {
-  console.log('deleteBookRecord_id= ', book_id);
-
-  // return extendRequest(``, {
-  //   method: 'post',
-  //   data: {
-  //   },
-  // })
-  //   .then(function (response) {
-  //     return response;
-  //   })
-  //   .catch(function (error) {
-  //     return false;
-  //   });
+//用户
+//获取高分/热门书列表
+export const user_getHighRateOrHotBooks = async ({
+  page,
+  page_size,
+  orderTypes,
+}: {
+  page: number;
+  page_size: number;
+  orderTypes: string;
+}) => {
+  console.log('getBooks = ', orderTypes);
+  const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
+  return doRequest(url);
 };

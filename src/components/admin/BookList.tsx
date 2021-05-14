@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
   Button,
   Divider,
@@ -38,7 +38,8 @@ const BookList: FC<BookListProps> = (props) => {
     total_count,
     onPageChange,
   } = props;
-  // const [thatBooks, setThatBooks] = useState([])
+  // const [books, setBooks] = useState([])
+  // const [total_count, setTotal_count] = useState(0)
 
   return (
     <React.Fragment>
@@ -145,7 +146,13 @@ const BookList: FC<BookListProps> = (props) => {
           showSizeChanger
         />
       ) : null}
-      {total_count ? null : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+      {total_count ? null : (
+        <Empty
+          style={{ position: 'relative', top: '200px' }}
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description="暂无数据"
+        />
+      )}
     </React.Fragment>
   );
 };
