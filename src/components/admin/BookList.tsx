@@ -24,7 +24,7 @@ interface BookListProps {
   page: number;
   page_size: number;
   total_count: number;
-  onPageChange: (page: number) => void;
+  onPageChange: (page: number, pageSize?: number) => void;
 }
 
 const BookList: FC<BookListProps> = (props) => {
@@ -86,7 +86,7 @@ const BookList: FC<BookListProps> = (props) => {
                 />
                 <div className={adminStyles.bookInfo}>
                   <div>
-                    <span style={{ fontSize: '15px', color: 'cornflowerblue' }}>
+                    <span style={{ fontSize: '17px', color: 'cornflowerblue' }}>
                       {bookRecord.title}
                     </span>
                     <Rate
@@ -94,13 +94,26 @@ const BookList: FC<BookListProps> = (props) => {
                       allowHalf
                       value={bookRecord.rate}
                     />
-                    &emsp;{bookRecord.rate}
+                    &emsp;{bookRecord.rate ? bookRecord.rate : '暂无评分'}
                   </div>
-                  <div>作者: {bookRecord.authors}</div>
-                  <div>出版社: {bookRecord.pub}</div>
-                  <div>出版时间: {bookRecord.pub_date}</div>
+                  <div>作者： {bookRecord.authors}</div>
+                  <div>出版社： {bookRecord.pub}</div>
+                  <div>出版时间： {bookRecord.pub_date}</div>
+                  <div>
+                    零售价：{' '}
+                    <span
+                      style={{
+                        textDecoration: 'line-through',
+                        marginRight: '5px',
+                        color: 'red',
+                      }}
+                    >
+                      {bookRecord.price}
+                    </span>
+                    {bookRecord.retail_price}
+                  </div>
                   <div className={adminStyles.bookDescribe}>
-                    描述: {bookRecord.describe}
+                    描述： {bookRecord.describe}
                   </div>
                 </div>
               </div>

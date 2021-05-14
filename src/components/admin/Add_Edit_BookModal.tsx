@@ -3,12 +3,14 @@ import { Button, Modal, Form, Input, DatePicker, Upload, message } from 'antd';
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import { bookRecordValue, FormValues } from '@/pages/data';
 import moment from 'moment';
+const { TextArea } = Input;
 
 interface Add_Edit_BookModalProps {
   add_edit_BookModalVisible: boolean;
   onSubmitBookModal: (formValues: FormValues) => void;
   onCancelBookModal: () => void;
   bookRecord: bookRecordValue | undefined;
+  bookSubmitLoading: boolean;
 }
 
 const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
@@ -18,6 +20,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
     onSubmitBookModal,
     onCancelBookModal,
     bookRecord,
+    bookSubmitLoading,
   } = props;
   const [form] = Form.useForm();
   const layoutFrom = {
@@ -113,6 +116,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
       cancelText="取消"
       onCancel={onCancelBookModal}
       onOk={onOk}
+      confirmLoading={bookSubmitLoading}
       forceRender
     >
       <Form
@@ -125,7 +129,9 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
         <Form.Item
           name="cover_uri"
           label="上传书封面"
-          rules={[{ required: true, message: '请上传书封面!' }]}
+          rules={
+            bookRecord ? [] : [{ required: true, message: '请上传书封面!' }]
+          }
           valuePropName="fileList"
           getValueFromEvent={bookCoverFile}
         >
@@ -148,21 +154,27 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
         <Form.Item
           name="title"
           label="书名"
-          rules={[{ required: true, message: '书名不能为空!' }]}
+          rules={
+            bookRecord ? [] : [{ required: true, message: '书名不能为空!' }]
+          }
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="authors"
           label="作者"
-          rules={[{ required: true, message: '作者不能为空!' }]}
+          rules={
+            bookRecord ? [] : [{ required: true, message: '作者不能为空!' }]
+          }
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="pub"
           label="出版社"
-          rules={[{ required: true, message: '出版社不能为空!' }]}
+          rules={
+            bookRecord ? [] : [{ required: true, message: '出版社不能为空!' }]
+          }
         >
           <Input />
         </Form.Item>
@@ -170,30 +182,40 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
           name="pub_date" //最后要转换成string形式 -> pub_date
           label="出版日期"
           {...dateTimeConfig}
-          rules={[{ required: true, message: '请选择出版日期!' }]}
+          rules={
+            bookRecord ? [] : [{ required: true, message: '请选择出版日期!' }]
+          }
         >
           <DatePicker placeholder="选择出版日期" />
         </Form.Item>
         <Form.Item
           name="price"
           label="原价"
-          rules={[{ required: true, message: '原价不能为空!' }]}
+          rules={
+            bookRecord ? [] : [{ required: true, message: '原价不能为空!' }]
+          }
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="retail_price"
           label="零售价"
-          rules={[{ required: true, message: '零售价不能为空!' }]}
+          rules={
+            bookRecord ? [] : [{ required: true, message: '零售价不能为空!' }]
+          }
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="describe"
           label="描述"
-          rules={[{ required: true, message: '请对此书进行简单描述!' }]}
+          rules={
+            bookRecord
+              ? []
+              : [{ required: true, message: '请对此书进行简单描述!' }]
+          }
         >
-          <Input type="textarea" />
+          <TextArea rows={3} />
         </Form.Item>
       </Form>
     </Modal>

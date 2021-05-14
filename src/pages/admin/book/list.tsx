@@ -93,10 +93,12 @@ const AdminBookList: FC<ListProps> = (props) => {
       setAdd_edit_BookModalVisible(false);
       setBookRecord(bookRecord);
       message.success(`${book_id ? '编辑' : '添加'}成功！`);
+      getBookList(page, page_size);
+      setBookSubmitLoading(false);
     } else {
       message.error(`${result.message}， ${book_id ? '编辑' : '添加'}失败！`);
+      setBookSubmitLoading(false);
     }
-    setBookSubmitLoading(false);
   };
   //删除书
   const deleteBookConfirm = (bookRecord: bookRecordValue) => {
@@ -193,6 +195,7 @@ const AdminBookList: FC<ListProps> = (props) => {
         onSubmitBookModal={onSubmitBookModal}
         onCancelBookModal={onCancelBookModal}
         bookRecord={bookRecord}
+        bookSubmitLoading={bookSubmitLoading}
       />
     </React.Fragment>
   );
