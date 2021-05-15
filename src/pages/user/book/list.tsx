@@ -13,9 +13,9 @@ import { Empty } from 'antd';
 interface UserBookList {
   isLogin: boolean;
   total_count: number;
-  newBooks: bookRecordValue[] | [];
-  highRateBooks: bookRecordValue[] | [];
-  hotBooks: bookRecordValue[] | [];
+  newBooks: bookRecordValue[];
+  highRateBooks: bookRecordValue[];
+  hotBooks: bookRecordValue[];
 }
 
 const UserBookList: FC<UserBookList> = (props) => {
@@ -36,7 +36,6 @@ const UserBookList: FC<UserBookList> = (props) => {
       books: hotBooks,
     },
   ];
-  // let [books, setBooks] = useState<bookRecordValue[]>([])
   return (
     <React.Fragment>
       <Header isLogin={isLogin} />
@@ -57,10 +56,7 @@ const UserBookList: FC<UserBookList> = (props) => {
                       />
                     </a>
                   </p>
-                  {/*{hotBooks ? <BookList books={hotBooks} /> : null}*/}
-                  {/*{highRateBooks ? <BookList books={highRateBooks} /> : null}*/}
-                  {/*{newBooks  ? <BookList books={newBooks} /> : null}*/}
-                  <BookList books={newBooks} />
+                  <BookList books={oneBooksType.books} />
                 </div>
               );
             })}

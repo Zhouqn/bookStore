@@ -77,6 +77,7 @@ const BookModel: BookModelType = {
       // yield call( admin_deleteBookRecord, payload  );
     },
     //用户
+    //获取书列表
     *user_getBookList({ payload }, { call, put }) {
       console.log('user_getBookList_payload', payload);
       const res_newBooks = yield call(getBooks, payload);
@@ -91,7 +92,11 @@ const BookModel: BookModelType = {
       console.log('res_newBooks = ', res_newBooks);
       console.log('res_highRateBooks = ', res_highRateBooks);
       console.log('res_hotBooks = ', res_hotBooks);
-      if (res_newBooks.code === 0) {
+      if (
+        res_newBooks.code === 0 &&
+        res_highRateBooks.code === 0 &&
+        res_hotBooks.code === 0
+      ) {
         yield put({
           type: 'setBookList',
           payload: {
@@ -99,36 +104,12 @@ const BookModel: BookModelType = {
             page_size: res_newBooks.data.page_size,
             total_count: res_newBooks.data.total_count,
             newBooks: res_newBooks.data.books,
+            highRateBooks: res_highRateBooks.data.books,
+            hotBooks: res_hotBooks.data.books,
           },
         });
       } else {
         message.error(res_newBooks.message);
-      }
-      if (res_highRateBooks.code === 0) {
-        yield put({
-          type: 'setBookList',
-          payload: {
-            page: res_highRateBooks.data.page,
-            page_size: res_highRateBooks.data.page_size,
-            total_count: res_highRateBooks.data.total_count,
-            newBooks: res_highRateBooks.data.books,
-          },
-        });
-      } else {
-        message.error(res_highRateBooks.message);
-      }
-      if (res_hotBooks.code === 0) {
-        yield put({
-          type: 'setBookList',
-          payload: {
-            page: res_hotBooks.data.page,
-            page_size: res_hotBooks.data.page_size,
-            total_count: res_hotBooks.data.total_count,
-            newBooks: res_hotBooks.data.books,
-          },
-        });
-      } else {
-        message.error(res_hotBooks.message);
       }
     },
   },
