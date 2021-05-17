@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Dispatch } from 'umi';
 import { Divider, Image, Tooltip } from 'antd';
 import userStyles from '@/asset/css/user.css';
 import noBookCover from '@/asset/imgs/noBookCover.png';
@@ -6,15 +7,12 @@ import { bookRecordValue } from '@/pages/data';
 
 interface NewBooksProps {
   books: bookRecordValue[];
+  clickBookCover_orTitle: (bookRecord: bookRecordValue) => void;
 }
 
 const BookList: FC<NewBooksProps> = (props) => {
-  const { books } = props;
+  const { books, clickBookCover_orTitle } = props;
   // console.log('user_BookList_books = ', books);
-
-  const clickBookCover = (bookRecord: bookRecordValue) => {
-    console.log('bookRecord = ', bookRecord);
-  };
 
   return (
     <React.Fragment>
@@ -56,11 +54,14 @@ const BookList: FC<NewBooksProps> = (props) => {
                       className={userStyles.bookList_bookCover}
                       fallback={noBookCover}
                       // placeholder={true}
-                      onClick={() => clickBookCover(bookRecord)}
+                      onClick={() => clickBookCover_orTitle(bookRecord)}
                       preview={false}
                     />
                   </Tooltip>
-                  <div className={userStyles.bookList_bookTitle}>
+                  <div
+                    className={userStyles.bookList_bookTitle}
+                    onClick={() => clickBookCover_orTitle(bookRecord)}
+                  >
                     {bookRecord.title}
                   </div>
                   <div style={{ fontSize: '13px' }}>{bookRecord.authors}</div>

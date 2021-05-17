@@ -10,7 +10,8 @@ import BookList from '@/components/user/BookList';
 import { DoubleRightOutlined } from '@ant-design/icons';
 import { Empty } from 'antd';
 
-interface UserBookList {
+interface UserBookListProps {
+  dispatch: Dispatch;
   isLogin: boolean;
   total_count: number;
   newBooks: bookRecordValue[];
@@ -18,8 +19,15 @@ interface UserBookList {
   hotBooks: bookRecordValue[];
 }
 
-const UserBookList: FC<UserBookList> = (props) => {
-  const { isLogin, total_count, newBooks, highRateBooks, hotBooks } = props;
+const UserBookList: FC<UserBookListProps> = (props) => {
+  const {
+    dispatch,
+    isLogin,
+    total_count,
+    newBooks,
+    highRateBooks,
+    hotBooks,
+  } = props;
   console.log('book = ', newBooks, highRateBooks, hotBooks);
   console.log('total_count = ', total_count);
   const booksType = [
@@ -36,6 +44,12 @@ const UserBookList: FC<UserBookList> = (props) => {
       books: hotBooks,
     },
   ];
+
+  const clickBookCover_orTitle = (bookRecord: bookRecordValue) => {
+    // console.log("userList_bookRecord = ",bookRecord)
+    dispatch({ type: 'book/user_getABookRecord', payload: bookRecord });
+  };
+
   return (
     <React.Fragment>
       <Header isLogin={isLogin} />
@@ -56,7 +70,10 @@ const UserBookList: FC<UserBookList> = (props) => {
                       />
                     </a>
                   </p>
-                  <BookList books={oneBooksType.books} />
+                  <BookList
+                    books={oneBooksType.books}
+                    clickBookCover_orTitle={clickBookCover_orTitle}
+                  />
                 </div>
               );
             })}

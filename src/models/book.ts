@@ -4,11 +4,13 @@ import {
   admin_deleteBookRecord,
   getBooks,
   user_getHighRateOrHotBooks,
+  user_getOneBook,
 } from '@/services/book';
 import { message } from 'antd';
 
 export interface BookModelState {
   books: bookRecordValue[];
+  bookRecord: bookRecordValue | {};
   newBooks: bookRecordValue[];
   highRateBooks: bookRecordValue[];
   hotBooks: bookRecordValue[];
@@ -30,6 +32,7 @@ interface BookModelType {
     admin_deleteBook: Effect;
     //用户
     user_getBookList: Effect;
+    user_getABookRecord: Effect;
   };
   subscriptions: {
     showBookList: Subscription;
@@ -43,6 +46,7 @@ const BookModel: BookModelType = {
   namespace: 'book',
   state: {
     books: [],
+    bookRecord: {},
     page: 1,
     page_size: 4,
     total_count: 0,
@@ -111,6 +115,11 @@ const BookModel: BookModelType = {
       } else {
         message.error(res_newBooks.message);
       }
+    },
+    //  获取单个书信息
+    *user_getABookRecord({ payload }, { call, put }) {
+      console.log('user_getABookRecord_payload = ', payload);
+      // yield call(user_getOneBook, payload:)
     },
   },
   subscriptions: {

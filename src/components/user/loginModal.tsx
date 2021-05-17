@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Link } from 'umi';
 import { Modal, Form, Input, message } from 'antd';
 import { FormValues } from '@/pages/data';
 
@@ -47,7 +48,7 @@ const LoginModal: FC<LoginModalProps> = (props) => {
   return (
     <React.Fragment>
       <Modal
-        title="登录"
+        title="您还未登录，请先登录"
         forceRender
         visible={loginModalVisible}
         okText="登录"
@@ -63,9 +64,10 @@ const LoginModal: FC<LoginModalProps> = (props) => {
           initialValues={{ remember: true }}
           onFinish={loginFormOnFinish}
           onFinishFailed={loginFormFinishFailed}
+          size="large"
         >
           <Form.Item
-            label="Username"
+            label="用户名："
             name="username"
             rules={[{ required: true, message: '用户名不能为空！' }]}
           >
@@ -73,13 +75,16 @@ const LoginModal: FC<LoginModalProps> = (props) => {
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label="密码："
             name="password"
             rules={[{ required: true, message: '密码不能为空！' }]}
           >
             <Input.Password />
           </Form.Item>
         </Form>
+        <div style={{ marginLeft: '120px', color: 'grey' }}>
+          还没有账号？先进行<Link to="/user/register">注册</Link>
+        </div>
       </Modal>
     </React.Fragment>
   );

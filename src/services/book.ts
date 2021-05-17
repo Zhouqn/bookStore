@@ -86,3 +86,19 @@ export const user_getHighRateOrHotBooks = async ({
   const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
   return doRequest(url);
 };
+//获取单个书的信息
+export const user_getOneBook = async ({
+  book_id,
+  page,
+  page_size,
+  orderTypes,
+}: {
+  book_id: number;
+  page: number;
+  page_size: number;
+  orderTypes: string;
+}) => {
+  const url = `/api/comment/fetchByBookId?book_id=${book_id}&page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
+  console.log(url);
+  // return doRequest(url);
+};
