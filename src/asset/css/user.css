@@ -92,19 +92,20 @@
   bottom: 50px;
   width: 100%;
   /*border: 2px solid;*/
-  background: rgba(255, 255, 255, 0.7) ;
+  background: rgba(255, 255, 255, 0.5) ;
   overflow-y: auto;
 }
 .bookMsg, .bookMsg_comment{
   width: 1000px;
   margin:auto;
   padding: 40px 70px;
-  background: rgba(255, 255, 255, 0.5) ;
+  background: rgba(255, 255, 255, 0.7) ;
   border: 1px solid lightgray;
 }
 .bookMsg_bookTitle{
   font-size:25px;
-  color:grey;
+  color:darkorange;
+  margin-bottom: 15px;
   /*border: 1px solid;*/
 }
 .bookMsg_BookInfos{
@@ -135,6 +136,9 @@
 .bookMsg_comment{
 
 }
+.bookMsg_chooseOrderType a{
+  margin: 7px;
+}
 .bookMsg_comment_delete{
   position: absolute;
   width: 30px;
@@ -145,7 +149,4 @@
   position: absolute;
   width:60px;
   right:15px;
-}
-.bookMsg_commentLikeIcon:hover{
-  color: red;
 }

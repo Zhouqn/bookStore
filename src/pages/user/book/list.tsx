@@ -7,12 +7,14 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import userStyles from '@/asset/css/user.css';
 import BookList from '@/components/user/BookList';
-import { DoubleRightOutlined } from '@ant-design/icons';
-import { Empty } from 'antd';
+import { DoubleRightOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Empty, Spin } from 'antd';
+import { Loading } from '@@/plugin-dva/connect';
 
 interface UserBookListProps {
   dispatch: Dispatch;
   isLogin: boolean;
+  bookListLoading: boolean;
   total_count: number;
   newBooks: bookRecordValue[];
   highRateBooks: bookRecordValue[];
@@ -27,6 +29,7 @@ const UserBookList: FC<UserBookListProps> = (props) => {
     newBooks,
     highRateBooks,
     hotBooks,
+    bookListLoading,
   } = props;
   console.log('book = ', newBooks, highRateBooks, hotBooks);
   console.log('total_count = ', total_count);
@@ -44,17 +47,26 @@ const UserBookList: FC<UserBookListProps> = (props) => {
       books: hotBooks,
     },
   ];
+  const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
 
   const clickBookCover_orTitle = (bookRecord: bookRecordValue) => {
     // console.log("userList_bookRecord = ",bookRecord)
-    dispatch({ type: 'book/user_getABookRecord', payload: bookRecord });
+    dispatch({
+      type: 'book/user_getABookRecord',
+      payload: { bookRecord: bookRecord },
+    });
   };
 
   return (
     <React.Fragment>
       <Header isLogin={isLogin} />
       <div className={userStyles.userBookList}>
-        {total_count ? (
+        {bookListLoading ? (
+          <Spin
+            indicator={bookListLoadingIcon}
+            style={{ position: 'relative', left: '47% ', top: '40%' }}
+          />
+        ) : total_count ? (
           <div className={userStyles.allTypesBookList}>
             {booksType.map((oneBooksType, i) => {
               return (
@@ -91,11 +103,20 @@ const UserBookList: FC<UserBookListProps> = (props) => {
 };
 
 export default connect(
-  ({ user, book }: { user: UserModelState; book: BookModelState }) => {
+  ({
+    user,
+    book,
+    loading,
+  }: {
+    user: UserModelState;
+    book: BookModelState;
+    loading: Loading;
+  }) => {
     return {
       //user
       isLogin: user.isLogin,
       //book
+      bookListLoading: loading.models.book,
       total_count: book.total_count,
       newBooks: book.newBooks,
       highRateBooks: book.highRateBooks,

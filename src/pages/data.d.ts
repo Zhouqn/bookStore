@@ -33,3 +33,15 @@ export interface singleUserType {
   status: number;
   extendInfo: string;
 }
+
+export interface commentType {
+  avatar: string | null;
+  content: string;
+  create_time: string;
+  id: number;
+  is_like: boolean;
+  like_count: number;
+  rate: number;
+  user_id: number;
+  user_name: string;
+}

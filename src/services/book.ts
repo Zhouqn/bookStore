@@ -100,5 +100,5 @@ export const user_getOneBook = async ({
 }) => {
   const url = `/api/comment/fetchByBookId?book_id=${book_id}&page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
   console.log(url);
-  // return doRequest(url);
+  return doRequest(url);
 };

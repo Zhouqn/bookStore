@@ -29,7 +29,9 @@ const BookList: FC<NewBooksProps> = (props) => {
                         <div>
                           <p style={{ fontSize: '16px', fontWeight: 'bold' }}>
                             {bookRecord.title}
-                            {bookRecord.rate}
+                            <span style={{ marginLeft: '10px' }}>
+                              {bookRecord.rate ? bookRecord.rate : '暂无评分'}
+                            </span>
                           </p>
                           <div>作者：{bookRecord.authors}</div>
                           <div>出版社：{bookRecord.pub}</div>

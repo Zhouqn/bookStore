@@ -1,5 +1,5 @@
-import { Reducer, Effect, Subscription } from 'umi';
-import { bookRecordValue } from '@/pages/data';
+import { Reducer, Effect, Subscription, history } from 'umi';
+import { bookRecordValue, commentType } from '@/pages/data';
 import {
   admin_deleteBookRecord,
   getBooks,
@@ -10,7 +10,8 @@ import { message } from 'antd';
 
 export interface BookModelState {
   books: bookRecordValue[];
-  bookRecord: bookRecordValue | {};
+  bookRecord: bookRecordValue | undefined;
+  comments: commentType[];
   newBooks: bookRecordValue[];
   highRateBooks: bookRecordValue[];
   hotBooks: bookRecordValue[];
@@ -25,6 +26,7 @@ interface BookModelType {
   reducers: {
     setBookList: Reducer<BookModelState>; //getList的类型是Reducer, 返回值是UserState类型
     //用户
+    setCommentList: Reducer<BookModelState>;
   };
   effects: {
     getBookList: Effect;
@@ -46,7 +48,8 @@ const BookModel: BookModelType = {
   namespace: 'book',
   state: {
     books: [],
-    bookRecord: {},
+    bookRecord: undefined,
+    comments: [],
     page: 1,
     page_size: 4,
     total_count: 0,
@@ -57,6 +60,10 @@ const BookModel: BookModelType = {
   },
   reducers: {
     setBookList(state, { payload }) {
+      console.log('getBookList_reducers', payload);
+      return payload;
+    },
+    setCommentList(state, { payload }) {
       console.log('getBookList_reducers', payload);
       return payload;
     },
@@ -118,8 +125,35 @@ const BookModel: BookModelType = {
     },
     //  获取单个书信息
     *user_getABookRecord({ payload }, { call, put }) {
-      console.log('user_getABookRecord_payload = ', payload);
-      // yield call(user_getOneBook, payload:)
+      // console.log('user_getABookRecord_payload = ', payload);
+      const { bookRecord } = payload;
+      let orderTypes = 'like_count';
+      if (payload.orderTypes) {
+        orderTypes = payload.orderTypes;
+      }
+      const res = yield call(user_getOneBook, {
+        book_id: bookRecord.id,
+        page: 1,
+        page_size: 10,
+        orderTypes,
+      });
+      console.log(' user_getABookRecord_res = ', res);
+      if (res.code === 0) {
+        const { comments, page, page_size, total_count } = res.data;
+        yield put({
+          type: 'setCommentList',
+          payload: {
+            bookRecord,
+            comments,
+            page,
+            page_size,
+            total_count,
+          },
+        });
+        history.push('/user/book/bookMsg');
+      } else {
+        message.error(res.message);
+      }
     },
   },
   subscriptions: {
