@@ -168,7 +168,11 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                   <FileTextOutlined style={{ marginRight: '5px' }} />
                   描述：
                 </span>
-                <div style={{ margin: '5px 60px' }}>{bookRecord.describe}</div>
+                <div style={{ margin: '5px 60px' }}>
+                  {bookRecord.describe === ''
+                    ? '暂无描述'
+                    : bookRecord.describe}
+                </div>
               </div>
             </div>
             <div style={{ width: '1000px', margin: 'auto' }}>
