@@ -5,6 +5,7 @@ import {
   getBooks,
   user_getHighRateOrHotBooks,
   user_getOneBook,
+  getBookById,
 } from '@/services/book';
 import { message } from 'antd';
 
@@ -30,6 +31,7 @@ interface BookModelType {
   };
   effects: {
     getBookList: Effect;
+    getBook_byId: Effect;
     //管理员
     admin_deleteBook: Effect;
     //用户
@@ -37,10 +39,11 @@ interface BookModelType {
     user_getABookRecord: Effect;
   };
   subscriptions: {
-    showBookList: Subscription;
-
+    //管理员
+    admin_showBookList: Subscription;
     //用户
     user_showBookList: Subscription;
+    // user_showABookRecord: Subscription;
   };
 }
 
@@ -60,19 +63,20 @@ const BookModel: BookModelType = {
   },
   reducers: {
     setBookList(state, { payload }) {
-      console.log('getBookList_reducers', payload);
+      // console.log('getBookList_reducers', payload);
       return payload;
     },
     setCommentList(state, { payload }) {
-      console.log('getBookList_reducers', payload);
+      // console.log('getBookList_reducers', payload);
       return payload;
     },
   },
   effects: {
+    //获取书列表 / 【按最新时间顺序】
     *getBookList({ payload }, { put, call }) {
-      console.log('getBookList_effects_payload', payload);
+      // console.log('getBookList_effects_payload', payload);
       const res = yield call(getBooks, payload);
-      console.log('getBookList_res = ', res);
+      // console.log('getBookList_res = ', res);
       if (res.code === 0) {
         yield put({
           type: 'setBookList',
@@ -82,15 +86,31 @@ const BookModel: BookModelType = {
         message.error(res.message);
       }
     },
+    //通过id获取书
+    *getBook_byId({ payload }, { put, call }) {
+      console.log('getBookById_effects_payload', payload);
+      const res = yield call(getBookById, payload);
+      console.log('getBook_byId_res = ', res);
+      if (res.code === 0) {
+        yield put({
+          type: 'user_getABookRecord',
+          payload: {
+            bookRecord: res.data.books[0],
+          },
+        });
+      } else {
+        message.error(res.message);
+      }
+    },
     //管理员
     *admin_deleteBook({ payload }, { call }) {
-      console.log('deleteBook_payload', payload);
+      // console.log('deleteBook_payload', payload);
       // yield call( admin_deleteBookRecord, payload  );
     },
     //用户
     //获取书列表
     *user_getBookList({ payload }, { call, put }) {
-      console.log('user_getBookList_payload', payload);
+      // console.log('user_getBookList_payload', payload);
       const res_newBooks = yield call(getBooks, payload);
       const res_highRateBooks = yield call(user_getHighRateOrHotBooks, {
         ...payload,
@@ -100,9 +120,9 @@ const BookModel: BookModelType = {
         ...payload,
         orderTypes: 'comment_count',
       });
-      console.log('res_newBooks = ', res_newBooks);
-      console.log('res_highRateBooks = ', res_highRateBooks);
-      console.log('res_hotBooks = ', res_hotBooks);
+      // console.log('res_newBooks = ', res_newBooks);
+      // console.log('res_highRateBooks = ', res_highRateBooks);
+      // console.log('res_hotBooks = ', res_hotBooks);
       if (
         res_newBooks.code === 0 &&
         res_highRateBooks.code === 0 &&
@@ -137,7 +157,7 @@ const BookModel: BookModelType = {
         page_size: 10,
         orderTypes,
       });
-      console.log(' user_getABookRecord_res = ', res);
+      // console.log(' user_getABookRecord_res = ', res);
       if (res.code === 0) {
         const { comments, page, page_size, total_count } = res.data;
         yield put({
@@ -150,17 +170,18 @@ const BookModel: BookModelType = {
             total_count,
           },
         });
-        history.push('/user/book/bookMsg');
+        history.push(`/user/book/${bookRecord.id}`);
       } else {
         message.error(res.message);
       }
     },
   },
   subscriptions: {
-    showBookList({ dispatch, history }) {
+    //管理员
+    admin_showBookList({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/admin/book/list') {
-          console.log('/admin/book/list_subscriptions');
+          // console.log('/admin/book/list_subscriptions');
           dispatch({
             type: 'getBookList',
             payload: {
@@ -171,11 +192,11 @@ const BookModel: BookModelType = {
         }
       });
     },
-
+    //用户
     user_showBookList({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/user/book/list') {
-          console.log('/user/book/list_subscriptions');
+          // console.log('subscriptions_/user/book/list');
           dispatch({
             type: 'user_getBookList',
             payload: {

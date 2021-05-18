@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react';
-import { connect, Dispatch } from 'umi';
+import React, { FC, useEffect, useState } from 'react';
+import { connect, Dispatch, useParams } from 'umi';
 import { Image, message, Rate, List, Comment, Divider, Empty } from 'antd';
 import {
   FormOutlined,
@@ -18,38 +18,8 @@ import { BookModelState } from '@/models/book';
 import LoginModal from '@/components/user/loginModal';
 import { bookRecordValue, FormValues, commentType } from '@/pages/data';
 
-// const data = [
-//   {
-//     author: 'Han Solo',
-//     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-//     like_count: 1000,
-//     is_like: true,
-//     content: (
-//       <p>
-//         We supply a series of design principles, practical patterns and high
-//         quality design resources (Sketch and Axure), to help people create their
-//         product prototypes beautifully and efficiently.
-//       </p>
-//     ),
-//     datetime: '2020年3月21日 14:26:55',
-//   },
-//   {
-//     author: 'Han Solo',
-//     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-//     like_count: 0,
-//     is_like: false,
-//     content: (
-//       <p>
-//         We supply a series of design principles, practical patterns and high
-//         quality design resources (Sketch and Axure), to help people create their
-//         product prototypes beautifully and efficiently.
-//       </p>
-//     ),
-//     datetime: '2020年3月21日 14:26:57',
-//   },
-// ];
-
 interface BookMsgProps {
+  dispatch: Dispatch;
   isLogin: boolean;
   bookRecord: bookRecordValue | undefined;
   comments: commentType[];
@@ -57,11 +27,23 @@ interface BookMsgProps {
 
 const desc = ['差', '较差', '一般', '好', '很好'];
 
-const BookMsg: FC<BookMsgProps> = (props) => {
-  const { isLogin, bookRecord, comments } = props;
+const BookInfo: FC<BookMsgProps> = (props) => {
+  const { dispatch, isLogin, bookRecord, comments } = props;
+  const [bookId, setBookId] = useState(0);
   const [rateValue, setRateValue] = useState(0);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginModalLoading, setLoginModalLoading] = useState(false);
+
+  const { bookInfo }: { bookInfo: any } = useParams();
+
+  useEffect(() => {
+    dispatch({
+      type: 'book/getBook_byId',
+      payload: {
+        book_id: bookInfo,
+      },
+    });
+  }, [bookId]);
 
   //评分
   const rateHandleChange = (rateValue: number) => {
@@ -281,4 +263,4 @@ export default connect(
       comments: book.comments,
     };
   },
-)(BookMsg);
+)(BookInfo);

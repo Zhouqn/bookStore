@@ -26,6 +26,7 @@ const doRequest = (url: string, options?: object) => {
     });
 };
 
+//获取书信息 【按最新时间排序】
 export const getBooks = async ({
   page,
   page_size,
@@ -37,6 +38,13 @@ export const getBooks = async ({
   const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}`;
   return doRequest(url);
 };
+//通过id查找书
+export const getBookById = async ({ book_id }: { book_id: number }) => {
+  console.log('getBookById = ', book_id);
+  const url = `/api/book/fetch_books?id=${book_id}`;
+  return doRequest(url);
+};
+
 //管理员
 //添加
 export const admin_addBookRecord = async ({
