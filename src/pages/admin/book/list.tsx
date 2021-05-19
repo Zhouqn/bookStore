@@ -72,7 +72,7 @@ const AdminBookList: FC<ListProps> = (props) => {
     console.log('addFormValues = ', formValues);
     const values = {
       ...formValues,
-      cover_uri: formValues.cover_uri[0].name,
+      cover_uri: formValues.cover_uri[0].response.data.file_uri,
       pub_date: moment(formValues.pub_date).format('YYYY-MM-DD'),
     };
 

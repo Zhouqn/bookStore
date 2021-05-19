@@ -74,6 +74,12 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
         return;
       }
       if (info.file.status === 'done') {
+        console.log(info.file.response);
+        if (info.file.response.code === 0) {
+          message.success('上传成功');
+        } else {
+          message.error(info.file.response.message);
+        }
         setBookCoverLoading(false);
       }
     },
@@ -136,8 +142,9 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
           getValueFromEvent={bookCoverFile}
         >
           <Upload
-            name="bookCover"
+            name="file"
             listType="picture"
+            action="/api/upload"
             maxCount={1}
             {...bookCoverUploadConfig}
           >

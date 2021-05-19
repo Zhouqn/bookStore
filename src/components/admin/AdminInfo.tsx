@@ -10,7 +10,7 @@ import {
   Upload,
 } from 'antd';
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
-import bookImg from '@/asset/imgs/book.png';
+import defaultAvatarImg from '@/asset/imgs/avatar.png';
 import React, { useState } from 'react';
 const { TextArea } = Input;
 
@@ -22,6 +22,7 @@ const AdminInfo = () => {
   };
 
   //更换头像
+  const [avatarImg, setAvatarImg] = useState(undefined);
   const [avatarChangeLoading, setAvatarChangeLoading] = useState(false);
   const bookCoverUploadConfig = {
     beforeUpload: (file: any) => {
@@ -34,12 +35,13 @@ const AdminInfo = () => {
       return isJpgOrPng && isLt2M ? true : Upload.LIST_IGNORE;
     },
     onChange: (info: any) => {
-      console.log(info.fileList);
+      console.log('info.fileList', info.fileList);
       if (info.file.status === 'uploading') {
         setAvatarChangeLoading(true);
         return;
       }
       if (info.file.status === 'done') {
+        console.log('info.file.response = ', info.file.response);
         setAvatarChangeLoading(false);
       }
     },
@@ -52,7 +54,8 @@ const AdminInfo = () => {
             <Avatar
               size={100}
               alt="头像"
-              src={<Image src={bookImg} />}
+              // src={<Image src={peopleImg} />}
+              src={defaultAvatarImg}
               style={{
                 border: '1px solid',
                 backgroundColor: 'whitesmoke',
@@ -61,8 +64,10 @@ const AdminInfo = () => {
               }}
             />
             <Upload
-              name="bookCover"
+              name="file"
               listType="picture"
+              action="/api/upload"
+              method="POST"
               maxCount={1}
               showUploadList={false}
               {...bookCoverUploadConfig}

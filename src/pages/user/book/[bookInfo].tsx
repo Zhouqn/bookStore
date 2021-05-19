@@ -1,12 +1,21 @@
 import React, { FC, useEffect, useState } from 'react';
 import { connect, Dispatch, useParams } from 'umi';
-import { Image, message, Rate, List, Comment, Divider, Empty } from 'antd';
+import {
+  Image,
+  message,
+  Rate,
+  List,
+  Comment,
+  Divider,
+  Empty,
+  Spin,
+} from 'antd';
 import {
   FormOutlined,
   EditOutlined,
   FileTextOutlined,
   HeartFilled,
-  StarFilled,
+  LoadingOutlined,
 } from '@ant-design/icons';
 import { appName } from '@/config';
 import noBookCover from '@/asset/imgs/noBookCover.png';
@@ -17,9 +26,11 @@ import { UserModelState } from '@/models/user';
 import { BookModelState } from '@/models/book';
 import LoginModal from '@/components/user/loginModal';
 import { bookRecordValue, FormValues, commentType } from '@/pages/data';
+import { Loading } from '@@/plugin-dva/connect';
 
 interface BookMsgProps {
   dispatch: Dispatch;
+  bookRecordLoading: boolean;
   isLogin: boolean;
   bookRecord: bookRecordValue | undefined;
   comments: commentType[];
@@ -28,11 +39,12 @@ interface BookMsgProps {
 const desc = ['差', '较差', '一般', '好', '很好'];
 
 const BookInfo: FC<BookMsgProps> = (props) => {
-  const { dispatch, isLogin, bookRecord, comments } = props;
+  const { dispatch, bookRecordLoading, isLogin, bookRecord, comments } = props;
   const [bookId, setBookId] = useState(0);
   const [rateValue, setRateValue] = useState(0);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginModalLoading, setLoginModalLoading] = useState(false);
+  const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
 
   const { bookInfo }: { bookInfo: any } = useParams();
 
@@ -81,7 +93,12 @@ const BookInfo: FC<BookMsgProps> = (props) => {
       {/*上半部分*/}
 
       <div className={userStyles.bookMsg_middle}>
-        {bookRecord ? (
+        {bookRecordLoading ? (
+          <Spin
+            indicator={bookListLoadingIcon}
+            style={{ position: 'relative', left: '47% ', top: '40%' }}
+          />
+        ) : bookRecord ? (
           <div>
             <div className={userStyles.bookMsg}>
               <div className={userStyles.bookMsg_bookTitle}>
@@ -260,9 +277,18 @@ const BookInfo: FC<BookMsgProps> = (props) => {
 };
 
 export default connect(
-  ({ user, book }: { user: UserModelState; book: BookModelState }) => {
+  ({
+    user,
+    book,
+    loading,
+  }: {
+    user: UserModelState;
+    book: BookModelState;
+    loading: Loading;
+  }) => {
     return {
       isLogin: user.isLogin,
+      bookRecordLoading: loading.models.book,
       bookRecord: book.bookRecord,
       comments: book.comments,
     };
