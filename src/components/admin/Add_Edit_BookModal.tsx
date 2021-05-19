@@ -1,5 +1,14 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Button, Modal, Form, Input, DatePicker, Upload, message } from 'antd';
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  Upload,
+  message,
+  InputNumber,
+} from 'antd';
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import { bookRecordValue, FormValues } from '@/pages/data';
 import moment from 'moment';
@@ -35,6 +44,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
     } else {
       console.log('useEffectEditBookRecord', bookRecord);
       form.setFieldsValue({
+        cover_uri: null,
         title: bookRecord.title,
         authors: bookRecord.authors,
         pub: bookRecord.pub,
@@ -199,10 +209,11 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
           name="price"
           label="原价"
           rules={
-            bookRecord ? [] : [{ required: true, message: '原价不能为空!' }]
+            // bookRecord ? [] : [{ required: true, message: '原价不能为空!' }]
+            [{ required: !bookRecord, message: '原价不能为空!' }]
           }
         >
-          <Input />
+          <Input type="number" />
         </Form.Item>
         <Form.Item
           name="retail_price"
@@ -211,7 +222,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
             bookRecord ? [] : [{ required: true, message: '零售价不能为空!' }]
           }
         >
-          <Input />
+          <Input type="number" />
         </Form.Item>
         <Form.Item
           name="describe"

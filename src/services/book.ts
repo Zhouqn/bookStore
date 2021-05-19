@@ -69,6 +69,15 @@ export const admin_editBookRecord = async ({
   values: FormValues;
 }) => {
   console.log('service_editBookRecord_id&values = ', book_id, values);
+  const url = `/api/book/update`;
+  const options = {
+    method: 'post',
+    data: {
+      id: book_id,
+      ...values,
+    },
+  };
+  return doRequest(url, options);
 };
 //删除
 export const admin_deleteBookRecord = async ({

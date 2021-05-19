@@ -9,14 +9,17 @@ import {
   Rate,
   Select,
   Image,
+  Spin,
 } from 'antd';
 import noBookCover from '@/asset/imgs/noBookCover.png';
 import adminStyles from '@/asset/css/admin.css';
 import { bookRecordValue } from '@/pages/data';
+import { LoadingOutlined } from '@ant-design/icons';
 const { Search } = Input;
 const { Option } = Select;
 
 interface BookListProps {
+  bookListLoading: boolean;
   books: bookRecordValue[];
   clickAddButton: () => void;
   clickEditBook: (book: bookRecordValue) => void;
@@ -29,6 +32,7 @@ interface BookListProps {
 
 const BookList: FC<BookListProps> = (props) => {
   const {
+    bookListLoading,
     books,
     clickAddButton,
     clickEditBook,
@@ -38,8 +42,8 @@ const BookList: FC<BookListProps> = (props) => {
     total_count,
     onPageChange,
   } = props;
-  // const [books, setBooks] = useState([])
-  // const [total_count, setTotal_count] = useState(0)
+  //加载图标
+  const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
 
   return (
     <React.Fragment>
@@ -76,63 +80,83 @@ const BookList: FC<BookListProps> = (props) => {
       </div>
       {/*书列表*/}
       <div className={adminStyles.book_oneLine}>
-        {books.map((bookRecord, i) => {
-          return (
-            <div key={i} className={adminStyles.oneRecord}>
-              <div className={adminStyles.oneBookRecord}>
-                <Image
-                  alt="book"
-                  src={bookRecord.cover_url}
-                  fallback={noBookCover}
-                />
-                <div className={adminStyles.bookInfo}>
-                  <div>
-                    <span style={{ fontSize: '17px', color: 'cornflowerblue' }}>
-                      {bookRecord.title}
-                    </span>
-                    <Rate
-                      style={{ marginLeft: '15px' }}
-                      allowHalf
-                      value={bookRecord.rate}
+        {bookListLoading ? (
+          <Spin
+            indicator={bookListLoadingIcon}
+            style={{ position: 'relative', left: '47% ', top: '150px' }}
+          />
+        ) : total_count ? (
+          books.map((bookRecord, i) => {
+            return (
+              <div key={i} className={adminStyles.oneRecord}>
+                <div className={adminStyles.oneBookRecord}>
+                  <div className={adminStyles.oneBookRecord_img}>
+                    <Image
+                      style={{ overflow: 'hidden' }}
+                      alt="book"
+                      src={bookRecord.cover_url}
+                      fallback={noBookCover}
+                      width="110px"
                     />
-                    &emsp;{bookRecord.rate ? bookRecord.rate : '暂无评分'}
                   </div>
-                  <div>作者： {bookRecord.authors}</div>
-                  <div>出版社： {bookRecord.pub}</div>
-                  <div>出版时间： {bookRecord.pub_date}</div>
-                  <div>
-                    零售价：{' '}
-                    <span
-                      style={{
-                        textDecoration: 'line-through',
-                        marginRight: '5px',
-                        color: 'red',
-                      }}
-                    >
-                      {bookRecord.price}
-                    </span>
-                    {bookRecord.retail_price}
-                  </div>
-                  <div className={adminStyles.bookDescribe}>
-                    描述： {bookRecord.describe}
+                  <div className={adminStyles.bookInfo}>
+                    <div>
+                      <span
+                        style={{ fontSize: '17px', color: 'cornflowerblue' }}
+                      >
+                        {bookRecord.title}
+                      </span>
+                      <Rate
+                        style={{ marginLeft: '15px' }}
+                        allowHalf
+                        disabled
+                        value={bookRecord.rate}
+                      />
+                      &emsp;{bookRecord.rate ? bookRecord.rate : '暂无评分'}
+                    </div>
+                    <div>作者： {bookRecord.authors}</div>
+                    <div>出版社： {bookRecord.pub}</div>
+                    <div>出版时间： {bookRecord.pub_date}</div>
+                    <div>
+                      零售价：{' '}
+                      <span
+                        style={{
+                          textDecoration: 'line-through',
+                          marginRight: '5px',
+                          color: 'red',
+                        }}
+                      >
+                        {bookRecord.price}
+                      </span>
+                      {bookRecord.retail_price}
+                    </div>
+                    <div className={adminStyles.bookDescribe}>
+                      描述： {bookRecord.describe}
+                    </div>
                   </div>
                 </div>
+                <div className={adminStyles.bookAction}>
+                  <a onClick={() => clickEditBook(bookRecord)}>编辑</a>
+                  <Popconfirm
+                    title="确定删除吗?"
+                    okText="确认"
+                    cancelText="取消"
+                    onConfirm={() => deleteBookConfirm(bookRecord)}
+                  >
+                    <a>删除</a>
+                  </Popconfirm>
+                </div>
+                <Divider style={{ borderColor: 'lightgray' }} dashed />
               </div>
-              <div className={adminStyles.bookAction}>
-                <a onClick={() => clickEditBook(bookRecord)}>编辑</a>
-                <Popconfirm
-                  title="确定删除吗?"
-                  okText="确认"
-                  cancelText="取消"
-                  onConfirm={() => deleteBookConfirm(bookRecord)}
-                >
-                  <a>删除</a>
-                </Popconfirm>
-              </div>
-              <Divider style={{ borderColor: 'lightgray' }} dashed />
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <Empty
+            style={{ position: 'relative', left: '47% ', top: '150px' }}
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="暂无数据"
+          />
+        )}
       </div>
       {total_count ? (
         <Pagination
@@ -146,13 +170,13 @@ const BookList: FC<BookListProps> = (props) => {
           showSizeChanger
         />
       ) : null}
-      {total_count ? null : (
-        <Empty
-          style={{ position: 'relative', top: '200px' }}
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="暂无数据"
-        />
-      )}
+      {/*{total_count ? null : (*/}
+      {/*  <Empty*/}
+      {/*    style={{ position: 'relative', top: '200px' }}*/}
+      {/*    image={Empty.PRESENTED_IMAGE_SIMPLE}*/}
+      {/*    description="暂无数据"*/}
+      {/*  />*/}
+      {/*)}*/}
     </React.Fragment>
   );
 };

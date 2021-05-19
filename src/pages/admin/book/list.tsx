@@ -12,10 +12,12 @@ import { BookModelState } from '@/models/book';
 import bookImg from '@/asset/imgs/book.png';
 import moment from 'moment';
 import { admin_addBookRecord, admin_editBookRecord } from '@/services/book';
+import { Loading } from '@@/plugin-dva/connect';
 
 const { Header, Content, Footer } = Layout;
 
 interface ListProps {
+  bookListLoading: boolean;
   books: bookRecordValue[];
   page: number;
   page_size: number;
@@ -24,7 +26,14 @@ interface ListProps {
 }
 
 const AdminBookList: FC<ListProps> = (props) => {
-  const { books, page, page_size, total_count, dispatch } = props;
+  const {
+    bookListLoading,
+    books,
+    page,
+    page_size,
+    total_count,
+    dispatch,
+  } = props;
   console.log('total_count = ', total_count);
   const SiderMenuSelectedKeys = '1';
 
@@ -175,6 +184,7 @@ const AdminBookList: FC<ListProps> = (props) => {
           </Header>
           <Content className={adminStyles.layout_content}>
             <BookList
+              bookListLoading={bookListLoading}
               books={books}
               clickAddButton={clickAddButton}
               deleteBookConfirm={deleteBookConfirm}
@@ -201,11 +211,14 @@ const AdminBookList: FC<ListProps> = (props) => {
   );
 };
 
-export default connect(({ book }: { book: BookModelState }) => {
-  return {
-    books: book.books,
-    page: book.page,
-    page_size: book.page_size,
-    total_count: book.total_count,
-  };
-})(AdminBookList);
+export default connect(
+  ({ book, loading }: { book: BookModelState; loading: Loading }) => {
+    return {
+      bookListLoading: loading.models.book,
+      books: book.books,
+      page: book.page,
+      page_size: book.page_size,
+      total_count: book.total_count,
+    };
+  },
+)(AdminBookList);

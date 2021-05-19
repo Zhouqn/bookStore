@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Dispatch } from 'umi';
 import { Divider, Image, Tooltip } from 'antd';
 import userStyles from '@/asset/css/user.css';
@@ -13,6 +13,9 @@ interface NewBooksProps {
 const BookList: FC<NewBooksProps> = (props) => {
   const { books, clickBookCover_orTitle } = props;
   // console.log('user_BookList_books = ', books);
+  const [bookCoverWidth, setBookCoverWidth] = useState(0);
+  const [bookCoverHeight, setBookCoverHeight] = useState(0);
+  const [bookCoverMargin, setBookCoverMargin] = useState(0);
 
   return (
     <React.Fragment>
@@ -50,15 +53,18 @@ const BookList: FC<NewBooksProps> = (props) => {
                       );
                     }}
                   >
-                    <Image
-                      alt="暂无封面"
-                      src={bookRecord.cover_uri}
-                      className={userStyles.bookList_bookCover}
-                      fallback={noBookCover}
-                      // placeholder={true}
-                      onClick={() => clickBookCover_orTitle(bookRecord)}
-                      preview={false}
-                    />
+                    <div className={userStyles.bookList_bookCover}>
+                      <Image
+                        // style={{border:"1px solid", position:"relative" , bottom:"0px"}}
+                        alt="暂无封面"
+                        src={bookRecord.cover_url}
+                        fallback={noBookCover}
+                        onClick={() => clickBookCover_orTitle(bookRecord)}
+                        preview={false}
+                        width="100%"
+                        // height="100%"
+                      />
+                    </div>
                   </Tooltip>
                   <div
                     className={userStyles.bookList_bookTitle}
