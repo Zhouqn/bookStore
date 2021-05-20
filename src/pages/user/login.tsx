@@ -1,5 +1,5 @@
-import React from 'react';
-import { connect, Link } from 'umi';
+import React, { FC } from 'react';
+import { connect, Dispatch, Link } from 'umi';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { appName } from '@/config';
@@ -10,25 +10,31 @@ import Footer from '@/components/Footer';
 // @ts-ignore
 import md5 from 'md5';
 import { UserModelState } from '@/models/user';
-import { userLoginType } from '@/pages/data';
+import { FormValues } from '@/pages/data';
 
-const Login = ({ isLogin }: { isLogin: boolean }) => {
+interface LoginProps {
+  dispatch: Dispatch;
+  isLogin: boolean;
+}
+
+const Login: FC<LoginProps> = (props) => {
   // console.log("userInfo= ", userInfo)
+  const { dispatch, isLogin } = props;
 
-  const onFinish = (values: userLoginType) => {
+  const onFinish = (values: FormValues) => {
     console.log('Success:', values);
-    // dispatch({
-    //   type: 'user/goLogin',
-    //   payload: {
-    //     username: values.username,
-    //     password: md5(values.password),
-    //   },
-    // });
+    dispatch({
+      type: 'user/goLogin',
+      payload: {
+        username: values.username,
+        password: md5(values.password),
+      },
+    });
   };
 
-  // const onFinishFailed = (errorInfo: any) => {
-  //   console.log('Failed:', errorInfo);
-  // };
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
 
   return (
     <div className={styles.login}>
@@ -44,6 +50,7 @@ const Login = ({ isLogin }: { isLogin: boolean }) => {
           style={{ maxWidth: 400, margin: 'auto' }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
           size="large"
         >
           <Form.Item

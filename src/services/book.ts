@@ -1,8 +1,5 @@
-// import {request} from "umi";
-import { extend } from 'umi-request';
-import { message } from 'antd';
 import { FormValues } from '@/pages/data';
-import { errorHandler } from '@/config';
+import doRequest from '@/request';
 
 //箭头函数写异步函数
 // const name = async (params) => {
@@ -10,21 +7,6 @@ import { errorHandler } from '@/config';
 // 普通函数
 // async function function_name(params){
 // }
-
-const extendRequest = extend({ errorHandler });
-
-const doRequest = (url: string, options?: object) => {
-  return extendRequest(url, {
-    method: 'get',
-    ...options,
-  })
-    .then(function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      return false;
-    });
-};
 
 //获取书信息 【按最新时间排序】
 export const getBooks = async ({

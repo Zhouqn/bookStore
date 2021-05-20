@@ -12,24 +12,7 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = (props) => {
   const { isLogin } = props;
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
-  const [loginModalLoading, setLoginModalLoading] = useState(false);
 
-  const clickLogin = () => {
-    setLoginModalVisible(true);
-  };
-  //提交登录
-  const submitLoginModal = (formValues: FormValues) => {
-    console.log('submitLoginModal_formValues = ', formValues);
-    setLoginModalVisible(false);
-    // setLoginModalLoading(true) //连接到后台启用
-    // message.success("登陆成功")
-  };
-  //Modal 取消登录
-  const LoginModalHandleCancel = () => {
-    setLoginModalVisible(false);
-    message.error('已取消');
-  };
   return (
     <React.Fragment>
       <div className="header">
@@ -47,22 +30,15 @@ const Header: FC<HeaderProps> = (props) => {
           </div>
         ) : (
           <div>
-            {/*<Link className="header_login" to='/user/login'>登录</Link>*/}
-            <a onClick={clickLogin} className="header_login">
+            <Link className="header_login" to="/user/login">
               登录
-            </a>
+            </Link>
             <Link className="header_register" to="/user/register">
               注册
             </Link>
           </div>
         )}
       </div>
-      <LoginModal
-        loginModalVisible={loginModalVisible}
-        submitLoginModal={submitLoginModal}
-        LoginModalHandleCancel={LoginModalHandleCancel}
-        loginModalLoading={loginModalLoading}
-      />
     </React.Fragment>
   );
 };

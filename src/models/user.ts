@@ -1,4 +1,5 @@
 import { Reducer, Effect, Subscription } from 'umi';
+import { goLogin } from '@/services/user';
 import { singleUserType } from '@/pages/data';
 
 export interface UserModelState {
@@ -10,10 +11,10 @@ interface UserModelType {
   namespace: string;
   state: UserModelState;
   reducers: {
-    // : Reducer  //getList的类型是Reducer，返回值是UserState类型
+    setUserInfo: Reducer; //getList的类型是Reducer，返回值是UserState类型
   };
   effects: {
-    // goLogin: Effect;
+    goLogin: Effect;
   };
   subscriptions: {
     // setup: Subscription;
@@ -26,8 +27,30 @@ const UserModel: UserModelType = {
     userInfo: {},
     isLogin: false,
   },
-  reducers: {},
-  effects: {},
+  reducers: {
+    setUserInfo(state, { payload }) {
+      console.log('models_setUserInfo_payload', payload);
+      return payload;
+    },
+  },
+  effects: {
+    *goLogin({ payload }, { put, call }) {
+      console.log('models_goLogin_payload = ', payload);
+      const res = yield call(goLogin, payload);
+      console.log('models_goLogin_res = ', res);
+      if (res.code === 0) {
+        yield put({
+          type: 'setUserInfo',
+          payload: {
+            isLogin: true,
+          },
+        });
+        if (res.data.role === 1) {
+          history.back();
+        }
+      }
+    },
+  },
   subscriptions: {},
 };
 
