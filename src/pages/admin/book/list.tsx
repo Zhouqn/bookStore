@@ -1,5 +1,5 @@
 import React, { useState, FC } from 'react';
-import { connect, Dispatch } from 'umi';
+import { connect, Dispatch, Loading, history } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
 import { appName } from '@/config';
 import { Avatar, Image, Layout, message, Popconfirm, Modal, Empty } from 'antd';
@@ -8,11 +8,12 @@ import Add_Edit_BookModal from '@/components/admin/Add_Edit_BookModal';
 import AdminSider from '@/components/admin/AdminSider';
 import BookList from '@/components/admin/BookList';
 import { bookRecordValue, FormValues } from '@/pages/data';
+import { UserModelState } from '@/models/user';
 import { BookModelState } from '@/models/book';
 import bookImg from '@/asset/imgs/book.png';
 import moment from 'moment';
+import { singleUserType } from '@/pages/data';
 import { admin_addBookRecord, admin_editBookRecord } from '@/services/book';
-import { Loading } from '@@/plugin-dva/connect';
 
 const { Header, Content, Footer } = Layout;
 
@@ -23,6 +24,8 @@ interface ListProps {
   page_size: number;
   total_count: number;
   dispatch: Dispatch;
+  isLogin: boolean;
+  userInfo: singleUserType | {};
 }
 
 const AdminBookList: FC<ListProps> = (props) => {
@@ -33,6 +36,8 @@ const AdminBookList: FC<ListProps> = (props) => {
     page_size,
     total_count,
     dispatch,
+    isLogin,
+    userInfo,
   } = props;
   console.log('total_count = ', total_count);
   const SiderMenuSelectedKeys = '1';
@@ -156,7 +161,7 @@ const AdminBookList: FC<ListProps> = (props) => {
     message.error('取消注销');
   };
 
-  return (
+  return isLogin ? (
     <React.Fragment>
       <Layout className={adminStyles.admin}>
         <AdminSider SiderMenuSelectedKeys={SiderMenuSelectedKeys} />
@@ -208,17 +213,32 @@ const AdminBookList: FC<ListProps> = (props) => {
         bookSubmitLoading={bookSubmitLoading}
       />
     </React.Fragment>
+  ) : (
+    <div>
+      {message.error('未登录,请先登录')}
+      {history.push('/')}
+    </div>
   );
 };
 
 export default connect(
-  ({ book, loading }: { book: BookModelState; loading: Loading }) => {
+  ({
+    user,
+    book,
+    loading,
+  }: {
+    user: UserModelState;
+    book: BookModelState;
+    loading: Loading;
+  }) => {
     return {
       bookListLoading: loading.models.book,
       books: book.books,
       page: book.page,
       page_size: book.page_size,
       total_count: book.total_count,
+      isLogin: user.isLogin,
+      userInfo: user.userInfo,
     };
   },
 )(AdminBookList);

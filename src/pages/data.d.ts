@@ -26,6 +26,7 @@ export interface userLoginType {
 
 export interface singleUserType {
   id: number;
+  avatar: string;
   username: string;
   password: string;
   gender: number;

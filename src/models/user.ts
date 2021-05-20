@@ -1,4 +1,4 @@
-import { Reducer, Effect, Subscription } from 'umi';
+import { Reducer, Effect, Subscription, history } from 'umi';
 import { goLogin } from '@/services/user';
 import { singleUserType } from '@/pages/data';
 
@@ -43,10 +43,13 @@ const UserModel: UserModelType = {
           type: 'setUserInfo',
           payload: {
             isLogin: true,
+            userInfo: res.data,
           },
         });
         if (res.data.role === 1) {
-          history.back();
+          history.push('/user/book/list');
+        } else if (res.data.role === 2) {
+          history.push('/admin/book/list');
         }
       }
     },
