@@ -1,8 +1,17 @@
 import React, { useState, FC } from 'react';
-import { connect, Dispatch, Loading, history } from 'umi';
+import { connect, Dispatch, Loading, history, Link } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
 import { appName } from '@/config';
-import { Avatar, Image, Layout, message, Popconfirm, Modal, Empty } from 'antd';
+import {
+  Avatar,
+  Image,
+  Layout,
+  message,
+  Popconfirm,
+  Modal,
+  Result,
+  Divider,
+} from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import Add_Edit_BookModal from '@/components/admin/Add_Edit_BookModal';
 import AdminSider from '@/components/admin/AdminSider';
@@ -14,6 +23,7 @@ import bookImg from '@/asset/imgs/book.png';
 import moment from 'moment';
 import { singleUserType } from '@/pages/data';
 import { admin_addBookRecord, admin_editBookRecord } from '@/services/book';
+import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
 const { Header, Content, Footer } = Layout;
 
@@ -25,6 +35,7 @@ interface ListProps {
   total_count: number;
   dispatch: Dispatch;
   isLogin: boolean;
+  isAdmin: boolean;
   userInfo: singleUserType | {};
 }
 
@@ -37,6 +48,7 @@ const AdminBookList: FC<ListProps> = (props) => {
     total_count,
     dispatch,
     isLogin,
+    isAdmin,
     userInfo,
   } = props;
   console.log('total_count = ', total_count);
@@ -161,7 +173,30 @@ const AdminBookList: FC<ListProps> = (props) => {
     message.error('取消注销');
   };
 
-  return isLogin ? (
+  //5秒后页面跳转
+  const timeChange = () => {
+    // 获取初始时间
+    let time = document.getElementById('timeChange');
+    // 获取到id为time标签中的数字时间
+    if (time) {
+      if (parseInt(time.innerHTML) === 0) {
+        // 等于0时清除计时，并跳转该指定页面
+        history.push('/user/login');
+      } else {
+        time.innerHTML = String(parseInt(time.innerHTML) - 1);
+      }
+    }
+  };
+  const timeCall = () => {
+    // 1000毫秒调用一次
+    window.onload = () => {
+      window.setInterval(() => {
+        timeChange();
+      }, 1000);
+    };
+  };
+
+  return (
     <React.Fragment>
       <Layout className={adminStyles.admin}>
         <AdminSider SiderMenuSelectedKeys={SiderMenuSelectedKeys} />
@@ -212,12 +247,35 @@ const AdminBookList: FC<ListProps> = (props) => {
         bookRecord={bookRecord}
         bookSubmitLoading={bookSubmitLoading}
       />
+      {isLogin && isAdmin ? null : (
+        <div>
+          <div
+            style={{
+              position: 'fixed',
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            }}
+          />
+          <Modal visible={true} footer={false} closable={false}>
+            {isLogin ? (
+              <Result
+                status="warning"
+                title="此页面为管理员页面，当前权限不够，请先进行管理员登录！"
+              />
+            ) : (
+              <Result status="warning" title="您当前没有登录，请先进行登录！" />
+            )}
+            <Divider />
+            <div style={{ color: 'grey' }}>
+              请稍后，<span id="timeChange">5</span>秒后会自动跳转到登录页面！
+              <Link to="/user/login">去登陆</Link>
+            </div>
+          </Modal>
+          {timeCall()}
+        </div>
+      )}
     </React.Fragment>
-  ) : (
-    <div>
-      {message.error('未登录,请先登录')}
-      {history.push('/')}
-    </div>
   );
 };
 
@@ -238,6 +296,7 @@ export default connect(
       page_size: book.page_size,
       total_count: book.total_count,
       isLogin: user.isLogin,
+      isAdmin: user.isAdmin,
       userInfo: user.userInfo,
     };
   },

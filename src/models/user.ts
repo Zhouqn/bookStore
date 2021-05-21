@@ -5,6 +5,7 @@ import { singleUserType } from '@/pages/data';
 export interface UserModelState {
   userInfo: singleUserType | {};
   isLogin: boolean;
+  isAdmin: boolean;
 }
 
 interface UserModelType {
@@ -26,6 +27,7 @@ const UserModel: UserModelType = {
   state: {
     userInfo: {},
     isLogin: false,
+    isAdmin: false,
   },
   reducers: {
     setUserInfo(state, { payload }) {
@@ -44,6 +46,7 @@ const UserModel: UserModelType = {
           payload: {
             isLogin: true,
             userInfo: res.data,
+            isAdmin: res.data.role === 2,
           },
         });
         if (res.data.role === 1) {
