@@ -99,7 +99,10 @@ const adminUser = () => {
                 <AdminInfo />
               </div>
               {/*修改密码*/}
-              <div style={{ display: menuFlag ? 'none' : '' }}>
+              <div
+                style={{ display: menuFlag ? 'none' : '' }}
+                className={adminStyles.adminUser_contentRight}
+              >
                 <ChangePassword
                   onFinishChangePassword={onFinishChangePassword}
                   onChangeVerifyPassword={onChangeVerifyPassword}

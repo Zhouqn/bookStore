@@ -60,7 +60,7 @@ const AdminSider = (props: AdminSiderProps) => {
           }
           style={{ fontSize: '15px', marginTop: '50px' }}
         >
-          <Link to="/admin/adminUser">个人中心</Link>
+          <Link to="/admin/info">个人中心</Link>
         </Menu.Item>
       </Menu>
     </Sider>

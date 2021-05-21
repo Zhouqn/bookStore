@@ -177,7 +177,7 @@ const AdminBookList: FC<ListProps> = (props) => {
   const timeChange = () => {
     // 获取初始时间
     let time = document.getElementById('timeChange');
-    // 获取到id为time标签中的数字时间
+    // 获取到id为timeChange标签中的数字时间
     if (time) {
       if (parseInt(time.innerHTML) === 0) {
         // 等于0时清除计时，并跳转该指定页面
@@ -249,14 +249,7 @@ const AdminBookList: FC<ListProps> = (props) => {
       />
       {isLogin && isAdmin ? null : (
         <div>
-          <div
-            style={{
-              position: 'fixed',
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(255, 255, 255, 0.95)',
-            }}
-          />
+          <div className={adminStyles.verifyModal} />
           <Modal visible={true} footer={false} closable={false}>
             {isLogin ? (
               <Result

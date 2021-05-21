@@ -126,7 +126,6 @@ const AdminInfo = () => {
               rows={4}
               placeholder="快来介绍一下自己吧！"
             />
-            ,
           </div>
           <Divider style={{ borderColor: 'whitesmoke' }} />
         </div>
