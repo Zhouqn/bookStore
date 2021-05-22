@@ -48,7 +48,6 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
 
   return (
     <React.Fragment>
-      {/*<div className={adminStyles.adminUser_contentRight}>*/}
       <Form
         {...formItemLayout}
         form={formVerify}
@@ -151,7 +150,6 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
           </Button>
         </Form.Item>
       </Form>
-      {/*</div>*/}
     </React.Fragment>
   );
 };

@@ -11,7 +11,7 @@ import {
   OrderedListOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
-import AdminInfo from '@/components/admin/AdminInfo';
+import UserInfo from '@/components/UserInfo';
 
 interface UserInfoProps {
   isLogin: boolean;
@@ -44,7 +44,7 @@ const commonUser: FC<UserInfoProps> = (props) => {
           </Menu>
         </div>
         <div className={userStyles.commonUser_content_info}>
-          <AdminInfo />
+          <UserInfo />
         </div>
       </div>
       <Footer />

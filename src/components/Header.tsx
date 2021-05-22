@@ -2,9 +2,6 @@ import React, { FC, useState } from 'react';
 import bookImg from '@/asset/imgs/book.png';
 import { appName } from '@/config';
 import { Link } from 'umi';
-import LoginModal from '@/components/user/loginModal';
-import { FormValues } from '@/pages/data';
-import { message } from 'antd';
 
 interface HeaderProps {
   isLogin: boolean;

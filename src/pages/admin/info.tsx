@@ -5,11 +5,10 @@ import { appName } from '@/config';
 import { Layout, Avatar, Image, Menu, message } from 'antd';
 import { SnippetsOutlined, EditOutlined } from '@ant-design/icons';
 import AdminSider from '@/components/admin/AdminSider';
-import AdminInfo from '@/components/admin/AdminInfo';
-import ChangePassword from '@/components/admin/ChangePassword';
+import UserInfo from '@/components/UserInfo';
+import ChangePassword from '@/components/ChangePassword';
 const { Header, Content, Footer } = Layout;
-
-import bookImg from '@/asset/imgs/book.png'; //头像之后会是从数据库取出
+import defaultAvatar from '@/asset/imgs/avatar.png'; //头像之后会是从数据库取出
 
 const adminUser = () => {
   const SiderMenuSelectedKeys = '2';
@@ -63,7 +62,7 @@ const adminUser = () => {
             <Avatar
               size={35}
               alt="头像"
-              src={<Image src={bookImg} />}
+              src={defaultAvatar}
               className={adminStyles.adminUser_avatar}
               // style={{border:'1px solid', backgroundColor:"lightgrey", marginLeft:"10px"}}
             />
@@ -95,8 +94,11 @@ const adminUser = () => {
                 </Menu>
               </div>
               {/*管理员信息*/}
-              <div style={{ display: menuFlag ? '' : 'none' }}>
-                <AdminInfo />
+              <div
+                style={{ display: menuFlag ? '' : 'none' }}
+                className={adminStyles.adminUser_contentRight}
+              >
+                <UserInfo />
               </div>
               {/*修改密码*/}
               <div
