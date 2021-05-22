@@ -9,6 +9,7 @@ import {
   Divider,
   Empty,
   Spin,
+  Pagination,
 } from 'antd';
 import {
   FormOutlined,
@@ -27,6 +28,7 @@ import { BookModelState } from '@/models/book';
 import LoginModal from '@/components/user/loginModal';
 import { bookRecordValue, FormValues, commentType } from '@/pages/data';
 import { Loading } from '@@/plugin-dva/connect';
+import { user_getOneBook } from '@/services/book';
 
 interface BookMsgProps {
   dispatch: Dispatch;
@@ -34,19 +36,44 @@ interface BookMsgProps {
   isLogin: boolean;
   bookRecord: bookRecordValue | undefined;
   comments: commentType[];
+  page: number;
+  page_size: number;
+  total_count: number;
 }
 
 const desc = ['差', '较差', '一般', '好', '很好'];
 
 const BookInfo: FC<BookMsgProps> = (props) => {
-  const { dispatch, bookRecordLoading, isLogin, bookRecord, comments } = props;
+  const { dispatch, bookRecordLoading, isLogin, bookRecord } = props;
   const [bookId, setBookId] = useState(0);
+  const [orderTypes, setOrderTypes] = useState('like_count');
   const [rateValue, setRateValue] = useState(0);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginModalLoading, setLoginModalLoading] = useState(false);
   const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
 
-  const { bookInfo }: { bookInfo: any } = useParams();
+  //评论  (防止整个页面刷新， 只想评论刷新)
+  const [page, setPage] = useState(1);
+  const [page_size, setPage_size] = useState(10);
+  const [total_count, setTotal_count] = useState(10);
+  const [comments, setComments] = useState<commentType[]>([]);
+
+  //获取动态url的参数
+  const { bookInfo }: { bookInfo: string } = useParams();
+
+  //后台直接获取评论
+  const getComments = (payload: any) => {
+    user_getOneBook(payload).then((value) => {
+      console.log('value = ', value);
+      if (value.code === 0) {
+        const { page, page_size, total_count, comments } = value.data;
+        setPage(page);
+        setPage_size(page_size);
+        setTotal_count(total_count);
+        setComments(comments);
+      }
+    });
+  };
 
   useEffect(() => {
     dispatch({
@@ -55,6 +82,13 @@ const BookInfo: FC<BookMsgProps> = (props) => {
         book_id: bookInfo,
       },
     });
+    const payload = {
+      book_id: parseInt(bookInfo),
+      page,
+      page_size,
+      orderTypes,
+    };
+    getComments(payload);
   }, [bookId]);
 
   //评分
@@ -80,9 +114,37 @@ const BookInfo: FC<BookMsgProps> = (props) => {
     message.error('已取消');
   };
 
+  const onPageChange = (page: number, pageSize?: number) => {
+    const payload = {
+      book_id: parseInt(bookInfo),
+      page,
+      page_size: pageSize ? pageSize : page_size,
+      orderTypes,
+    };
+    getComments(payload);
+  };
+
   //获取评论
-  const onClickNewComment = (bookRecord: bookRecordValue | {}) => {};
-  const onClickHotComment = (bookRecord: bookRecordValue | {}) => {};
+  const onClickHotComment = () => {
+    setOrderTypes('like_count');
+    const payload = {
+      book_id: parseInt(bookInfo),
+      page: 1,
+      page_size: page_size,
+      orderTypes: 'like_count',
+    };
+    getComments(payload);
+  };
+  const onClickNewComment = () => {
+    setOrderTypes('create_time');
+    const payload = {
+      book_id: parseInt(bookInfo),
+      page: 1,
+      page_size: page_size,
+      orderTypes: 'create_time',
+    };
+    getComments(payload);
+  };
 
   //点赞评论
   const isLikeComment = () => {};
@@ -204,7 +266,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                 <span className={userStyles.bookMsg_chooseOrderType}>
                   <a
                     onClick={() => {
-                      onClickNewComment(bookRecord);
+                      onClickNewComment();
                     }}
                   >
                     最新评论
@@ -212,7 +274,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                   /
                   <a
                     onClick={() => {
-                      onClickHotComment(bookRecord);
+                      onClickHotComment();
                     }}
                   >
                     热门评论
@@ -221,7 +283,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
               </div>
               <List
                 className="comment_list"
-                header={`${comments.length} 条评论`}
+                header={`${total_count} 条评论`}
                 itemLayout="horizontal"
                 dataSource={comments}
                 renderItem={(item) => (
@@ -255,6 +317,16 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                     <Divider />
                   </li>
                 )}
+              />
+              <Pagination
+                // className={adminStyles.bookList_pagination}
+                current={page}
+                pageSize={page_size}
+                total={total_count}
+                showTotal={(total) => `共 ${total} 条`}
+                onChange={onPageChange}
+                pageSizeOptions={['4', '6', '8', '10', '20', '50']}
+                showSizeChanger
               />
             </div>
           </div>
@@ -291,6 +363,9 @@ export default connect(
       bookRecordLoading: loading.models.book,
       bookRecord: book.bookRecord,
       comments: book.comments,
+      page: book.page,
+      page_size: book.page_size,
+      total_count: book.total_count,
     };
   },
 )(BookInfo);

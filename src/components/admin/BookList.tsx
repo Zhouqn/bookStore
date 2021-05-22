@@ -166,17 +166,10 @@ const BookList: FC<BookListProps> = (props) => {
           total={total_count}
           showTotal={(total) => `共 ${total} 条`}
           onChange={onPageChange}
-          pageSizeOptions={['4', '6', '8', '10', '20', '50', '100']}
+          pageSizeOptions={['4', '6', '8', '10', '20', '50']}
           showSizeChanger
         />
       ) : null}
-      {/*{total_count ? null : (*/}
-      {/*  <Empty*/}
-      {/*    style={{ position: 'relative', top: '200px' }}*/}
-      {/*    image={Empty.PRESENTED_IMAGE_SIMPLE}*/}
-      {/*    description="暂无数据"*/}
-      {/*  />*/}
-      {/*)}*/}
     </React.Fragment>
   );
 };

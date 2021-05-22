@@ -96,6 +96,9 @@ const BookModel: BookModelType = {
           type: 'user_getABookRecord',
           payload: {
             bookRecord: res.data.books[0],
+            page: 1,
+            page_size: 10,
+            orderTypes: 'like_count',
           },
         });
       } else {
@@ -146,15 +149,11 @@ const BookModel: BookModelType = {
     //  获取单个书信息
     *user_getABookRecord({ payload }, { call, put }) {
       // console.log('user_getABookRecord_payload = ', payload);
-      const { bookRecord } = payload;
-      let orderTypes = 'like_count';
-      if (payload.orderTypes) {
-        orderTypes = payload.orderTypes;
-      }
+      const { bookRecord, page, page_size, orderTypes } = payload;
       const res = yield call(user_getOneBook, {
         book_id: bookRecord.id,
-        page: 1,
-        page_size: 10,
+        page,
+        page_size,
         orderTypes,
       });
       // console.log(' user_getABookRecord_res = ', res);
