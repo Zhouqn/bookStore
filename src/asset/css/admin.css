@@ -144,18 +144,6 @@
 .adminUser_contentRight{
   width: 680px;
 }
-/*.adminUser_List{*/
-/*  margin-left:25px ;*/
-/*}*/
-/*.adminUser_oneRecord{*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*  margin: 0 50px;*/
-/*}*/
-/*.adminUser_oneRecord span{*/
-/*  color: gray;*/
-/*}*/
-
 .verifyModal{
   position: fixed;
   width: 100%;

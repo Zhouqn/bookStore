@@ -66,7 +66,7 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
             },
           ]}
         >
-          <div>
+          <div style={{ display: 'flex' }}>
             <Input.Password
               placeholder="请先验证旧密码，失焦自动验证"
               onBlur={(e) => {
@@ -76,12 +76,18 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
                 onChangeVerifyPassword(e);
               }}
               allowClear
+              style={{ width: '380px' }}
             />
             <div
-              className="1"
-              style={{ display: verifyTrueFlag ? '' : 'none' }}
+              key={1}
+              style={{
+                display: verifyTrueFlag ? '' : 'none',
+                marginTop: '7px',
+              }}
             >
-              <CheckCircleOutlined style={{ color: 'darkgreen' }} />
+              <CheckCircleOutlined
+                style={{ color: 'darkgreen', marginLeft: '10px' }}
+              />
               <a
                 style={{
                   color: 'darkgreen',
@@ -92,8 +98,16 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
                 验证成功
               </a>
             </div>
-            <div key={1} style={{ display: verifyFalseFlag ? '' : 'none' }}>
-              <CloseCircleOutlined style={{ color: 'red' }} />
+            <div
+              key={2}
+              style={{
+                display: verifyFalseFlag ? '' : 'none',
+                marginTop: '7px',
+              }}
+            >
+              <CloseCircleOutlined
+                style={{ color: 'red', marginLeft: '10px' }}
+              />
               <a style={{ color: 'red', marginLeft: '5px', cursor: 'default' }}>
                 密码错误
               </a>
@@ -120,7 +134,7 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
             },
           ]}
         >
-          <Input.Password allowClear />
+          <Input.Password allowClear style={{ width: '380px' }} />
         </Form.Item>
 
         <Form.Item
@@ -142,7 +156,7 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
             }),
           ]}
         >
-          <Input.Password allowClear />
+          <Input.Password allowClear style={{ width: '380px' }} />
         </Form.Item>
         <Form.Item name="submit" {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit" disabled={!verifyTrueFlag}>
