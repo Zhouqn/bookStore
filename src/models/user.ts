@@ -1,6 +1,7 @@
 import { Reducer, Effect, Subscription, history } from 'umi';
 import { goLogin } from '@/services/user';
 import { singleUserType } from '@/pages/data';
+import { message } from 'antd';
 
 export interface UserModelState {
   userInfo: singleUserType | {};
@@ -16,6 +17,7 @@ interface UserModelType {
   };
   effects: {
     goLogin: Effect;
+    // goLogin_byModal:Effect;
   };
   subscriptions: {
     // setup: Subscription;
@@ -49,7 +51,10 @@ const UserModel: UserModelType = {
             isAdmin: res.data.role === 2,
           },
         });
-        if (res.data.role === 1) {
+        message.success('登录成功');
+        if (payload.flag === 2) {
+          history.goBack();
+        } else if (res.data.role === 1) {
           history.push('/user/book/list');
         } else if (res.data.role === 2) {
           history.push('/admin/book/list');

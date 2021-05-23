@@ -29,33 +29,42 @@ import LoginModal from '@/components/user/loginModal';
 import { bookRecordValue, FormValues, commentType } from '@/pages/data';
 import { Loading } from '@@/plugin-dva/connect';
 import { user_getOneBook } from '@/services/book';
+// @ts-ignore
+import md5 from 'md5';
 
 interface BookMsgProps {
   dispatch: Dispatch;
-  bookRecordLoading: boolean;
+  bookModelLoading: boolean;
+  userModelLoading: boolean;
   isLogin: boolean;
   bookRecord: bookRecordValue | undefined;
-  comments: commentType[];
-  page: number;
-  page_size: number;
-  total_count: number;
+  // comments: commentType[];
+  // page: number;
+  // page_size: number;
+  // total_count: number;
 }
 
 const desc = ['差', '较差', '一般', '好', '很好'];
 
 const BookInfo: FC<BookMsgProps> = (props) => {
-  const { dispatch, bookRecordLoading, isLogin, bookRecord } = props;
+  const {
+    dispatch,
+    userModelLoading,
+    bookModelLoading,
+    isLogin,
+    bookRecord,
+  } = props;
   const [bookId, setBookId] = useState(0);
-  const [orderTypes, setOrderTypes] = useState('like_count');
+  const [orderTypes, setOrderTypes] = useState('create_time');
   const [rateValue, setRateValue] = useState(0);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
-  const [loginModalLoading, setLoginModalLoading] = useState(false);
+  // const [loginModalLoading, setLoginModalLoading] = useState(false);
   const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
 
-  //评论  (防止整个页面刷新， 只想评论刷新)
+  //获取评论 【直接从后台获取，不用model里面的数据，自己定义】  (防止整个页面刷新， 只想评论刷新)
   const [page, setPage] = useState(1);
   const [page_size, setPage_size] = useState(10);
-  const [total_count, setTotal_count] = useState(10);
+  const [total_count, setTotal_count] = useState(0);
   const [comments, setComments] = useState<commentType[]>([]);
 
   //获取动态url的参数
@@ -104,8 +113,15 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   //提交登录
   const submitLoginModal = (formValues: FormValues) => {
     console.log('submitLoginModal_formValues = ', formValues);
+    dispatch({
+      type: 'user/goLogin',
+      payload: {
+        username: formValues.username,
+        password: md5(formValues.password),
+        flag: 2, //代表从modal出登录
+      },
+    });
     setLoginModalVisible(false);
-    // setLoginModalLoading(true) //连接到后台启用
     // message.success("登陆成功")
   };
   //Modal 取消登录
@@ -155,7 +171,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
       {/*上半部分*/}
 
       <div className={userStyles.bookMsg_middle}>
-        {bookRecordLoading ? (
+        {bookModelLoading ? (
           <Spin
             indicator={bookListLoadingIcon}
             style={{ position: 'relative', left: '47% ', top: '40%' }}
@@ -268,6 +284,12 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                     onClick={() => {
                       onClickNewComment();
                     }}
+                    className={userStyles.bookMsg_orderType}
+                    style={
+                      orderTypes === 'create_time'
+                        ? { color: 'dodgerblue', textDecoration: 'underline' }
+                        : {}
+                    }
                   >
                     最新评论
                   </a>
@@ -276,6 +298,12 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                     onClick={() => {
                       onClickHotComment();
                     }}
+                    className={userStyles.bookMsg_orderType}
+                    style={
+                      orderTypes === 'like_count'
+                        ? { color: 'dodgerblue', textDecoration: 'underline' }
+                        : {}
+                    }
                   >
                     热门评论
                   </a>
@@ -319,7 +347,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                 )}
               />
               <Pagination
-                // className={adminStyles.bookList_pagination}
+                className={userStyles.bookMsg_comment_pagination}
                 current={page}
                 pageSize={page_size}
                 total={total_count}
@@ -327,6 +355,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                 onChange={onPageChange}
                 pageSizeOptions={['4', '6', '8', '10', '20', '50']}
                 showSizeChanger
+                hideOnSinglePage
               />
             </div>
           </div>
@@ -342,7 +371,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
         submitLoginModal={submitLoginModal}
         LoginModalHandleCancel={LoginModalHandleCancel}
         loginModalVisible={loginModalVisible}
-        loginModalLoading={loginModalLoading}
+        loginModalLoading={userModelLoading}
       />
     </React.Fragment>
   );
@@ -360,12 +389,13 @@ export default connect(
   }) => {
     return {
       isLogin: user.isLogin,
-      bookRecordLoading: loading.models.book,
+      userModelLoading: loading.models.user,
+      bookModelLoading: loading.models.book,
       bookRecord: book.bookRecord,
-      comments: book.comments,
-      page: book.page,
-      page_size: book.page_size,
-      total_count: book.total_count,
+      // comments: book.comments,
+      // page: book.page,
+      // page_size: book.page_size,
+      // total_count: book.total_count,
     };
   },
 )(BookInfo);

@@ -141,6 +141,13 @@
 .bookMsg_chooseOrderType a{
   margin: 7px;
 }
+.bookMsg_orderType{
+  color:black;
+}
+.bookMsg_orderType:hover{
+  color: dodgerblue;
+  text-decoration: underline
+}
 .bookMsg_comment_delete{
   position: absolute;
   width: 30px;
@@ -151,6 +158,10 @@
   position: absolute;
   width:60px;
   right:15px;
+}
+.bookMsg_comment_pagination{
+  position: relative;
+  left: 270px;
 }
 
 /*commonUser*/

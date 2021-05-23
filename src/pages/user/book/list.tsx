@@ -52,8 +52,8 @@ const UserBookList: FC<UserBookListProps> = (props) => {
   const clickBookCover_orTitle = (bookRecord: bookRecordValue) => {
     // console.log("userList_bookRecord = ",bookRecord)
     dispatch({
-      type: 'book/user_getABookRecord',
-      payload: { bookRecord: bookRecord },
+      type: 'book/getBook_byId',
+      payload: { book_id: bookRecord.id },
     });
   };
 
