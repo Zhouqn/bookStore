@@ -166,7 +166,7 @@
 
 /*commonUser*/
 .commonUser{
-  /*overflow: auto;*/
+  overflow: auto;
 }
 .commonUser_content{
   position: fixed;
@@ -206,5 +206,20 @@
 .commonUser_user_changePassword{
   width: 600px;
   margin: auto;
+}
+
+/*likeComments*/
+/*myComments*/
+.comments_list{
+  position: relative;
+  top: 55px;
+  margin: auto;
+  width: 1000px;
+}
+.comments_list_title{
+  color:cornflowerblue;
+  border-bottom:1px solid #dedddd;
+  padding-bottom: 5px;
+  font-size:17px
 
 }
