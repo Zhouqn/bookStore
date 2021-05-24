@@ -19,6 +19,7 @@ interface UserModelType {
     goLogin: Effect;
     goRegister: Effect;
     // goLogin_byModal:Effect;
+    getUserInfo: Effect;
   };
   subscriptions: {
     // setup: Subscription;
@@ -39,6 +40,7 @@ const UserModel: UserModelType = {
     },
   },
   effects: {
+    //登录
     *goLogin({ payload }, { put, call }) {
       console.log('models_goLogin_payload = ', payload);
       const res = yield call(goLogin, payload);
@@ -70,6 +72,7 @@ const UserModel: UserModelType = {
         message.error(res.message);
       }
     },
+    //注册
     *goRegister({ payload }, { put, call }) {
       console.log('goRegister_effect_payload = ', payload);
       const res = yield call(goRegister, payload);
@@ -79,6 +82,17 @@ const UserModel: UserModelType = {
         message.success('注册成功，请登录！');
       } else {
         message.error(res.msg);
+      }
+    },
+    //获取用户信息
+    *getUserInfo(action, { put, call }) {
+      const res = yield call(getUserInfo);
+      if (res.code === 0) {
+        // yield put({type:"setUserInfo", payload:{
+        //     isLogin: true,
+        //     userInfo: res.data,
+        //     isAdmin: res.data.role === '2',
+        //   }})
       }
     },
   },

@@ -33,17 +33,13 @@
   font-size: 20px;
   width: 100%;
 }
-.adminUser_logout{
-  position: absolute;
-  right: 100px;
-}
 .adminUser_logoff{
   position: absolute;
   right: 40px;
 }
 .adminUser_avatar{
   position: absolute;
-  right: 200px;
+  right: 150px;
   top: 15px;
   background: lightgray;
 }
@@ -64,6 +60,7 @@
 .book_contentTop{
   width: 100%;
   display: flex;
+  margin-top:40px ;
 }
 .book_contentSearch{
   display: flex;
@@ -121,7 +118,7 @@
 .bookList_pagination{
   position:relative;
   /*background: #F5F5DC;*/
-  left: 60%;
+  left: 30%;
   width: 550px;
   margin:auto;
 }

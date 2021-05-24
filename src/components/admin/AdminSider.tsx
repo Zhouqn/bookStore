@@ -8,15 +8,15 @@ import React from 'react';
 const { Sider } = Layout;
 
 interface AdminSiderProps {
-  SiderMenuSelectedKeys: string;
+  // SiderMenuSelectedKeys: string;
 }
 
 const AdminSider = (props: AdminSiderProps) => {
-  const goToIndex = () => {
-    history.push('/');
-  };
+  // const goToIndex = () => {
+  //   history.push('/');
+  // };
 
-  const { SiderMenuSelectedKeys } = props;
+  // const { SiderMenuSelectedKeys } = props;
   return (
     <Sider
       breakpoint="lg"
@@ -38,11 +38,7 @@ const AdminSider = (props: AdminSiderProps) => {
         {/*<a onClick={goToIndex}>{appName}</a>*/}
         <a>{appName}</a>
       </div>
-      <Menu
-        theme="dark"
-        mode="inline"
-        defaultSelectedKeys={[SiderMenuSelectedKeys]}
-      >
+      <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
         <Menu.Item
           key="1"
           icon={
@@ -61,7 +57,7 @@ const AdminSider = (props: AdminSiderProps) => {
           }
           style={{ fontSize: '15px', marginTop: '50px' }}
         >
-          <Link to="/admin/info">个人中心</Link>
+          <Link to="/admin/info/basicInfo">个人中心</Link>
         </Menu.Item>
       </Menu>
     </Sider>
