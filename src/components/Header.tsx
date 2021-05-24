@@ -21,7 +21,10 @@ const Header: FC<HeaderProps> = (props) => {
         </Link>
         {isLogin ? (
           <div>
-            <a className="header_mine">个人中心</a>
+            {/*<a className="header_mine">个人中心</a>*/}
+            <Link to="/user/info/basicInfo" className="header_mine">
+              个人中心
+            </Link>
             <a className="header_logout">退出</a>
             <a className="header_logoff">注销</a>
           </div>

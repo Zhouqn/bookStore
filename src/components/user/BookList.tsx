@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { Dispatch } from 'umi';
 import { Divider, Image, Tooltip } from 'antd';
 import userStyles from '@/asset/css/user.css';
 import noBookCover from '@/asset/imgs/noBookCover.png';
@@ -13,9 +12,9 @@ interface NewBooksProps {
 const BookList: FC<NewBooksProps> = (props) => {
   const { books, clickBookCover_orTitle } = props;
   // console.log('user_BookList_books = ', books);
-  const [bookCoverWidth, setBookCoverWidth] = useState(0);
-  const [bookCoverHeight, setBookCoverHeight] = useState(0);
-  const [bookCoverMargin, setBookCoverMargin] = useState(0);
+  // const [bookCoverWidth, setBookCoverWidth] = useState(0);
+  // const [bookCoverHeight, setBookCoverHeight] = useState(0);
+  // const [bookCoverMargin, setBookCoverMargin] = useState(0);
 
   return (
     <React.Fragment>

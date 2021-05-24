@@ -24,6 +24,12 @@ export interface userLoginType {
   password: string;
 }
 
+export interface userRegisterType {
+  username: string;
+  password: string;
+  gender: string;
+}
+
 export interface singleUserType {
   id: number;
   avatar: string;
@@ -32,7 +38,10 @@ export interface singleUserType {
   gender: number;
   role: boolean;
   status: number;
-  extendInfo: string;
+  nickname: string;
+  signature: string;
+  register_time: string;
+  // extendInfo: string;
 }
 
 export interface commentType {

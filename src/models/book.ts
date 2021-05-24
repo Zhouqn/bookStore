@@ -92,13 +92,20 @@ const BookModel: BookModelType = {
       const res = yield call(getBookById, payload);
       console.log('getBook_byId_res = ', res);
       if (res.code === 0) {
+        //暂时不需要这么获取书的评论信息，在页面内直接获取
+        // yield put({
+        //   type: 'user_getABookRecord',
+        //   payload: {
+        //     bookRecord: res.data.books[0],
+        //     page: 1,
+        //     page_size: 10,
+        //     orderTypes: 'create_time',
+        //   },
+        // });
         yield put({
-          type: 'user_getABookRecord',
+          type: 'setBookList',
           payload: {
             bookRecord: res.data.books[0],
-            page: 1,
-            page_size: 10,
-            orderTypes: 'like_count',
           },
         });
       } else {

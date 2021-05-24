@@ -33,9 +33,10 @@ const AdminSider = (props: AdminSiderProps) => {
           alt=""
           src={bookImg}
           className={adminStyles.logoImg}
-          onClick={goToIndex}
+          // onClick={goToIndex}
         />
-        <a onClick={goToIndex}>{appName}</a>
+        {/*<a onClick={goToIndex}>{appName}</a>*/}
+        <a>{appName}</a>
       </div>
       <Menu
         theme="dark"

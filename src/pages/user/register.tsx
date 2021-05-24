@@ -1,21 +1,38 @@
 import { Form, Input, Button, Radio } from 'antd';
-import { connect, Link } from 'umi';
+import { connect, Link, Dispatch } from 'umi';
 import styles from '@/asset/css/user.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import bookImg from '@/asset/imgs/book.png';
-import React from 'react';
+import React, { FC } from 'react';
 import { useState } from 'react';
 import { appName } from '@/config';
 import { UserModelState } from '@/models/user';
+import { FormValues } from '@/pages/data';
+// @ts-ignore
+import md5 from 'md5';
 
-const Register = ({ isLogin }: { isLogin: boolean }) => {
+interface RegisterProps {
+  dispatch: Dispatch;
+  isLogin: boolean;
+}
+
+const Register: FC<RegisterProps> = (props) => {
+  const { dispatch, isLogin } = props;
   const [value, setValue] = useState(1);
-  const onFinish = (values: any) => {
+  const onFinish = (values: FormValues) => {
     console.log(values);
+    dispatch({
+      type: 'user/goRegister',
+      payload: {
+        username: values.username,
+        password: md5(values.password),
+        gender: values.gender,
+      },
+    });
   };
 
-  const onChange = (e: any) => {
+  const onGenderChange = (e: any) => {
     console.log('radio checked', e.target.value);
     setValue(e.target.value);
   };
@@ -33,10 +50,10 @@ const Register = ({ isLogin }: { isLogin: boolean }) => {
           onFinish={onFinish}
           size="large"
           style={{ maxWidth: '450px', margin: 'auto' }}
-          initialValues={{ sex: 1 }}
+          initialValues={{ gender: 1 }}
         >
           <Form.Item
-            name={['user', 'name']}
+            name="username"
             label="用&nbsp;&nbsp;户&nbsp;&nbsp;名"
             rules={[
               {
@@ -84,11 +101,11 @@ const Register = ({ isLogin }: { isLogin: boolean }) => {
             <Input.Password />
           </Form.Item>
           <Form.Item
-            name="sex"
+            name="gender"
             label="性&emsp;&emsp;别:"
             style={{ marginLeft: '10px' }}
           >
-            <Radio.Group onChange={onChange} value={value}>
+            <Radio.Group onChange={onGenderChange} value={value}>
               <Radio value={1}>男</Radio>
               <Radio value={2}>女</Radio>
             </Radio.Group>

@@ -1,5 +1,5 @@
-import React, { useState, FC, useEffect } from 'react';
-import { connect, Dispatch } from 'umi';
+import React, { FC } from 'react';
+import { connect, Dispatch, history } from 'umi';
 import { UserModelState } from '@/models/user';
 import { BookModelState } from '@/models/book';
 import { bookRecordValue } from '@/pages/data';
@@ -50,11 +50,7 @@ const UserBookList: FC<UserBookListProps> = (props) => {
   const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
 
   const clickBookCover_orTitle = (bookRecord: bookRecordValue) => {
-    // console.log("userList_bookRecord = ",bookRecord)
-    dispatch({
-      type: 'book/getBook_byId',
-      payload: { book_id: bookRecord.id },
-    });
+    history.push(`/user/book/${bookRecord.id}`);
   };
 
   return (

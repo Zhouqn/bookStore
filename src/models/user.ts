@@ -1,5 +1,5 @@
 import { Reducer, Effect, Subscription, history } from 'umi';
-import { goLogin } from '@/services/user';
+import { goLogin, goRegister, getUserInfo } from '@/services/user';
 import { singleUserType } from '@/pages/data';
 import { message } from 'antd';
 
@@ -17,6 +17,7 @@ interface UserModelType {
   };
   effects: {
     goLogin: Effect;
+    goRegister: Effect;
     // goLogin_byModal:Effect;
   };
   subscriptions: {
@@ -43,22 +44,41 @@ const UserModel: UserModelType = {
       const res = yield call(goLogin, payload);
       console.log('models_goLogin_res = ', res);
       if (res.code === 0) {
-        yield put({
-          type: 'setUserInfo',
-          payload: {
-            isLogin: true,
-            userInfo: res.data,
-            isAdmin: res.data.role === 2,
-          },
-        });
+        const userInfo_res = yield call(getUserInfo);
+        console.log('userInfo_res = ', userInfo_res);
         message.success('登录成功');
-        if (payload.flag === 2) {
-          history.goBack();
-        } else if (res.data.role === 1) {
-          history.push('/user/book/list');
-        } else if (res.data.role === 2) {
-          history.push('/admin/book/list');
+        if (userInfo_res.code === 0) {
+          yield put({
+            type: 'setUserInfo',
+            payload: {
+              isLogin: true,
+              userInfo: userInfo_res.data,
+              isAdmin: userInfo_res.data.role === '2',
+            },
+          });
+          if (payload.flag === 2) {
+            history.goBack();
+          } else if (userInfo_res.data.role === '1') {
+            history.push('/user/book/list');
+          } else if (userInfo_res.data.role === '2') {
+            history.push('/admin/book/list');
+          }
+        } else {
+          message.error(userInfo_res.message);
         }
+      } else {
+        message.error(res.message);
+      }
+    },
+    *goRegister({ payload }, { put, call }) {
+      console.log('goRegister_effect_payload = ', payload);
+      const res = yield call(goRegister, payload);
+      console.log('goRegister_effect_res = ', res);
+      if (res.code === 0) {
+        history.push('/user/login');
+        message.success('注册成功，请登录！');
+      } else {
+        message.error(res.msg);
       }
     },
   },
