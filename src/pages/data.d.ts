@@ -19,30 +19,32 @@ export interface bookRecordValue {
 }
 
 //user
-export interface userLoginType {
-  username: string;
-  password: string;
-}
-
-export interface userRegisterType {
-  username: string;
-  password: string;
-  gender: string;
-}
-
-export interface singleUserType {
-  id: number;
+export interface userPartType {
   avatar: string;
-  username: string;
-  password: string;
-  gender: number;
-  role: boolean;
-  status: number;
+  gender: string;
   nickname: string;
   signature: string;
-  register_time: string;
-  // extendInfo: string;
 }
+
+export interface userAllType extends userPartType {
+  id: number;
+  username: string;
+  password: string;
+  role: string;
+  register_time: string;
+}
+
+// export interface singleUserType {
+//   id: number;
+//   avatar: string;
+//   username: string;
+//   password: string;
+//   gender: string;
+//   role: string;
+//   nickname: string;
+//   signature: string;
+//   register_time: string;
+// }
 
 export interface commentType {
   avatar: string | null;

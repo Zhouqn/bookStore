@@ -3,17 +3,23 @@ import { connect, Link } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
 import { Menu } from 'antd';
 import { SnippetsOutlined, EditOutlined } from '@ant-design/icons';
+import { UserModelState } from '@/models/user';
+
 // import defaultAvatar from '@/asset/imgs/avatar.png'; //头像之后会是从数据库取出
 
-interface adminUserProps {}
+interface adminUserProps {
+  admin_info_menu: string;
+}
 
 const adminUser: FC<adminUserProps> = (props) => {
+  const { admin_info_menu } = props;
   return (
     <React.Fragment>
       <div className={adminStyles.adminUser_content}>
         <div className={adminStyles.adminUser_contentLeft}>
           <Menu
             defaultSelectedKeys={['1']}
+            selectedKeys={[admin_info_menu]}
             mode="inline"
             style={{ textAlign: 'center', width: '50%' }}
           >
@@ -42,7 +48,8 @@ const adminUser: FC<adminUserProps> = (props) => {
   );
 };
 
-export default connect((state) => {
-  console.log(state);
-  return {};
+export default connect(({ user }: { user: UserModelState }) => {
+  return {
+    admin_info_menu: user.admin_info_menu,
+  };
 })(adminUser);

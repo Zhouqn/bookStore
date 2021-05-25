@@ -1,4 +1,4 @@
-import React, { useState, FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { connect, Dispatch, Loading, history, Link } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
 import {
@@ -15,61 +15,40 @@ import {
 import { LoadingOutlined } from '@ant-design/icons';
 import AdminSider from '@/components/admin/AdminSider';
 import { UserModelState } from '@/models/user';
-import { BookModelState } from '@/models/book';
-import bookImg from '@/asset/imgs/book.png';
-import { getUserInfo } from '@/services/user';
+import defaultAvatarImg from '@/asset/imgs/avatar.png';
+import { userAllType } from '@/pages/data';
 
 const { Header, Content, Footer } = Layout;
 
 interface ListProps {
-  // bookListLoading: boolean;
-  // books: bookRecordValue[];
-  // page: number;
-  // page_size: number;
-  // total_count: number;
-  // dispatch: Dispatch;
-  // isLogin: boolean;
-  // isAdmin: boolean;
-  // userInfo: singleUserType | {};
+  dispatch: Dispatch;
+  userModelLoading: boolean;
+  isLogin: boolean;
+  isAdmin: boolean;
+  admin_sider_menu: string;
+  admin_info_menu: string;
+  userInfo: userAllType;
 }
 
 const AdminBookList: FC<ListProps> = (props) => {
   const {
-    // bookListLoading,
-    // books,
-    // page,
-    // page_size,
-    // total_count,
-    // dispatch,
-    // isLogin,
-    // isAdmin,
-    // userInfo,
+    dispatch,
+    userModelLoading,
+    isLogin,
+    isAdmin,
+    admin_sider_menu,
+    userInfo,
   } = props;
-  //判断用户状态
-  const [isLogin, setIsLogin] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(false);
+  console.log('_layout_userInfo = ', userInfo);
+  //加载图标
   const antIcon = <LoadingOutlined style={{ fontSize: 45 }} spin />;
-  const judgeState = async () => {
-    setLoading(true);
-    await getUserInfo().then((value) => {
-      console.log('getUserInfo_value = ', value);
-      if (value.code === 0) {
-        setIsLogin(true);
-        if (value.data.role === '2') {
-          setIsAdmin(true);
-        }
-      }
-      setLoading(false);
-    });
-  };
-  useEffect(() => {
-    judgeState();
-  }, []);
 
   //确认退出
   const onConfirmLogoff = () => {
-    message.success('退出成功');
+    dispatch({
+      type: 'user/goLogoff',
+      payload: {},
+    });
   };
   //取消退出
   const onCancelLogoff = () => {
@@ -99,7 +78,7 @@ const AdminBookList: FC<ListProps> = (props) => {
     };
   };
 
-  return loading ? (
+  return userModelLoading ? (
     <Spin
       indicator={antIcon}
       style={{ position: 'relative', marginLeft: '50%', marginTop: '20%' }}
@@ -107,14 +86,18 @@ const AdminBookList: FC<ListProps> = (props) => {
   ) : (
     <React.Fragment>
       <Layout className={adminStyles.admin}>
-        <AdminSider />
+        <AdminSider admin_sider_menu={admin_sider_menu} />
         <Layout className={adminStyles.rightLayout}>
           <Header className={adminStyles.layout_header}>
             管理员页面
             <Avatar
               size={35}
               alt="头像"
-              src={<Image src={bookImg} />}
+              src={
+                <Image
+                  src={userInfo.avatar ? userInfo.avatar : defaultAvatarImg}
+                />
+              }
               className={adminStyles.adminUser_avatar}
             />
             <Popconfirm
@@ -162,24 +145,14 @@ const AdminBookList: FC<ListProps> = (props) => {
 };
 
 export default connect(
-  ({
-    user,
-    book,
-    loading,
-  }: {
-    user: UserModelState;
-    book: BookModelState;
-    loading: Loading;
-  }) => {
+  ({ user, loading }: { user: UserModelState; loading: Loading }) => {
     return {
-      // bookListLoading: loading.models.book,
-      // books: book.books,
-      // page: book.page,
-      // page_size: book.page_size,
-      // total_count: book.total_count,
-      // isLogin: user.isLogin,
-      // isAdmin: user.isAdmin,
-      // userInfo: user.userInfo,
+      userModelLoading: loading.models.user,
+      isLogin: user.isLogin,
+      isAdmin: user.isAdmin,
+      admin_sider_menu: user.admin_sider_menu,
+      admin_info_menu: user.admin_info_menu,
+      userInfo: user.userInfo,
     };
   },
 )(AdminBookList);

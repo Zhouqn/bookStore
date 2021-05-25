@@ -27,7 +27,7 @@ const Register: FC<RegisterProps> = (props) => {
       payload: {
         username: values.username,
         password: md5(values.password),
-        gender: values.gender,
+        gender: `${values.gender}`,
       },
     });
   };

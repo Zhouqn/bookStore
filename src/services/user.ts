@@ -1,5 +1,5 @@
 import doRequest from '@/request';
-import { userRegisterType } from '@/pages/data';
+import { userPartType } from '@/pages/data';
 
 //箭头函数写异步函数
 // const name = async (params) => {
@@ -8,6 +8,7 @@ import { userRegisterType } from '@/pages/data';
 // async function function_name(params){
 // }
 
+//登录
 export const goLogin = async ({
   username,
   password,
@@ -23,35 +24,49 @@ export const goLogin = async ({
       password,
     },
   };
-  // if (username === 'zqn' && password === '202cb962ac59075b964b07152d234b70') {
-  //   return {
-  //     code: 0,
-  //     message: '登录成功',
-  //     data: {
-  //       user_id: 1,
-  //       avatar: '',
-  //       username: 'zqn',
-  //       gender: 2,
-  //       role: 2,
-  //       nickname: '',
-  //       signature: '',
-  //     },
-  //   };
-  // }
   return doRequest(url, options);
 };
 
-export const goRegister = async (values: userRegisterType) => {
+//注册
+export const goRegister = async ({
+  username,
+  password,
+  gender,
+}: {
+  username: string;
+  password: string;
+  gender: string;
+}) => {
   const url = `/api/user/register`;
-  console.log('goRegister_service_values = ', values);
   const options = {
     method: 'post',
-    data: values,
+    data: {
+      username,
+      password,
+      gender,
+    },
   };
   return doRequest(url, options);
 };
 
+//获取用户信息
 export const getUserInfo = async () => {
   const url = `/api/user/getMyInfo`;
+  return doRequest(url);
+};
+
+//修改用户信息
+export const goUpdate = async (info: userPartType) => {
+  const url = `/api/user/updateMyInfo`;
+  const options = {
+    method: 'post',
+    data: info,
+  };
+  return doRequest(url, options);
+};
+
+//退出登录
+export const goLogoff = async () => {
+  const url = `/api/user/logoff`;
   return doRequest(url);
 };

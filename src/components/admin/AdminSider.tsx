@@ -4,19 +4,16 @@ import { appName } from '@/config';
 import { Layout, Menu } from 'antd';
 import { AlignCenterOutlined, UserOutlined } from '@ant-design/icons';
 import { history, Link } from 'umi';
-import React from 'react';
+import React, { FC } from 'react';
 const { Sider } = Layout;
 
 interface AdminSiderProps {
-  // SiderMenuSelectedKeys: string;
+  admin_sider_menu: string;
 }
 
-const AdminSider = (props: AdminSiderProps) => {
-  // const goToIndex = () => {
-  //   history.push('/');
-  // };
-
-  // const { SiderMenuSelectedKeys } = props;
+const AdminSider: FC<AdminSiderProps> = (props) => {
+  const { admin_sider_menu } = props;
+  console.log('admin_sider_menu = ', admin_sider_menu);
   return (
     <Sider
       breakpoint="lg"
@@ -38,7 +35,12 @@ const AdminSider = (props: AdminSiderProps) => {
         {/*<a onClick={goToIndex}>{appName}</a>*/}
         <a>{appName}</a>
       </div>
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+      <Menu
+        theme="dark"
+        mode="inline"
+        defaultSelectedKeys={['1']}
+        selectedKeys={[admin_sider_menu]}
+      >
         <Menu.Item
           key="1"
           icon={

@@ -1,8 +1,33 @@
-import React from 'react';
+import React, { FC } from 'react';
+import { connect, Dispatch, Loading } from 'umi';
 import UserInfo from '@/components/UserInfo';
+import { UserModelState } from '@/models/user';
+import { userAllType, userPartType } from '@/pages/data';
 
-const Admin_BasicInfo = () => {
-  return <UserInfo />;
+interface Admin_BasicInfoProps {
+  dispatch: Dispatch;
+  userInfo: userAllType;
+}
+
+const Admin_BasicInfo: FC<Admin_BasicInfoProps> = (props) => {
+  const { dispatch, userInfo } = props;
+
+  const onSubmitInfo = (info: userPartType) => {
+    console.log('onSubmitInfo = ', info);
+    dispatch({
+      type: 'user/goUpdate',
+      payload: {
+        info,
+        userRole: '2',
+      },
+    });
+  };
+
+  return <UserInfo userInfo={userInfo} onSubmitInfo={onSubmitInfo} />;
 };
 
-export default Admin_BasicInfo;
+export default connect(({ user }: { user: UserModelState }) => {
+  return {
+    userInfo: user.userInfo,
+  };
+})(Admin_BasicInfo);

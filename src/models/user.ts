@@ -1,12 +1,20 @@
 import { Reducer, Effect, Subscription, history } from 'umi';
-import { goLogin, goRegister, getUserInfo } from '@/services/user';
-import { singleUserType } from '@/pages/data';
+import {
+  goLogin,
+  goRegister,
+  getUserInfo,
+  goUpdate,
+  goLogoff,
+} from '@/services/user';
+import { userAllType } from '@/pages/data';
 import { message } from 'antd';
 
 export interface UserModelState {
-  userInfo: singleUserType | {};
+  userInfo: userAllType;
   isLogin: boolean;
   isAdmin: boolean;
+  admin_sider_menu: string;
+  admin_info_menu: string;
 }
 
 interface UserModelType {
@@ -20,18 +28,33 @@ interface UserModelType {
     goRegister: Effect;
     // goLogin_byModal:Effect;
     getUserInfo: Effect;
+    goUpdate: Effect;
+    goLogoff: Effect;
   };
   subscriptions: {
     // setup: Subscription;
+    admin_Info: Subscription;
   };
 }
 
 const UserModel: UserModelType = {
   namespace: 'user',
   state: {
-    userInfo: {},
+    userInfo: {
+      id: 0,
+      avatar: '',
+      username: '',
+      password: '',
+      gender: '',
+      role: '',
+      nickname: '',
+      signature: '',
+      register_time: '',
+    },
     isLogin: false,
     isAdmin: false,
+    admin_sider_menu: '1',
+    admin_info_menu: '1',
   },
   reducers: {
     setUserInfo(state, { payload }) {
@@ -85,18 +108,80 @@ const UserModel: UserModelType = {
       }
     },
     //获取用户信息
-    *getUserInfo(action, { put, call }) {
+    *getUserInfo({ payload }, { put, call }) {
       const res = yield call(getUserInfo);
       if (res.code === 0) {
-        // yield put({type:"setUserInfo", payload:{
-        //     isLogin: true,
-        //     userInfo: res.data,
-        //     isAdmin: res.data.role === '2',
-        //   }})
+        yield put({
+          type: 'setUserInfo',
+          payload: {
+            isLogin: true,
+            userInfo: res.data,
+            isAdmin: res.data.role === '2',
+            admin_sider_menu: payload.admin_sider_menu,
+            admin_info_menu: payload.admin_info_menu,
+          },
+        });
+      }
+    },
+    //更新用户信息
+    *goUpdate({ payload }, { put, call }) {
+      console.log('goUpdate_effect_payload = ', payload);
+      const res = yield call(goUpdate, payload.info);
+      console.log('goRegister_effect_res = ', res);
+      if (res.code === 0) {
+        if (payload.userRole === '1') {
+          history.push('/user/info/basicInfo');
+        } else {
+          history.push('/admin/info/basicInfo');
+        }
+        message.success('修改成功！');
+      } else {
+        message.error(res.msg);
+      }
+    },
+    *goLogoff({ payload }, { put, call }) {
+      const res = yield call(goLogoff);
+      console.log('goLogoff_res = ', res);
+      if (res.code === 0) {
+        message.success('已退出！');
+        history.push('/');
       }
     },
   },
-  subscriptions: {},
+  subscriptions: {
+    admin_Info({ dispatch, history }) {
+      return history.listen(({ pathname }) => {
+        if (pathname === '/admin/book/list') {
+          console.log('subscriptions_/admin/book/list');
+          dispatch({
+            type: 'getUserInfo',
+            payload: {
+              admin_sider_menu: '1',
+              admin_info_menu: '1',
+            },
+          });
+        } else if (pathname === '/admin/info/basicInfo') {
+          console.log('subscriptions_/admin/info/basicInfo');
+          dispatch({
+            type: 'getUserInfo',
+            payload: {
+              admin_sider_menu: '2',
+              admin_info_menu: '1',
+            },
+          });
+        } else if (pathname === '/admin/info/changePassword') {
+          console.log('subscriptions_/admin/info/changePassword');
+          dispatch({
+            type: 'getUserInfo',
+            payload: {
+              admin_sider_menu: '2',
+              admin_info_menu: '2',
+            },
+          });
+        }
+      });
+    },
+  },
 };
 
 export default UserModel;
