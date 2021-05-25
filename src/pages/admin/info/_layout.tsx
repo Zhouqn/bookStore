@@ -1,13 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { connect, Link } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
-// import { appName } from '@/config';
-import { Layout, Avatar, Image, Menu, message } from 'antd';
+import { Menu } from 'antd';
 import { SnippetsOutlined, EditOutlined } from '@ant-design/icons';
-// import AdminSider from '@/components/admin/AdminSider';
-// import UserInfo from '@/components/UserInfo';
-// import ChangePassword from '@/components/ChangePassword';
-const { Header, Content, Footer } = Layout;
 // import defaultAvatar from '@/asset/imgs/avatar.png'; //头像之后会是从数据库取出
 
 interface adminUserProps {}

@@ -1,7 +1,6 @@
 import React, { useState, FC, useEffect } from 'react';
 import { connect, Dispatch, Loading, history, Link } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
-// import { appName } from '@/config';
 import {
   Avatar,
   Image,
@@ -13,17 +12,11 @@ import {
   Divider,
   Spin,
 } from 'antd';
-import { ExclamationCircleOutlined, LoadingOutlined } from '@ant-design/icons';
-import Add_Edit_BookModal from '@/components/admin/Add_Edit_BookModal';
+import { LoadingOutlined } from '@ant-design/icons';
 import AdminSider from '@/components/admin/AdminSider';
-import BookList from '@/components/admin/BookList';
-import { bookRecordValue, FormValues } from '@/pages/data';
 import { UserModelState } from '@/models/user';
 import { BookModelState } from '@/models/book';
 import bookImg from '@/asset/imgs/book.png';
-// import moment from 'moment';
-// import { singleUserType } from '@/pages/data';
-// import { admin_addBookRecord, admin_editBookRecord } from '@/services/book';
 import { getUserInfo } from '@/services/user';
 
 const { Header, Content, Footer } = Layout;
@@ -71,7 +64,6 @@ const AdminBookList: FC<ListProps> = (props) => {
     });
   };
   useEffect(() => {
-    // setLoading(true)
     judgeState();
   }, []);
 
