@@ -168,6 +168,17 @@
 .commonUser{
   overflow: auto;
 }
+.commonUser_goBookList{
+  position: fixed;
+  top: 75px;
+  left: 235px;
+  color: cornflowerblue;
+  text-decoration: underline;
+  font-size: 18px;
+}
+.commonUser_goBookList:hover{
+  cursor: pointer;
+}
 .commonUser_content{
   position: fixed;
   margin: auto;

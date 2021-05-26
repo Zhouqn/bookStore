@@ -29,19 +29,33 @@ body{
   left: 20px;
   color: dimgray;
 }
-.header_mine, .header_logout, .header_logoff, .header_login, .header_register{
+.header_bookList{
+  position: absolute;
+  top: 17px;
+  right: 320px;
+  text-decoration: underline;
+  font-size: 15px;
+}
+.header_avatar{
+  position: absolute;
+  right: 260px;
+  top: 6px;
+  background: whitesmoke;
+  border: 1px solid whitesmoke;
+}
+.header_mine, .header_logoff, .header_login, .header_register{
   position: absolute;
   margin: 1px 0;
-  padding: 0 20px;
+  padding: 0 10px;
   color: white;
   border-left:1px solid whitesmoke ;
   border-right:1px solid whitesmoke;
 }
-.header_mine{
-  right: 230px;
+.header_login{
+  right: 120px;
 }
-.header_logout, .header_login{
-  right: 130px;
+.header_mine{
+  right: 140px;
 }
 .header_logoff, .header_register{
   right: 30px;

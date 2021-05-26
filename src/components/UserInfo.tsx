@@ -16,11 +16,15 @@ const UserInfo: FC<UserInfoProps> = (props) => {
   const { userInfo, onSubmitInfo } = props;
   console.log('userInfo = ', userInfo);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [nicknameValue, setNicknameValue] = useState(userInfo.nickname);
-  const [genderValue, setGenderValue] = useState(
-    userInfo.gender === '1' ? 1 : 2,
+  const [nicknameValue, setNicknameValue] = useState(
+    userInfo ? userInfo.nickname : '',
   );
-  const [signatureValue, setSignatureValue] = useState(userInfo.signature);
+  const [genderValue, setGenderValue] = useState(
+    userInfo ? (userInfo.gender === '1' ? 1 : 2) : 1,
+  );
+  const [signatureValue, setSignatureValue] = useState(
+    userInfo ? userInfo.signature : '',
+  );
 
   const genderOnChange = (e: any) => {
     console.log('radio checked', e.target.value);
@@ -35,7 +39,7 @@ const UserInfo: FC<UserInfoProps> = (props) => {
 
   //更换头像
   // const [avatarUri, setAvatarUri] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState(userInfo.avatar);
+  const [avatarUrl, setAvatarUrl] = useState(userInfo ? userInfo.avatar : '');
   const setUri_Url = (data: any) => {
     // console.log("data = ",data)
     // setAvatarUri(data.file_uri);
@@ -67,7 +71,7 @@ const UserInfo: FC<UserInfoProps> = (props) => {
             alt="头像"
             src={avatarUrl === '' ? defaultAvatarImg : avatarUrl}
             style={{
-              border: '1px solid',
+              border: '1px solid lightgrey',
               backgroundColor: 'whitesmoke',
               marginRight: '15px',
             }}
@@ -80,7 +84,7 @@ const UserInfo: FC<UserInfoProps> = (props) => {
           <Input
             className="userInfo_input"
             // onChange={onUsernameInputChange}
-            value={userInfo.username}
+            value={userInfo ? userInfo.username : ''}
             disabled
           />
         </div>
@@ -109,7 +113,7 @@ const UserInfo: FC<UserInfoProps> = (props) => {
         </div>
         <Divider style={{ borderColor: 'whitesmoke' }} />
 
-        {userInfo.role === '2' ? (
+        {userInfo && userInfo.role === '2' ? (
           <div>
             <div className="userInfo_oneRecord">
               <span style={{ width: '100px' }}>身份</span>

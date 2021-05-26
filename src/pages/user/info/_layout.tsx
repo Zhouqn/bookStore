@@ -1,10 +1,10 @@
 import React, { FC, useEffect } from 'react';
-import { connect, Link, history, Loading } from 'umi';
+import { connect, Link, history, Loading, Dispatch } from 'umi';
 import { UserModelState } from '@/models/user';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import userStyles from '@/asset/css/user.css';
-import { Menu, Spin } from 'antd';
+import { Menu, message, Spin } from 'antd';
 import {
   EditOutlined,
   SnippetsOutlined,
@@ -12,20 +12,41 @@ import {
   HeartOutlined,
   LoadingOutlined,
 } from '@ant-design/icons';
+import { userAllType } from '@/pages/data';
 
 interface UserInfoProps {
+  dispatch: Dispatch;
   isLogin: boolean;
+  userInfo: userAllType;
   userModelLoading: boolean;
   user_info_menu: string;
 }
 
 const commonUser: FC<UserInfoProps> = (props) => {
-  const { isLogin, userModelLoading, user_info_menu } = props;
+  const {
+    dispatch,
+    isLogin,
+    userInfo,
+    userModelLoading,
+    user_info_menu,
+  } = props;
   useEffect(() => {
     history.push('/user/info/basicInfo');
   }, []);
 
   const antIcon = <LoadingOutlined style={{ fontSize: 45 }} spin />;
+
+  //确认退出
+  const onConfirmLogoff = () => {
+    dispatch({
+      type: 'user/goLogoff',
+      payload: {},
+    });
+  };
+  //取消退出
+  const onCancelLogoff = () => {
+    message.error('取消退出');
+  };
 
   return userModelLoading ? (
     <Spin
@@ -34,7 +55,15 @@ const commonUser: FC<UserInfoProps> = (props) => {
     />
   ) : (
     <div className={userStyles.commonUser}>
-      <Header isLogin={isLogin} />
+      <Header
+        isLogin={isLogin}
+        userInfo={userInfo}
+        onConfirmLogoff={onConfirmLogoff}
+        onCancelLogoff={onCancelLogoff}
+      />
+      <div className={userStyles.commonUser_goBookList}>
+        <Link to="/user/book/list">前往书列表</Link>
+      </div>
       <div className={userStyles.commonUser_content}>
         <div className={userStyles.commonUser_content_left}>
           <div className={userStyles.commonUser_content_menu}>
@@ -72,6 +101,7 @@ export default connect(
   ({ user, loading }: { user: UserModelState; loading: Loading }) => {
     return {
       isLogin: user.isLogin,
+      userInfo: user.userInfo,
       userModelLoading: loading.models.user,
       user_info_menu: user.user_info_menu,
     };

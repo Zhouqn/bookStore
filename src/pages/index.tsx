@@ -1,17 +1,45 @@
 import styles from '@/pages/index.css';
-import React from 'react';
-import { Link, connect } from 'umi';
+import React, { FC, useEffect } from 'react';
+import { Link, connect, Dispatch } from 'umi';
 import { UserModelState } from '@/models/user';
 import { appName } from '@/config';
 import bookImg from '../asset/imgs/book.png';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { userAllType } from '@/pages/data';
+import { message } from 'antd';
 
-const IndexPage = ({ isLogin }: { isLogin: boolean }) => {
+interface IndexPageProps {
+  dispatch: Dispatch;
+  isLogin: boolean;
+  userInfo: userAllType;
+}
+
+const IndexPage: FC<IndexPageProps> = (props) => {
+  const { dispatch, isLogin, userInfo } = props;
+  useEffect(() => {}, []);
+
+  //确认退出
+  const onConfirmLogoff = () => {
+    dispatch({
+      type: 'user/goLogoff',
+      payload: {},
+    });
+  };
+  //取消退出
+  const onCancelLogoff = () => {
+    message.error('取消退出');
+  };
+
   return (
     <React.Fragment>
       <div className={styles.welcomePage}>
-        <Header isLogin={isLogin} />
+        <Header
+          isLogin={isLogin}
+          userInfo={userInfo}
+          onConfirmLogoff={onConfirmLogoff}
+          onCancelLogoff={onCancelLogoff}
+        />
         <div className={styles.middleContent}>
           <img className={styles.bookImg} alt="book" src={bookImg} />
           <h1 className={styles.welcomeContent}>
@@ -29,5 +57,6 @@ export default connect(({ user }: { user: UserModelState }) => {
   console.log('user = ', user);
   return {
     isLogin: user.isLogin,
+    userInfo: user.userInfo,
   };
 })(IndexPage);

@@ -21,8 +21,6 @@ import {
 import { appName } from '@/config';
 import noBookCover from '@/asset/imgs/noBookCover.png';
 import userStyles from '@/asset/css/user.css';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { UserModelState } from '@/models/user';
 import { BookModelState } from '@/models/book';
 import LoginModal from '@/components/user/loginModal';
@@ -167,9 +165,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
 
   return (
     <React.Fragment>
-      <Header isLogin={isLogin} />
       {/*上半部分*/}
-
       <div className={userStyles.bookMsg_middle}>
         {bookModelLoading ? (
           <Spin
@@ -367,7 +363,6 @@ const BookInfo: FC<BookMsgProps> = (props) => {
           />
         )}
       </div>
-      <Footer />
       <LoginModal
         submitLoginModal={submitLoginModal}
         LoginModalHandleCancel={LoginModalHandleCancel}

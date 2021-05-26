@@ -3,8 +3,6 @@ import { connect, Dispatch, history } from 'umi';
 import { UserModelState } from '@/models/user';
 import { BookModelState } from '@/models/book';
 import { bookRecordValue } from '@/pages/data';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import userStyles from '@/asset/css/user.css';
 import BookList from '@/components/user/BookList';
 import { DoubleRightOutlined, LoadingOutlined } from '@ant-design/icons';
@@ -14,7 +12,7 @@ import { Loading } from '@@/plugin-dva/connect';
 interface UserBookListProps {
   dispatch: Dispatch;
   isLogin: boolean;
-  bookListLoading: boolean;
+  bookModelLoading: boolean;
   total_count: number;
   newBooks: bookRecordValue[];
   highRateBooks: bookRecordValue[];
@@ -29,7 +27,7 @@ const UserBookList: FC<UserBookListProps> = (props) => {
     newBooks,
     highRateBooks,
     hotBooks,
-    bookListLoading,
+    bookModelLoading,
   } = props;
   console.log('book = ', newBooks, highRateBooks, hotBooks);
   console.log('total_count = ', total_count);
@@ -55,9 +53,8 @@ const UserBookList: FC<UserBookListProps> = (props) => {
 
   return (
     <React.Fragment>
-      <Header isLogin={isLogin} />
       <div className={userStyles.userBookList}>
-        {bookListLoading ? (
+        {bookModelLoading ? (
           <Spin
             indicator={bookListLoadingIcon}
             style={{ position: 'relative', left: '47% ', top: '40%' }}
@@ -93,7 +90,6 @@ const UserBookList: FC<UserBookListProps> = (props) => {
           />
         )}
       </div>
-      <Footer />
     </React.Fragment>
   );
 };
@@ -112,7 +108,7 @@ export default connect(
       //user
       isLogin: user.isLogin,
       //book
-      bookListLoading: loading.models.book,
+      bookModelLoading: loading.models.book,
       total_count: book.total_count,
       newBooks: book.newBooks,
       highRateBooks: book.highRateBooks,

@@ -112,6 +112,7 @@ const UserModel: UserModelType = {
     },
     //获取用户信息
     *getUserInfo({ payload }, { put, call }) {
+      console.log('user_model_getUserInfo');
       const res = yield call(getUserInfo);
       if (res.code === 0) {
         yield put({
@@ -150,9 +151,16 @@ const UserModel: UserModelType = {
       }
     },
     *goLogoff({ payload }, { put, call }) {
+      console.log('goLogoff_model');
       const res = yield call(goLogoff);
       console.log('goLogoff_res = ', res);
       if (res.code === 0) {
+        yield put({
+          type: 'setUserInfo',
+          payload: {
+            isLogin: false,
+          },
+        });
         message.success('已退出！');
         history.push('/');
       }
