@@ -220,15 +220,6 @@ const AdminBookList: FC<ListProps> = (props) => {
       message.warning('搜索框为空或者输入的字符无效，请填写想搜索的内容！');
     } else {
       toSearchByAuthorOrTitle(1, 4);
-      // dispatch({
-      //   type:'book/goSearch_byAuthorOrTitle',
-      //   payload:{
-      //     page:1,
-      //     page_size:4,
-      //     author: searchOption === 'author' ? valueTrim : "",
-      //     title: searchOption === 'title' ? valueTrim : "",
-      //   }
-      // })
     }
   };
 

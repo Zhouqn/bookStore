@@ -1,30 +1,38 @@
 import React, { FC, useEffect } from 'react';
-import { connect, Link, history } from 'umi';
+import { connect, Link, history, Loading } from 'umi';
 import { UserModelState } from '@/models/user';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import userStyles from '@/asset/css/user.css';
-import { Menu } from 'antd';
+import { Menu, Spin } from 'antd';
 import {
   EditOutlined,
   SnippetsOutlined,
   UnorderedListOutlined,
   HeartOutlined,
+  LoadingOutlined,
 } from '@ant-design/icons';
-import UserInfo from '@/components/UserInfo';
 
 interface UserInfoProps {
   isLogin: boolean;
+  userModelLoading: boolean;
+  user_info_menu: string;
 }
 
 const commonUser: FC<UserInfoProps> = (props) => {
+  const { isLogin, userModelLoading, user_info_menu } = props;
   useEffect(() => {
     history.push('/user/info/basicInfo');
   }, []);
 
-  const { isLogin } = props;
+  const antIcon = <LoadingOutlined style={{ fontSize: 45 }} spin />;
 
-  return (
+  return userModelLoading ? (
+    <Spin
+      indicator={antIcon}
+      style={{ position: 'absolute', top: '40%', left: '50%' }}
+    />
+  ) : (
     <div className={userStyles.commonUser}>
       <Header isLogin={isLogin} />
       <div className={userStyles.commonUser_content}>
@@ -32,6 +40,7 @@ const commonUser: FC<UserInfoProps> = (props) => {
           <div className={userStyles.commonUser_content_menu}>
             <Menu
               defaultSelectedKeys={['1']}
+              selectedKeys={[user_info_menu]}
               mode="inline"
               style={{ textAlign: 'center' }}
             >
@@ -59,8 +68,12 @@ const commonUser: FC<UserInfoProps> = (props) => {
   );
 };
 
-export default connect(({ user }: { user: UserModelState }) => {
-  return {
-    isLogin: user.isLogin,
-  };
-})(commonUser);
+export default connect(
+  ({ user, loading }: { user: UserModelState; loading: Loading }) => {
+    return {
+      isLogin: user.isLogin,
+      userModelLoading: loading.models.user,
+      user_info_menu: user.user_info_menu,
+    };
+  },
+)(commonUser);

@@ -52,18 +52,19 @@ const BookList: FC<NewBooksProps> = (props) => {
                       );
                     }}
                   >
-                    <div className={userStyles.bookList_bookCover}>
-                      <Image
-                        // style={{border:"1px solid", position:"relative" , bottom:"0px"}}
-                        alt="暂无封面"
-                        src={bookRecord.cover_url}
-                        fallback={noBookCover}
-                        onClick={() => clickBookCover_orTitle(bookRecord)}
-                        preview={false}
-                        width="100%"
-                        // height="100%"
-                      />
-                    </div>
+                    {/*<div className={userStyles.bookList_bookCover}>*/}
+                    <Image
+                      style={{ width: '110px', height: '165px' }}
+                      className={userStyles.bookList_bookCover}
+                      alt="暂无封面"
+                      src={bookRecord.cover_url}
+                      fallback={noBookCover}
+                      onClick={() => clickBookCover_orTitle(bookRecord)}
+                      preview={false}
+                      width="100%"
+                      // height="100%"
+                    />
+                    {/*</div>*/}
                   </Tooltip>
                   <div
                     className={userStyles.bookList_bookTitle}

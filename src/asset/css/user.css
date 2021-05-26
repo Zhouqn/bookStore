@@ -70,8 +70,8 @@
   -webkit-box-orient: vertical;
 }
 .bookList_bookCover{
-  width: 110px;
-  height: 165px;
+  /*width: 110px;*/
+  /*height: 165px;*/
   border: 1px solid #c2c0c0;
   cursor: pointer;
 }
@@ -112,8 +112,8 @@
   display: flex;
 }
 .bookMsg_bookCover{
-  width: 130px;
-  height: 190px;
+  /*width: 130px;*/
+  /*height: 190px;*/
   border: 1px solid gray;
 }
 .bookMsg_partBookInfo{

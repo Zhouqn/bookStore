@@ -184,6 +184,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
               </div>
               <div className={userStyles.bookMsg_BookInfos}>
                 <Image
+                  style={{ width: '130px', height: '185px' }}
                   className={userStyles.bookMsg_bookCover}
                   alt="暂无图片"
                   src={bookRecord.cover_url}

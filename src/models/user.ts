@@ -15,6 +15,7 @@ export interface UserModelState {
   isAdmin: boolean;
   admin_sider_menu: string;
   admin_info_menu: string;
+  user_info_menu: string;
 }
 
 interface UserModelType {
@@ -34,6 +35,7 @@ interface UserModelType {
   subscriptions: {
     // setup: Subscription;
     admin_Info: Subscription;
+    user_Info: Subscription;
   };
 }
 
@@ -55,6 +57,7 @@ const UserModel: UserModelType = {
     isAdmin: false,
     admin_sider_menu: '1',
     admin_info_menu: '1',
+    user_info_menu: '1',
   },
   reducers: {
     setUserInfo(state, { payload }) {
@@ -117,8 +120,15 @@ const UserModel: UserModelType = {
             isLogin: true,
             userInfo: res.data,
             isAdmin: res.data.role === '2',
-            admin_sider_menu: payload.admin_sider_menu,
-            admin_info_menu: payload.admin_info_menu,
+            admin_sider_menu: payload.admin_sider_menu
+              ? payload.admin_sider_menu
+              : '1',
+            admin_info_menu: payload.admin_info_menu
+              ? payload.admin_info_menu
+              : '1',
+            user_info_menu: payload.user_info_menu
+              ? payload.user_info_menu
+              : '1',
           },
         });
       }
@@ -176,6 +186,43 @@ const UserModel: UserModelType = {
             payload: {
               admin_sider_menu: '2',
               admin_info_menu: '2',
+            },
+          });
+        }
+      });
+    },
+    user_Info({ dispatch, history }) {
+      return history.listen(({ pathname }) => {
+        if (pathname === '/user/info/basicInfo') {
+          console.log('subscriptions_/admin/book/list');
+          dispatch({
+            type: 'getUserInfo',
+            payload: {
+              user_info_menu: '1',
+            },
+          });
+        } else if (pathname === '/user/info/changePassword') {
+          console.log('subscriptions_/admin/info/changePassword');
+          dispatch({
+            type: 'getUserInfo',
+            payload: {
+              user_info_menu: '2',
+            },
+          });
+        } else if (pathname === '/user/info/myComments') {
+          console.log('subscriptions_/admin/info/basicInfo');
+          dispatch({
+            type: 'getUserInfo',
+            payload: {
+              user_info_menu: '3',
+            },
+          });
+        } else if (pathname === '/user/info/likeComments') {
+          console.log('subscriptions_/admin/info/basicInfo');
+          dispatch({
+            type: 'getUserInfo',
+            payload: {
+              user_info_menu: '4',
             },
           });
         }
