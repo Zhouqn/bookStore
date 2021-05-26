@@ -6,6 +6,7 @@ import {
   user_getHighRateOrHotBooks,
   user_getOneBook,
   getBookById,
+  getBookByAuthorOrTitle,
 } from '@/services/book';
 import { message } from 'antd';
 
@@ -32,6 +33,7 @@ interface BookModelType {
   effects: {
     getBookList: Effect;
     getBook_byId: Effect;
+    goSearch_byAuthorOrTitle: Effect;
     //管理员
     admin_deleteBook: Effect;
     //用户
@@ -92,19 +94,10 @@ const BookModel: BookModelType = {
       const res = yield call(getBookById, payload);
       console.log('getBook_byId_res = ', res);
       if (res.code === 0) {
-        //暂时不需要这么获取书的评论信息，在页面内直接获取
-        // yield put({
-        //   type: 'user_getABookRecord',
-        //   payload: {
-        //     bookRecord: res.data.books[0],
-        //     page: 1,
-        //     page_size: 10,
-        //     orderTypes: 'create_time',
-        //   },
-        // });
         yield put({
           type: 'setBookList',
           payload: {
+            ...res.data,
             bookRecord: res.data.books[0],
           },
         });
@@ -112,6 +105,20 @@ const BookModel: BookModelType = {
         message.error(res.message);
       }
     },
+    //通过作者获取
+    *goSearch_byAuthorOrTitle({ payload }, { put, call }) {
+      const res = yield call(getBookByAuthorOrTitle, payload);
+      // console.log("goSearch_byAuthorOrTitle = ",res)
+      if (res.code === 0) {
+        yield put({
+          type: 'setBookList',
+          payload: res.data,
+        });
+      } else {
+        message.error(res.message);
+      }
+    },
+
     //管理员
     *admin_deleteBook({ payload }, { call }) {
       // console.log('deleteBook_payload', payload);

@@ -27,7 +27,15 @@ interface BookListProps {
   page: number;
   page_size: number;
   total_count: number;
+  getAllBook: () => void;
   onPageChange: (page: number, pageSize?: number) => void;
+  selectOnChange: (option: string) => void;
+  goSearchById: (id: string) => void;
+  goSearchByAuthorOrTitle: (value: string) => void;
+  searchId: string;
+  idOnChange: (value: string) => void;
+  searchAuthorOrTitle: string;
+  authorOrTitleOnChange: (value: string) => void;
 }
 
 const BookList: FC<BookListProps> = (props) => {
@@ -40,26 +48,46 @@ const BookList: FC<BookListProps> = (props) => {
     page,
     page_size,
     total_count,
+    getAllBook,
     onPageChange,
+    selectOnChange,
+    goSearchById,
+    goSearchByAuthorOrTitle,
+    searchId,
+    idOnChange,
+    searchAuthorOrTitle,
+    authorOrTitleOnChange,
   } = props;
   //加载图标
   const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
 
   return (
     <React.Fragment>
+      <div className={adminStyles.book_allBook} onClick={getAllBook}>
+        所有书列表
+      </div>
       <div className={adminStyles.book_contentTop}>
         {/*这里是搜索添加*/}
         <div className={adminStyles.book_contentSearch}>
           <Search
+            style={{ margin: '0 70px', width: '80%' }}
             placeholder="通过id查询书"
             enterButton="搜&emsp;索"
             size="large"
-            style={{ margin: '0 70px', width: '80%' }}
+            value={searchId}
+            onChange={(e) => {
+              idOnChange(e.target.value);
+            }}
+            onSearch={goSearchById}
           />
           <Input.Group compact size="large">
-            <Select defaultValue="bookAuthor" size="large">
-              <Option value="bookAuthor">作&emsp;者</Option>
-              <Option value="bookTitle名">书&emsp;名</Option>
+            <Select
+              defaultValue="author"
+              size="large"
+              onChange={selectOnChange}
+            >
+              <Option value="author">作&emsp;者</Option>
+              <Option value="title">书&emsp;名</Option>
             </Select>
             {/*<Input  defaultValue="input content" />*/}
             <Search
@@ -67,6 +95,11 @@ const BookList: FC<BookListProps> = (props) => {
               placeholder="按作者/书名查询书籍"
               enterButton="搜&emsp;索"
               size="large"
+              value={searchAuthorOrTitle}
+              onChange={(e) => {
+                authorOrTitleOnChange(e.target.value);
+              }}
+              onSearch={goSearchByAuthorOrTitle}
             />
           </Input.Group>
         </div>
@@ -168,6 +201,7 @@ const BookList: FC<BookListProps> = (props) => {
           onChange={onPageChange}
           pageSizeOptions={['4', '6', '8', '10', '20', '50']}
           showSizeChanger
+          hideOnSinglePage={total_count <= 4}
         />
       ) : null}
     </React.Fragment>

@@ -27,6 +27,22 @@ export const getBookById = async ({ book_id }: { book_id: number }) => {
   return doRequest(url);
 };
 
+export const getBookByAuthorOrTitle = async ({
+  page,
+  page_size,
+  author,
+  title,
+}: {
+  page: number;
+  page_size: number;
+  author: string;
+  title: string;
+}) => {
+  console.log('getBookByAuthor_service = ', author);
+  const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&author=${author}&title=${title}`;
+  return doRequest(url);
+};
+
 //管理员
 //添加
 export const admin_addBookRecord = async ({

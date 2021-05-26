@@ -57,10 +57,18 @@
 
 /*书*/
 /*书搜索添加*/
+.book_allBook{
+  margin-left: 70px;
+  margin-top: 20px ;
+  color: cornflowerblue;
+}
+.book_allBook:hover{
+  cursor: pointer;
+}
 .book_contentTop{
   width: 100%;
   display: flex;
-  margin-top:40px ;
+  margin-top:10px ;
 }
 .book_contentSearch{
   display: flex;
