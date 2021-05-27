@@ -193,7 +193,10 @@ const BookModel: BookModelType = {
     //管理员
     admin_showBookList({ dispatch, history }) {
       return history.listen(({ pathname }) => {
-        if (pathname === '/admin/book/list') {
+        if (
+          pathname === '/admin/book/list' ||
+          pathname === '/user/book/moreBooks'
+        ) {
           // console.log('/admin/book/list_subscriptions');
           dispatch({
             type: 'getBookList',

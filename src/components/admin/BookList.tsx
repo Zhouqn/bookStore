@@ -19,7 +19,7 @@ const { Search } = Input;
 const { Option } = Select;
 
 interface BookListProps {
-  bookListLoading: boolean;
+  bookModelLoading: boolean;
   books: bookRecordValue[];
   clickAddButton: () => void;
   clickEditBook: (book: bookRecordValue) => void;
@@ -40,7 +40,7 @@ interface BookListProps {
 
 const BookList: FC<BookListProps> = (props) => {
   const {
-    bookListLoading,
+    bookModelLoading,
     books,
     clickAddButton,
     clickEditBook,
@@ -113,7 +113,7 @@ const BookList: FC<BookListProps> = (props) => {
       </div>
       {/*书列表*/}
       <div className={adminStyles.book_oneLine}>
-        {bookListLoading ? (
+        {bookModelLoading ? (
           <Spin
             indicator={bookListLoadingIcon}
             style={{ position: 'relative', left: '47% ', top: '150px' }}

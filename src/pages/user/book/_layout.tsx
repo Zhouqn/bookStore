@@ -19,7 +19,7 @@ const UserBookList: FC<UserBookListProps> = (props) => {
 
   useEffect(() => {
     dispatch({ type: 'user/getUserInfo', payload: {} });
-    history.push('/user/book/list');
+    // history.push('/user/book/list');
   }, []);
 
   //确认退出

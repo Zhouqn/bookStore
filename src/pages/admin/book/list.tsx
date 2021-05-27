@@ -10,7 +10,7 @@ import { admin_addBookRecord, admin_editBookRecord } from '@/services/book';
 const { Header, Content, Footer } = Layout; //不能删除，删除样式就没了，不知为何
 
 interface ListProps {
-  bookListLoading: boolean;
+  bookModelLoading: boolean;
   books: bookRecordValue[];
   page: number;
   page_size: number;
@@ -20,7 +20,7 @@ interface ListProps {
 
 const AdminBookList: FC<ListProps> = (props) => {
   const {
-    bookListLoading,
+    bookModelLoading,
     books,
     page,
     page_size,
@@ -226,7 +226,7 @@ const AdminBookList: FC<ListProps> = (props) => {
   return (
     <React.Fragment>
       <BookList
-        bookListLoading={bookListLoading}
+        bookModelLoading={bookModelLoading}
         books={books}
         clickAddButton={clickAddButton}
         deleteBookConfirm={deleteBookConfirm}
@@ -258,7 +258,7 @@ const AdminBookList: FC<ListProps> = (props) => {
 export default connect(
   ({ book, loading }: { book: BookModelState; loading: Loading }) => {
     return {
-      bookListLoading: loading.models.book,
+      bookModelLoading: loading.models.book,
       books: book.books,
       page: book.page,
       page_size: book.page_size,
