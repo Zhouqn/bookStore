@@ -3,7 +3,7 @@ import { connect, Dispatch, Loading } from 'umi';
 import { Layout, message, Alert } from 'antd';
 import Add_Edit_BookModal from '@/components/admin/Add_Edit_BookModal';
 import BookList from '@/components/admin/BookList';
-import { bookRecordValue, FormValues } from '@/pages/data';
+import { bookRecordValue, FormValues, userAllType } from '@/pages/data';
 import { BookModelState } from '@/models/book';
 import moment from 'moment';
 import { admin_addBookRecord, admin_editBookRecord } from '@/services/book';
@@ -16,6 +16,7 @@ interface ListProps {
   page_size: number;
   total_count: number;
   dispatch: Dispatch;
+  userInfo: userAllType;
 }
 
 const AdminBookList: FC<ListProps> = (props) => {
@@ -26,7 +27,10 @@ const AdminBookList: FC<ListProps> = (props) => {
     page_size,
     total_count,
     dispatch,
+    userInfo,
   } = props;
+
+  console.log('AdminBookList_userInfo = ', userInfo);
 
   const [add_edit_BookModalVisible, setAdd_edit_BookModalVisible] = useState(
     false,
