@@ -1,13 +1,15 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 import { connect, Dispatch, Loading } from 'umi';
-import { Layout, message, Alert } from 'antd';
+import { Layout, message, Alert, Spin } from 'antd';
 import Add_Edit_BookModal from '@/components/admin/Add_Edit_BookModal';
 import BookList from '@/components/admin/BookList';
 import { bookRecordValue, FormValues, userAllType } from '@/pages/data';
 import { BookModelState } from '@/models/book';
 import moment from 'moment';
 import { admin_addBookRecord, admin_editBookRecord } from '@/services/book';
+import { LoadingOutlined } from '@ant-design/icons';
 const { Header, Content, Footer } = Layout; //不能删除，删除样式就没了，不知为何
+import { getUserInfo } from '@/services/user';
 
 interface ListProps {
   bookModelLoading: boolean;
@@ -16,7 +18,6 @@ interface ListProps {
   page_size: number;
   total_count: number;
   dispatch: Dispatch;
-  userInfo: userAllType;
 }
 
 const AdminBookList: FC<ListProps> = (props) => {
@@ -27,10 +28,18 @@ const AdminBookList: FC<ListProps> = (props) => {
     page_size,
     total_count,
     dispatch,
-    userInfo,
   } = props;
 
-  console.log('AdminBookList_userInfo = ', userInfo);
+  //判断是不是管理员，是否能有增加删除修改书的操作
+  const [adminAction, setAdminAction] = useState(false);
+  useEffect(() => {
+    getUserInfo().then((value) => {
+      console.log('AdminBookList_value = ', value);
+      if (value.code === 0 && value.data.role === '2') {
+        setAdminAction(true);
+      }
+    });
+  }, []);
 
   const [add_edit_BookModalVisible, setAdd_edit_BookModalVisible] = useState(
     false,
@@ -108,17 +117,18 @@ const AdminBookList: FC<ListProps> = (props) => {
       title,
       authors,
       pub,
+      pub_date,
       price,
       retail_price,
       describe,
     } = formValues;
 
     const values = {
-      ...formValues,
       cover_uri: cover_uri ? cover_uri[0].response.data.file_uri : null,
       title: title === '' ? null : title,
       authors: authors === '' ? null : authors,
       pub: pub === '' ? null : pub,
+      pub_date: moment(pub_date).format('YYYY-MM-DD'),
       price: price === '' ? null : price,
       retail_price: retail_price === '' ? null : retail_price,
       describe: describe === '' ? null : describe,
@@ -227,27 +237,36 @@ const AdminBookList: FC<ListProps> = (props) => {
     }
   };
 
+  const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
   return (
     <React.Fragment>
-      <BookList
-        bookModelLoading={bookModelLoading}
-        books={books}
-        clickAddButton={clickAddButton}
-        deleteBookConfirm={deleteBookConfirm}
-        clickEditBook={clickEditBook}
-        page={page}
-        page_size={page_size}
-        total_count={total_count}
-        getAllBook={getAllBook}
-        onPageChange={onPageChange}
-        selectOnChange={selectOnChange}
-        goSearchById={goSearchById}
-        goSearchByAuthorOrTitle={goSearchByAuthorOrTitle}
-        searchId={searchId}
-        idOnChange={idOnChange}
-        searchAuthorOrTitle={searchAuthorOrTitle}
-        authorOrTitleOnChange={authorOrTitleOnChange}
-      />
+      {bookModelLoading ? (
+        <Spin
+          indicator={bookListLoadingIcon}
+          style={{ position: 'relative', left: '47% ', top: '40%' }}
+        />
+      ) : (
+        <BookList
+          bookModelLoading={bookModelLoading}
+          books={books}
+          clickAddButton={clickAddButton}
+          deleteBookConfirm={deleteBookConfirm}
+          clickEditBook={clickEditBook}
+          page={page}
+          page_size={page_size}
+          total_count={total_count}
+          getAllBook={getAllBook}
+          onPageChange={onPageChange}
+          selectOnChange={selectOnChange}
+          goSearchById={goSearchById}
+          goSearchByAuthorOrTitle={goSearchByAuthorOrTitle}
+          searchId={searchId}
+          idOnChange={idOnChange}
+          searchAuthorOrTitle={searchAuthorOrTitle}
+          authorOrTitleOnChange={authorOrTitleOnChange}
+          adminAction={adminAction}
+        />
+      )}
       <Add_Edit_BookModal
         add_edit_BookModalVisible={add_edit_BookModalVisible}
         onSubmitBookModal={onSubmitBookModal}

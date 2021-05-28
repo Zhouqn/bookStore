@@ -62,7 +62,7 @@ const commonUser: FC<UserInfoProps> = (props) => {
         onCancelLogoff={onCancelLogoff}
       />
       <div className={userStyles.commonUser_goBookList}>
-        <Link to="/user/book/list">前往书列表</Link>
+        <Link to="/user/book/list">前往书分类列表</Link>
       </div>
       <div className={userStyles.commonUser_content}>
         <div className={userStyles.commonUser_content_left}>

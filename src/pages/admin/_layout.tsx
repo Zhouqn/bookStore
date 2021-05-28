@@ -56,14 +56,16 @@ const AdminBookList: FC<ListProps> = (props) => {
   };
 
   //5秒后页面跳转
+  let timeInterval: any;
   const timeChange = () => {
     // 获取初始时间
     let time = document.getElementById('timeChange');
     // 获取到id为timeChange标签中的数字时间
     if (time) {
-      if (parseInt(time.innerHTML) === 0) {
+      if (parseInt(time.innerHTML) === 1) {
         // 等于0时清除计时，并跳转该指定页面
         history.push('/user/login');
+        window.clearInterval(timeInterval);
       } else {
         time.innerHTML = String(parseInt(time.innerHTML) - 1);
       }
@@ -71,11 +73,14 @@ const AdminBookList: FC<ListProps> = (props) => {
   };
   const timeCall = () => {
     // 1000毫秒调用一次
-    window.onload = () => {
-      window.setInterval(() => {
+    // window.onload = () => {
+    window.setTimeout(() => {
+      timeInterval = window.setInterval(() => {
+        console.log('setInterval');
         timeChange();
       }, 1000);
-    };
+    }, 1000);
+    // };
   };
 
   return userModelLoading ? (
@@ -95,7 +100,11 @@ const AdminBookList: FC<ListProps> = (props) => {
               alt="头像"
               src={
                 <Image
-                  src={userInfo.avatar ? userInfo.avatar : defaultAvatarImg}
+                  src={
+                    userInfo && userInfo.avatar
+                      ? userInfo.avatar
+                      : defaultAvatarImg
+                  }
                 />
               }
               className={adminStyles.adminUser_avatar}

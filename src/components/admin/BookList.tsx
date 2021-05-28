@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import noBookCover from '@/asset/imgs/noBookCover.png';
 import adminStyles from '@/asset/css/admin.css';
-import { bookRecordValue } from '@/pages/data';
+import { bookRecordValue, userAllType } from '@/pages/data';
 import { LoadingOutlined } from '@ant-design/icons';
 const { Search } = Input;
 const { Option } = Select;
@@ -36,11 +36,11 @@ interface BookListProps {
   idOnChange: (value: string) => void;
   searchAuthorOrTitle: string;
   authorOrTitleOnChange: (value: string) => void;
+  adminAction: boolean;
 }
 
 const BookList: FC<BookListProps> = (props) => {
   const {
-    bookModelLoading,
     books,
     clickAddButton,
     clickEditBook,
@@ -57,9 +57,10 @@ const BookList: FC<BookListProps> = (props) => {
     idOnChange,
     searchAuthorOrTitle,
     authorOrTitleOnChange,
+    adminAction,
   } = props;
-  //加载图标
-  const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
+
+  console.log('adminAction = ', adminAction);
 
   return (
     <React.Fragment>
@@ -103,22 +104,19 @@ const BookList: FC<BookListProps> = (props) => {
             />
           </Input.Group>
         </div>
-        <Button
-          size="large"
-          className={adminStyles.book_addButton}
-          onClick={clickAddButton}
-        >
-          添加
-        </Button>
+        {adminAction ? (
+          <Button
+            size="large"
+            className={adminStyles.book_addButton}
+            onClick={clickAddButton}
+          >
+            添加
+          </Button>
+        ) : null}
       </div>
       {/*书列表*/}
       <div className={adminStyles.book_oneLine}>
-        {bookModelLoading ? (
-          <Spin
-            indicator={bookListLoadingIcon}
-            style={{ position: 'relative', left: '47% ', top: '150px' }}
-          />
-        ) : total_count ? (
+        {total_count ? (
           books.map((bookRecord, i) => {
             return (
               <div key={i} className={adminStyles.oneRecord}>
@@ -168,17 +166,19 @@ const BookList: FC<BookListProps> = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className={adminStyles.bookAction}>
-                  <a onClick={() => clickEditBook(bookRecord)}>编辑</a>
-                  <Popconfirm
-                    title="确定删除吗?"
-                    okText="确认"
-                    cancelText="取消"
-                    onConfirm={() => deleteBookConfirm(bookRecord)}
-                  >
-                    <a>删除</a>
-                  </Popconfirm>
-                </div>
+                {adminAction ? (
+                  <div className={adminStyles.bookAction}>
+                    <a onClick={() => clickEditBook(bookRecord)}>编辑</a>
+                    <Popconfirm
+                      title="确定删除吗?"
+                      okText="确认"
+                      cancelText="取消"
+                      onConfirm={() => deleteBookConfirm(bookRecord)}
+                    >
+                      <a>删除</a>
+                    </Popconfirm>
+                  </div>
+                ) : null}
                 <Divider style={{ borderColor: 'lightgray' }} dashed />
               </div>
             );
