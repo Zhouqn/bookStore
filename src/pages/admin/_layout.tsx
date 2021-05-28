@@ -73,14 +73,12 @@ const AdminBookList: FC<ListProps> = (props) => {
   };
   const timeCall = () => {
     // 1000毫秒调用一次
-    // window.onload = () => {
-    window.setTimeout(() => {
+    window.onload = () => {
       timeInterval = window.setInterval(() => {
         console.log('setInterval');
         timeChange();
       }, 1000);
-    }, 1000);
-    // };
+    };
   };
 
   return userModelLoading ? (

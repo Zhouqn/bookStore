@@ -8,16 +8,18 @@ import doRequest from '@/request';
 // async function function_name(params){
 // }
 
-//获取书信息 【按最新时间排序】
+//获取书信息 最新/高分/热门书列表
 export const getBooks = async ({
   page,
   page_size,
+  orderTypes,
 }: {
   page: number;
   page_size: number;
+  orderTypes: string;
 }) => {
   console.log('getBooks = ', page, page_size);
-  const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}`;
+  const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
   return doRequest(url);
 };
 //通过id查找书
@@ -30,16 +32,18 @@ export const getBookById = async ({ book_id }: { book_id: number }) => {
 export const getBookByAuthorOrTitle = async ({
   page,
   page_size,
+  orderTypes,
   author,
   title,
 }: {
   page: number;
   page_size: number;
+  orderTypes: string;
   author: string;
   title: string;
 }) => {
   console.log('getBookByAuthor_service = ', author);
-  const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&author=${author}&title=${title}`;
+  const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&order_by=${orderTypes}&author=${author}&title=${title}`;
   return doRequest(url);
 };
 
@@ -88,19 +92,19 @@ export const admin_deleteBookRecord = async ({
 
 //用户
 //获取高分/热门书列表
-export const user_getHighRateOrHotBooks = async ({
-  page,
-  page_size,
-  orderTypes,
-}: {
-  page: number;
-  page_size: number;
-  orderTypes: string;
-}) => {
-  console.log('getBooks = ', orderTypes);
-  const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
-  return doRequest(url);
-};
+// export const user_getHighRateOrHotBooks = async ({
+//   page,
+//   page_size,
+//   orderTypes,
+// }: {
+//   page: number;
+//   page_size: number;
+//   orderTypes: string;
+// }) => {
+//   console.log('getBooks = ', orderTypes);
+//   const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
+//   return doRequest(url);
+// };
 //获取单个书的信息
 export const user_getOneBook = async ({
   book_id,

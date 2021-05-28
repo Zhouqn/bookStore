@@ -18,6 +18,7 @@ interface ListProps {
   page_size: number;
   total_count: number;
   dispatch: Dispatch;
+  orderTypes: string;
 }
 
 const AdminBookList: FC<ListProps> = (props) => {
@@ -28,7 +29,10 @@ const AdminBookList: FC<ListProps> = (props) => {
     page_size,
     total_count,
     dispatch,
+    orderTypes,
   } = props;
+
+  console.log('AdminBookList_orderTypes　＝　', orderTypes);
 
   //判断是不是管理员，是否能有增加删除修改书的操作
   const [adminAction, setAdminAction] = useState(false);
@@ -62,6 +66,7 @@ const AdminBookList: FC<ListProps> = (props) => {
       payload: {
         page,
         page_size,
+        orderTypes,
         author: searchOption === 'author' ? searchAuthorOrTitle : '',
         title: searchOption === 'title' ? searchAuthorOrTitle : '',
       },
@@ -94,6 +99,7 @@ const AdminBookList: FC<ListProps> = (props) => {
       payload: {
         page,
         page_size,
+        orderTypes,
       },
     });
   };
@@ -237,6 +243,7 @@ const AdminBookList: FC<ListProps> = (props) => {
     }
   };
 
+  // 加载图标
   const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
   return (
     <React.Fragment>
@@ -286,6 +293,7 @@ export default connect(
       page: book.page,
       page_size: book.page_size,
       total_count: book.total_count,
+      // orderTypes: book.orderTypes,
     };
   },
 )(AdminBookList);

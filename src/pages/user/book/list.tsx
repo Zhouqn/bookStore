@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { connect, Dispatch, history } from 'umi';
 import { UserModelState } from '@/models/user';
 import { BookModelState } from '@/models/book';
@@ -51,6 +51,29 @@ const UserBookList: FC<UserBookListProps> = (props) => {
     history.push(`/user/book/${bookRecord.id}`);
   };
 
+  // const getOrderBooks = (orderTypes: string) => {
+  //   dispatch({type:"book/getBookList", payload:{
+  //       page:1,
+  //       page_size: 4,
+  //       orderTypes,
+  //     }})
+  //   history.push('/user/book/moreBooks')
+  // }
+  const [order, setOrder] = useState('byPubDate');
+  const getOrderBooks = (type: string) => {
+    console.log('getOrderBooks_type = ', type);
+    if (type === '最新书籍') {
+      // setOrder('byPubDate')
+      history.push(`/user/book/moreBooks/${order}`);
+    } else if (type === '高分书籍') {
+      // setOrder('byRate')
+      history.push(`/user/book/moreBooks/${order}`);
+    } else {
+      // setOrder('byHot')
+      history.push(`/user/book/moreBooks/${order}`);
+    }
+  };
+
   return (
     <React.Fragment>
       <div className={userStyles.userBookList}>
@@ -68,7 +91,7 @@ const UserBookList: FC<UserBookListProps> = (props) => {
                     <span style={{ fontSize: '20px' }}>
                       {oneBooksType.type}：
                     </span>
-                    <a>
+                    <a onClick={() => getOrderBooks(oneBooksType.type)}>
                       查看更多书籍
                       <DoubleRightOutlined
                         style={{ fontSize: '10px', marginLeft: '5px' }}
