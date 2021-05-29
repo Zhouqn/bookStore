@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { connect, Dispatch, useParams } from 'umi';
+import { connect, Dispatch, useParams, history } from 'umi';
 import {
   Image,
   message,
@@ -10,6 +10,8 @@ import {
   Empty,
   Spin,
   Pagination,
+  Modal,
+  Input,
 } from 'antd';
 import {
   FormOutlined,
@@ -17,6 +19,7 @@ import {
   FileTextOutlined,
   HeartFilled,
   LoadingOutlined,
+  RollbackOutlined,
 } from '@ant-design/icons';
 import { appName } from '@/config';
 import noBookCover from '@/asset/imgs/noBookCover.png';
@@ -24,17 +27,30 @@ import userStyles from '@/asset/css/user.css';
 import { UserModelState } from '@/models/user';
 import { BookModelState } from '@/models/book';
 import LoginModal from '@/components/user/loginModal';
-import { bookRecordValue, FormValues, commentType } from '@/pages/data';
+import {
+  bookRecordValue,
+  FormValues,
+  commentType,
+  userAllType,
+} from '@/pages/data';
 import { Loading } from '@@/plugin-dva/connect';
-import { user_getOneBook } from '@/services/book';
+import {
+  user_getOneBook,
+  publishComment,
+  deleteComment,
+  likeComment,
+} from '@/services/book';
 // @ts-ignore
 import md5 from 'md5';
+import noAvatar from '@/asset/imgs/avatar.png';
+import { render } from 'react-dom';
 
 interface BookMsgProps {
   dispatch: Dispatch;
   bookModelLoading: boolean;
   userModelLoading: boolean;
   isLogin: boolean;
+  userInfo: userAllType;
   bookRecord: bookRecordValue | undefined;
   // comments: commentType[];
   // page: number;
@@ -50,14 +66,19 @@ const BookInfo: FC<BookMsgProps> = (props) => {
     userModelLoading,
     bookModelLoading,
     isLogin,
+    userInfo,
     bookRecord,
   } = props;
+  console.log('BookInfo_isLogin_userInfo = ', isLogin, userInfo);
   const [bookId, setBookId] = useState(0);
   const [orderTypes, setOrderTypes] = useState('create_time');
   const [rateValue, setRateValue] = useState(0);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   // const [loginModalLoading, setLoginModalLoading] = useState(false);
   const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
+  const [commentModalVisible, setCommentModalVisible] = useState(false);
+  const [commentModalLoading, setCommentModalLoading] = useState(false);
+  const [writeCommentText, setWriteCommentText] = useState('');
 
   //获取评论 【直接从后台获取，不用model里面的数据，自己定义】  (防止整个页面刷新， 只想评论刷新)
   const [page, setPage] = useState(1);
@@ -69,7 +90,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   const { bookInfo }: { bookInfo: string } = useParams();
 
   //后台直接获取评论
-  const getComments = (payload: any) => {
+  const getComments = async (payload: any) => {
     user_getOneBook(payload).then((value) => {
       console.log('value = ', value);
       if (value.code === 0) {
@@ -78,6 +99,10 @@ const BookInfo: FC<BookMsgProps> = (props) => {
         setPage_size(page_size);
         setTotal_count(total_count);
         setComments(comments);
+        setRateValue(0);
+        setWriteCommentText('');
+      } else {
+        message.error(value.message);
       }
     });
   };
@@ -98,14 +123,75 @@ const BookInfo: FC<BookMsgProps> = (props) => {
     getComments(payload);
   }, [bookId]);
 
-  //评分
-  const rateHandleChange = (rateValue: number) => {
-    // console.log(rateValue)
+  //返回
+  const goBack = () => {
+    history.goBack();
+  };
+
+  //评分/评论modal
+  const onClickWriteComment = () => {
     if (isLogin) {
-      setRateValue(rateValue);
+      setCommentModalVisible(true);
     } else {
       setLoginModalVisible(true);
     }
+  };
+  //评分
+  const rateHandleChange = (rateValue: number) => {
+    // console.log(rateValue)
+    setRateValue(rateValue);
+  };
+  //评论内容
+  const writeCommentTextChange = (value: string) => {
+    setWriteCommentText(value);
+  };
+  //提交评论/编辑评论
+  const handleComment = () => {
+    setCommentModalLoading(true);
+    console.log('handleComment = ', rateValue, writeCommentText);
+    const payload = {
+      book_id: bookRecord ? bookRecord.id : 0,
+      rate: rateValue,
+      content: writeCommentText,
+    };
+    publishComment(payload).then((value) => {
+      console.log('publishComment_value = ', value);
+      if (value.code === 0) {
+        setCommentModalVisible(false);
+        const payload = {
+          book_id: parseInt(bookInfo),
+          page: 1,
+          page_size: 4,
+          orderTypes: 'create_time',
+        };
+        getComments(payload).then(() => {
+          setCommentModalLoading(false);
+          message.success('发表成功，感谢您的评价！');
+        });
+      }
+    });
+  };
+  //取消评论
+  const cancelComment = () => {
+    setCommentModalVisible(false);
+    message.error('取消评论');
+  };
+  //删除评论
+  const clickDeleteComment = (comment_id: number) => {
+    deleteComment({ comment_id }).then((value) => {
+      if (value.code === 0) {
+        message.success('删除成功');
+        const payload = {
+          book_id: parseInt(bookInfo),
+          page: 1,
+          page_size: 4,
+          orderTypes: 'create_time',
+        };
+        getComments(payload);
+      } else {
+        message.error('删除失败');
+      }
+    });
   };
 
   //提交登录
@@ -116,7 +202,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
       payload: {
         username: formValues.username,
         password: md5(formValues.password),
-        flag: 2, //代表从modal出登录
+        flag: bookRecord?.id, //代表从modal出登录
       },
     });
     setLoginModalVisible(false);
@@ -128,6 +214,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
     message.error('已取消');
   };
 
+  //页码变换
   const onPageChange = (page: number, pageSize?: number) => {
     const payload = {
       book_id: parseInt(bookInfo),
@@ -161,7 +248,26 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   };
 
   //点赞评论
-  const isLikeComment = () => {};
+  const isLikeComment = (comment_id: number, is_like: boolean) => {
+    console.log('isLikeComment_comment_id&is_like = ', comment_id, is_like);
+    likeComment({ comment_id, is_like }).then((value) => {
+      console.log('isLikeComment_value = ', value);
+      if (value.code === 0) {
+        if (is_like) {
+          message.success('取消点赞');
+        } else {
+          message.success('点赞成功');
+        }
+        const payload = {
+          book_id: parseInt(bookInfo),
+          page,
+          page_size,
+          orderTypes,
+        };
+        getComments(payload);
+      }
+    });
+  };
 
   return (
     <React.Fragment>
@@ -175,6 +281,10 @@ const BookInfo: FC<BookMsgProps> = (props) => {
         ) : bookRecord ? (
           <div>
             <div className={userStyles.bookMsg}>
+              <div className={userStyles.bookMsg_goBack} onClick={goBack}>
+                <RollbackOutlined style={{ marginRight: '5px' }} />
+                返回
+              </div>
               <div className={userStyles.bookMsg_bookTitle}>
                 {bookRecord.title}
               </div>
@@ -219,7 +329,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                         top: '3px',
                       }}
                     >
-                      {bookRecord.rate}
+                      {bookRecord.rate.toFixed(1)}
                     </span>
                   ) : null}
                   <Rate
@@ -230,28 +340,14 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                   />
                 </div>
               </div>
-              <div className={userStyles.bookMsg_doRate}>
-                <FormOutlined style={{ marginRight: '5px' }} />
-                <span>评价：</span>
-                <span>
-                  <Rate
-                    tooltips={desc}
-                    onChange={rateHandleChange}
-                    value={rateValue}
-                    disabled={!!rateValue}
-                  />
-                  {rateValue ? (
-                    <span style={{ marginLeft: '10px' }}>
-                      {desc[rateValue - 1]}
-                    </span>
-                  ) : (
-                    ''
-                  )}
-                </span>
-              </div>
-              <div style={{ marginTop: '10px' }}>
+              <div style={{ marginTop: '50px' }}>
                 <EditOutlined style={{ marginRight: '5px' }} />
-                <span>写评论</span>
+                <span
+                  style={{ cursor: 'pointer' }}
+                  onClick={onClickWriteComment}
+                >
+                  评分&评论
+                </span>
               </div>
 
               <div style={{ marginTop: '30px' }}>
@@ -315,22 +411,42 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                   <li>
                     <Comment
                       author={item.user_name}
-                      avatar={item.avatar}
-                      content={item.content}
+                      avatar={item.avatar ? item.avatar : noAvatar}
+                      content={
+                        <div>
+                          <div style={{ marginBottom: '15px' }}>
+                            <Rate value={item.rate} disabled />
+                          </div>
+                          <div>{item.content}</div>
+                        </div>
+                      }
                       datetime={item.create_time}
                     />
-                    <div className={userStyles.bookMsg_like_delete}>
-                      <span className={userStyles.bookMsg_comment_delete}>
-                        删除
-                      </span>{' '}
+                    <div className={userStyles.bookMsg_like_comment}>
                       {/*判断是不是当前用户，再显示删除*/}
+                      {item.user_id === userInfo.user_id ? (
+                        <div>
+                          <span
+                            className={userStyles.bookMsg_comment_update}
+                            // onClick={clickUpdateComment}
+                          >
+                            编辑
+                          </span>
+                          <span
+                            className={userStyles.bookMsg_comment_delete}
+                            onClick={() => clickDeleteComment(item.id)}
+                          >
+                            删除
+                          </span>
+                        </div>
+                      ) : null}
                       <div className={userStyles.bookMsg_comment_like}>
                         <HeartFilled
                           style={{
                             color: item.is_like ? 'red' : 'lightgrey',
                             marginRight: '7px',
                           }}
-                          onClick={isLikeComment}
+                          onClick={() => isLikeComment(item.id, item.is_like)}
                         />
                         {item.like_count
                           ? `${
@@ -363,12 +479,60 @@ const BookInfo: FC<BookMsgProps> = (props) => {
           />
         )}
       </div>
+      {/*登录的Modal*/}
       <LoginModal
         submitLoginModal={submitLoginModal}
         LoginModalHandleCancel={LoginModalHandleCancel}
         loginModalVisible={loginModalVisible}
         loginModalLoading={userModelLoading}
       />
+      {/*写评论的Modal*/}
+      {bookRecord ? (
+        <Modal
+          title={`当前评价的书籍：${bookRecord.title}`}
+          visible={commentModalVisible}
+          onOk={handleComment}
+          onCancel={cancelComment}
+          okText="发表"
+          cancelText="取消"
+          confirmLoading={commentModalLoading}
+        >
+          <div className={userStyles.bookMsg_doRate}>
+            <FormOutlined style={{ marginRight: '5px' }} />
+            <span>评价：</span>
+            <span>
+              <Rate
+                tooltips={desc}
+                onChange={rateHandleChange}
+                value={rateValue}
+              />
+              {rateValue ? (
+                <span style={{ marginLeft: '10px' }}>
+                  {desc[rateValue - 1]}
+                </span>
+              ) : (
+                ''
+              )}
+            </span>
+          </div>
+          <div className={userStyles.bookMsg_writeComment}>
+            <div>
+              <EditOutlined style={{ marginRight: '5px' }} />
+              写评价：
+            </div>
+            <div>
+              <Input.TextArea
+                style={{ width: '390px' }}
+                rows={4}
+                maxLength={300}
+                showCount
+                value={writeCommentText}
+                onChange={(e) => writeCommentTextChange(e.target.value)}
+              />
+            </div>
+          </div>
+        </Modal>
+      ) : null}
     </React.Fragment>
   );
 };
@@ -385,6 +549,7 @@ export default connect(
   }) => {
     return {
       isLogin: user.isLogin,
+      userInfo: user.userInfo,
       userModelLoading: loading.models.user,
       bookModelLoading: loading.models.book,
       bookRecord: book.bookRecord,

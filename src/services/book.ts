@@ -88,6 +88,14 @@ export const admin_deleteBookRecord = async ({
   book_id: number;
 }) => {
   console.log('deleteBookRecord_id= ', book_id);
+  const url = `/api/book/delete`;
+  const options = {
+    method: 'post',
+    data: {
+      book_id,
+    },
+  };
+  return doRequest(url, options);
 };
 
 //用户
@@ -120,4 +128,56 @@ export const user_getOneBook = async ({
   const url = `/api/comment/fetchByBookId?book_id=${book_id}&page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
   console.log(url);
   return doRequest(url);
+};
+//评论
+export const publishComment = async ({
+  book_id,
+  rate,
+  content,
+}: {
+  book_id: number;
+  rate: number;
+  content: string;
+}) => {
+  const url = `/api/comment/publish`;
+  console.log(url);
+  const options = {
+    method: 'post',
+    data: {
+      book_id,
+      rate,
+      content,
+    },
+  };
+  return doRequest(url, options);
+};
+export const deleteComment = async ({ comment_id }: { comment_id: number }) => {
+  const url = `/api/comment/delete`;
+  console.log(url);
+  const options = {
+    method: 'post',
+    data: {
+      comment_id,
+    },
+  };
+  return doRequest(url, options);
+};
+//点赞/取消点赞
+export const likeComment = async ({
+  comment_id,
+  is_like,
+}: {
+  comment_id: number;
+  is_like: boolean;
+}) => {
+  const url = `/api/comment/like`;
+  console.log(url);
+  const options = {
+    method: 'post',
+    data: {
+      comment_id: comment_id,
+      is_like: !is_like,
+    },
+  };
+  return doRequest(url, options);
 };

@@ -36,7 +36,7 @@ interface BookModelType {
     getBook_byId: Effect;
     goSearch_byAuthorOrTitle: Effect;
     //管理员
-    admin_deleteBook: Effect;
+    // admin_deleteBook: Effect;
     //用户
     user_getBookList: Effect;
     user_getABookRecord: Effect;
@@ -128,10 +128,13 @@ const BookModel: BookModelType = {
     },
 
     //管理员
-    *admin_deleteBook({ payload }, { call }) {
-      // console.log('deleteBook_payload', payload);
-      // yield call( admin_deleteBookRecord, payload  );
-    },
+    // *admin_deleteBook({ payload }, { call }) {
+    //   console.log('deleteBook_payload', payload);
+    //   const res = yield call( admin_deleteBookRecord, payload  );
+    //   if(res === 0){
+    //     history.goBack()
+    //   }
+    // },
     //用户
     //获取书列表
     *user_getBookList({ payload }, { call, put }) {

@@ -98,9 +98,14 @@
 .bookMsg, .bookMsg_comment{
   width: 1000px;
   margin:auto;
-  padding: 40px 70px;
+  padding: 30px 70px;
   background: rgba(255, 255, 255, 0.7) ;
   border: 1px solid lightgray;
+}
+.bookMsg_goBack{
+  color: cornflowerblue;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 .bookMsg_bookTitle{
   font-size:25px;
@@ -132,7 +137,11 @@
   border-right: 1px solid #c6bfbf;
 }
 .bookMsg_doRate{
-  margin-top: 50px;
+  margin-top: 10px;
+}
+.bookMsg_writeComment{
+  display: flex;
+  margin-top: 20px;
 }
 /*bookMsg_comment*/
 .bookMsg_comment{
@@ -148,11 +157,20 @@
   color: dodgerblue;
   text-decoration: underline
 }
-.bookMsg_comment_delete{
+.bookMsg_comment_update, .bookMsg_comment_delete{
   position: absolute;
   width: 30px;
-  right: 100px;
   color: gray;
+}
+.bookMsg_comment_update{
+  right: 150px;
+}
+.bookMsg_comment_delete{
+  right: 100px;
+}
+.bookMsg_comment_update:hover, .bookMsg_comment_delete:hover{
+  cursor: pointer;
+  color: cornflowerblue;
 }
 .bookMsg_comment_like{
   position: absolute;

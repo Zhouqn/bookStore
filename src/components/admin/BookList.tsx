@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { Link } from 'umi';
 import {
   Button,
   Divider,
@@ -136,7 +137,10 @@ const BookList: FC<BookListProps> = (props) => {
                       <span
                         style={{ fontSize: '17px', color: 'cornflowerblue' }}
                       >
-                        {bookRecord.title}
+                        {/*{bookRecord.title}*/}
+                        <Link to={`/user/book/${bookRecord.id}`}>
+                          {bookRecord.title}
+                        </Link>
                       </span>
                       <Rate
                         style={{ marginLeft: '15px' }}

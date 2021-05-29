@@ -6,7 +6,11 @@ import BookList from '@/components/admin/BookList';
 import { bookRecordValue, FormValues, userAllType } from '@/pages/data';
 import { BookModelState } from '@/models/book';
 import moment from 'moment';
-import { admin_addBookRecord, admin_editBookRecord } from '@/services/book';
+import {
+  admin_addBookRecord,
+  admin_editBookRecord,
+  admin_deleteBookRecord,
+} from '@/services/book';
 import { LoadingOutlined } from '@ant-design/icons';
 const { Header, Content, Footer } = Layout; //不能删除，删除样式就没了，不知为何
 import { getUserInfo } from '@/services/user';
@@ -134,7 +138,7 @@ const AdminBookList: FC<ListProps> = (props) => {
       title: title === '' ? null : title,
       authors: authors === '' ? null : authors,
       pub: pub === '' ? null : pub,
-      pub_date: moment(pub_date).format('YYYY-MM-DD'),
+      pub_date: pub_date ? moment(pub_date).format('YYYY-MM-DD') : null,
       price: price === '' ? null : price,
       retail_price: retail_price === '' ? null : retail_price,
       describe: describe === '' ? null : describe,
@@ -168,11 +172,20 @@ const AdminBookList: FC<ListProps> = (props) => {
   const deleteBookConfirm = (bookRecord: bookRecordValue) => {
     console.log('deleteBookConfirm = ', bookRecord);
     const { id } = bookRecord;
-    dispatch({
-      type: 'book/deleteBook',
-      payload: {
-        book_id: id,
-      },
+    // dispatch({
+    //   type: 'book/admin_deleteBook',
+    //   payload: {
+    //     book_id: id,
+    //   },
+    // });
+    admin_deleteBookRecord({ book_id: id }).then((value) => {
+      console.log('admin_deleteBookRecord_value = ', value);
+      if (value.code === 0) {
+        message.success('删除成功');
+        getBookList(1, 4);
+      } else {
+        message.error(value.message);
+      }
     });
   };
   // 编辑书

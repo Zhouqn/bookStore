@@ -43,7 +43,7 @@ const UserModel: UserModelType = {
   namespace: 'user',
   state: {
     userInfo: {
-      id: 0,
+      user_id: 0,
       avatar: '',
       username: '',
       password: '',
@@ -84,8 +84,10 @@ const UserModel: UserModelType = {
               isAdmin: userInfo_res.data.role === '2',
             },
           });
-          if (payload.flag === 2) {
-            history.goBack();
+          if (payload.flag) {
+            //login Modal
+            // history.goBack();
+            history.push(`/user/book/${payload.flag}`);
           } else if (userInfo_res.data.role === '1') {
             history.push('/user/book/list');
           } else if (userInfo_res.data.role === '2') {

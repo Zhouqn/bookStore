@@ -27,7 +27,7 @@ export interface userPartType {
 }
 
 export interface userAllType extends userPartType {
-  id: number;
+  user_id: number;
   username: string;
   password: string;
   role: string;
