@@ -78,7 +78,7 @@ const BookModel: BookModelType = {
   effects: {
     //获取书列表 / 【按最新时间顺序】
     *getBookList({ payload }, { put, call }) {
-      // console.log('getBookList_effects_payload', payload);
+      console.log('getBookList_effects_payload', payload);
       const res = yield call(getBooks, {
         ...payload,
         orderTypes: payload.orderTypes ? payload.orderTypes : 'pub_date',

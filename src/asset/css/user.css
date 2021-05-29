@@ -242,13 +242,14 @@
   width: 1600px;
   height: 750px;
   margin: auto;
+  padding: 10px 15px;
   top: 80px;
   bottom: 80px;
   background: rgba(255, 255, 255, 0.8);
 }
 .moreBooks_top{
   position: relative;
-  left: 45px;
+  left: 40px;
   top: 10px;
 }
 .moreBooks_title{

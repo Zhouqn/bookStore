@@ -1,9 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
-import { connect, Dispatch, Loading, useParams } from 'umi';
+import { connect, Dispatch, Loading, useParams, Link } from 'umi';
 import AdminBookList from '@/pages/admin/book/list';
 import userStyles from '@/asset/css/user.css';
 import { UserModelState } from '@/models/user';
-import { FieldTimeOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import {
+  FieldTimeOutlined,
+  ArrowRightOutlined,
+  StarOutlined,
+  CommentOutlined,
+} from '@ant-design/icons';
 // import { userAllType } from '@/pages/data';
 
 interface MoreBooksProps {
@@ -18,6 +23,7 @@ const MoreBooks: FC<MoreBooksProps> = (props) => {
   const [order, setOrder] = useState('');
   const { orderType }: { orderType: string } = useParams();
   const [orderTypes, setOrderTypes] = useState(''); //后端请求orderTypes
+  const [loadingFlag, setLoadingFlag] = useState(false);
 
   const getMoreBookParams = async () => {
     console.log('MoreBooks_orderType = ', orderType);
@@ -40,33 +46,43 @@ const MoreBooks: FC<MoreBooksProps> = (props) => {
     console.log('useEffect');
     getMoreBookParams().then(() => {
       console.log('useEffect_orderTypes = ', orderTypes);
-      dispatch({
-        type: 'book/getBookList',
-        payload: {
-          page: 1,
-          page_size: 4,
-          orderTypes: orderTypes,
-        },
-      });
+      if (orderTypes !== '') {
+        dispatch({
+          type: 'book/getBookList',
+          payload: {
+            page: 1,
+            page_size: 4,
+            orderTypes: orderTypes,
+          },
+        });
+        setLoadingFlag(true);
+      }
     });
-  }, []);
+  }, [orderType, orderTypes]);
 
   return (
     <React.Fragment>
-      {bookModelLoading ? null : (
+      {loadingFlag ? (
         <div className={userStyles.moreBooks_middle}>
           <div className={userStyles.moreBooks_top}>
             <span className={userStyles.moreBooks_title}>
-              <FieldTimeOutlined style={{ marginRight: '5px' }} />按{order}排序
+              {order === '时间' ? (
+                <FieldTimeOutlined style={{ marginRight: '5px' }} />
+              ) : order === '热度' ? (
+                <StarOutlined style={{ marginRight: '5px' }} />
+              ) : (
+                <CommentOutlined style={{ marginRight: '5px' }} />
+              )}
+              按{order}排序
             </span>
-            <a>
+            <Link to="/user/book/list">
               前往分类列表
               <ArrowRightOutlined style={{ marginLeft: '5px' }} />
-            </a>
+            </Link>
           </div>
           <AdminBookList orderTypes={orderTypes} />
         </div>
-      )}
+      ) : null}
     </React.Fragment>
   );
 };

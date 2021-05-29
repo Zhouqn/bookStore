@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { connect, Dispatch, history } from 'umi';
 import { UserModelState } from '@/models/user';
 import { BookModelState } from '@/models/book';
@@ -51,25 +51,18 @@ const UserBookList: FC<UserBookListProps> = (props) => {
     history.push(`/user/book/${bookRecord.id}`);
   };
 
-  // const getOrderBooks = (orderTypes: string) => {
-  //   dispatch({type:"book/getBookList", payload:{
-  //       page:1,
-  //       page_size: 4,
-  //       orderTypes,
-  //     }})
-  //   history.push('/user/book/moreBooks')
-  // }
-  const [order, setOrder] = useState('byPubDate');
+  //跳转页面
+  let order: any = '';
   const getOrderBooks = (type: string) => {
-    console.log('getOrderBooks_type = ', type);
+    console.log('setBooksOrder_type = ', type);
     if (type === '最新书籍') {
-      // setOrder('byPubDate')
+      order = 'byPubDate';
       history.push(`/user/book/moreBooks/${order}`);
     } else if (type === '高分书籍') {
-      // setOrder('byRate')
+      order = 'byRate';
       history.push(`/user/book/moreBooks/${order}`);
     } else {
-      // setOrder('byHot')
+      order = 'byHot';
       history.push(`/user/book/moreBooks/${order}`);
     }
   };
