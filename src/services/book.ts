@@ -151,6 +151,27 @@ export const publishComment = async ({
   };
   return doRequest(url, options);
 };
+export const updateComment = async ({
+  book_id,
+  rate,
+  content,
+}: {
+  book_id: number;
+  rate: number;
+  content: string;
+}) => {
+  const url = `/api/comment/update`;
+  console.log(url);
+  const options = {
+    method: 'post',
+    data: {
+      book_id,
+      rate,
+      content,
+    },
+  };
+  return doRequest(url, options);
+};
 export const deleteComment = async ({ comment_id }: { comment_id: number }) => {
   const url = `/api/comment/delete`;
   console.log(url);

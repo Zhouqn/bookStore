@@ -150,13 +150,6 @@
 .bookMsg_chooseOrderType a{
   margin: 7px;
 }
-.bookMsg_orderType{
-  color:black;
-}
-.bookMsg_orderType:hover{
-  color: dodgerblue;
-  text-decoration: underline
-}
 .bookMsg_comment_update, .bookMsg_comment_delete{
   position: absolute;
   width: 30px;

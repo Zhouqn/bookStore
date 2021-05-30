@@ -20,6 +20,7 @@ import {
   HeartFilled,
   LoadingOutlined,
   RollbackOutlined,
+  StarFilled,
 } from '@ant-design/icons';
 import { appName } from '@/config';
 import noBookCover from '@/asset/imgs/noBookCover.png';
@@ -37,6 +38,7 @@ import { Loading } from '@@/plugin-dva/connect';
 import {
   user_getOneBook,
   publishComment,
+  updateComment,
   deleteComment,
   likeComment,
 } from '@/services/book';
@@ -79,6 +81,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   const [commentModalVisible, setCommentModalVisible] = useState(false);
   const [commentModalLoading, setCommentModalLoading] = useState(false);
   const [writeCommentText, setWriteCommentText] = useState('');
+  const [addComment, setAddComment] = useState(true); //判断是添加还是修改评论， 添加评论为True，如果是修改为false
 
   //获取评论 【直接从后台获取，不用model里面的数据，自己定义】  (防止整个页面刷新， 只想评论刷新)
   const [page, setPage] = useState(1);
@@ -99,8 +102,6 @@ const BookInfo: FC<BookMsgProps> = (props) => {
         setPage_size(page_size);
         setTotal_count(total_count);
         setComments(comments);
-        setRateValue(0);
-        setWriteCommentText('');
       } else {
         message.error(value.message);
       }
@@ -129,8 +130,18 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   };
 
   //评分/评论modal
-  const onClickWriteComment = () => {
+  const onClickWriteOrUpdateComment = (payload?: any) => {
     if (isLogin) {
+      console.log('onClickWriteOrUpdateComment_payload = ', payload);
+      if (payload.rate && payload.content) {
+        setRateValue(payload.rate);
+        setWriteCommentText(payload.content);
+        setAddComment(false);
+      } else {
+        rateHandleChange(0);
+        setWriteCommentText('');
+        setAddComment(true);
+      }
       setCommentModalVisible(true);
     } else {
       setLoginModalVisible(true);
@@ -154,8 +165,14 @@ const BookInfo: FC<BookMsgProps> = (props) => {
       rate: rateValue,
       content: writeCommentText,
     };
-    publishComment(payload).then((value) => {
-      console.log('publishComment_value = ', value);
+    let serviceComment;
+    if (addComment) {
+      serviceComment = publishComment;
+    } else {
+      serviceComment = updateComment;
+    }
+    serviceComment(payload).then((value) => {
+      console.log('serviceComment_value = ', value);
       if (value.code === 0) {
         setCommentModalVisible(false);
         const payload = {
@@ -269,6 +286,8 @@ const BookInfo: FC<BookMsgProps> = (props) => {
     });
   };
 
+  const customIcons = <StarFilled style={{ fontSize: 15 }} />;
+
   return (
     <React.Fragment>
       {/*上半部分*/}
@@ -344,7 +363,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                 <EditOutlined style={{ marginRight: '5px' }} />
                 <span
                   style={{ cursor: 'pointer' }}
-                  onClick={onClickWriteComment}
+                  onClick={onClickWriteOrUpdateComment}
                 >
                   评分&评论
                 </span>
@@ -377,11 +396,10 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                     onClick={() => {
                       onClickNewComment();
                     }}
-                    className={userStyles.bookMsg_orderType}
                     style={
-                      orderTypes === 'create_time'
+                      orderTypes === 'like_count'
                         ? { color: 'dodgerblue', textDecoration: 'underline' }
-                        : {}
+                        : { color: 'black', cursor: 'default' }
                     }
                   >
                     最新评论
@@ -391,11 +409,10 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                     onClick={() => {
                       onClickHotComment();
                     }}
-                    className={userStyles.bookMsg_orderType}
                     style={
-                      orderTypes === 'like_count'
+                      orderTypes === 'create_time'
                         ? { color: 'dodgerblue', textDecoration: 'underline' }
-                        : {}
+                        : { color: 'black', cursor: 'default' }
                     }
                   >
                     热门评论
@@ -410,12 +427,18 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                 renderItem={(item) => (
                   <li>
                     <Comment
-                      author={item.user_name}
+                      author={
+                        <div style={{ fontSize: '15px' }}>{item.user_name}</div>
+                      }
                       avatar={item.avatar ? item.avatar : noAvatar}
                       content={
                         <div>
                           <div style={{ marginBottom: '15px' }}>
-                            <Rate value={item.rate} disabled />
+                            <Rate
+                              value={item.rate}
+                              disabled
+                              character={customIcons}
+                            />
                           </div>
                           <div>{item.content}</div>
                         </div>
@@ -424,21 +447,28 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                     />
                     <div className={userStyles.bookMsg_like_comment}>
                       {/*判断是不是当前用户，再显示删除*/}
-                      {item.user_id === userInfo.user_id ? (
-                        <div>
-                          <span
-                            className={userStyles.bookMsg_comment_update}
-                            // onClick={clickUpdateComment}
-                          >
-                            编辑
-                          </span>
-                          <span
-                            className={userStyles.bookMsg_comment_delete}
-                            onClick={() => clickDeleteComment(item.id)}
-                          >
-                            删除
-                          </span>
-                        </div>
+                      {userInfo ? (
+                        item.user_id === userInfo.user_id ? (
+                          <div>
+                            <span
+                              className={userStyles.bookMsg_comment_update}
+                              onClick={() =>
+                                onClickWriteOrUpdateComment({
+                                  rate: item.rate,
+                                  content: item.content,
+                                })
+                              }
+                            >
+                              编辑
+                            </span>
+                            <span
+                              className={userStyles.bookMsg_comment_delete}
+                              onClick={() => clickDeleteComment(item.id)}
+                            >
+                              删除
+                            </span>
+                          </div>
+                        ) : null
                       ) : null}
                       <div className={userStyles.bookMsg_comment_like}>
                         <HeartFilled
@@ -448,11 +478,13 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                           }}
                           onClick={() => isLikeComment(item.id, item.is_like)}
                         />
-                        {item.like_count
-                          ? `${
-                              item.like_count > 999 ? '999+' : item.like_count
-                            }`
-                          : ''}
+                        <span style={{ color: 'grey' }}>
+                          {item.like_count
+                            ? `${
+                                item.like_count > 999 ? '999+' : item.like_count
+                              }`
+                            : 0}
+                        </span>
                       </div>
                     </div>
                     <Divider />

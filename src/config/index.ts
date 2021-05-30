@@ -1,4 +1,4 @@
-export const appName = 'xx图书系统';
+export const appName = '轻书评';
 
 export const newBooks = [
   {
