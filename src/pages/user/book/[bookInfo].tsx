@@ -81,6 +81,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   const [commentModalVisible, setCommentModalVisible] = useState(false);
   const [commentModalLoading, setCommentModalLoading] = useState(false);
   const [writeCommentText, setWriteCommentText] = useState('');
+  const [commentId, setCommentId] = useState(0);
   const [addComment, setAddComment] = useState(true); //判断是添加还是修改评论， 添加评论为True，如果是修改为false
 
   //获取评论 【直接从后台获取，不用model里面的数据，自己定义】  (防止整个页面刷新， 只想评论刷新)
@@ -133,10 +134,11 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   const onClickWriteOrUpdateComment = (payload?: any) => {
     if (isLogin) {
       console.log('onClickWriteOrUpdateComment_payload = ', payload);
-      if (payload.rate && payload.content) {
+      if (payload.rate && payload.content && payload.comment_id) {
         setRateValue(payload.rate);
         setWriteCommentText(payload.content);
         setAddComment(false);
+        setCommentId(payload.comment_id);
       } else {
         rateHandleChange(0);
         setWriteCommentText('');
@@ -158,35 +160,40 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   };
   //提交评论/编辑评论
   const handleComment = () => {
-    setCommentModalLoading(true);
-    console.log('handleComment = ', rateValue, writeCommentText);
-    const payload = {
-      book_id: bookRecord ? bookRecord.id : 0,
-      rate: rateValue,
-      content: writeCommentText,
-    };
-    let serviceComment;
-    if (addComment) {
-      serviceComment = publishComment;
+    if (rateValue === 0 || writeCommentText === '') {
+      message.error('评分为空或者评论为空');
     } else {
-      serviceComment = updateComment;
-    }
-    serviceComment(payload).then((value) => {
-      console.log('serviceComment_value = ', value);
-      if (value.code === 0) {
-        setCommentModalVisible(false);
-        const payload = {
-          book_id: parseInt(bookInfo),
-          page: 1,
-          page_size: 4,
-          orderTypes: 'create_time',
-        };
-        getComments(payload).then(() => {
-          setCommentModalLoading(false);
-          message.success('发表成功，感谢您的评价！');
-        });
+      setCommentModalLoading(true);
+      console.log('handleComment = ', rateValue, writeCommentText);
+      const payload = {
+        book_id: bookRecord ? bookRecord.id : 0,
+        comment_id: commentId,
+        rate: rateValue,
+        content: writeCommentText,
+      };
+      let serviceComment;
+      if (addComment) {
+        serviceComment = publishComment;
+      } else {
+        serviceComment = updateComment;
       }
-    });
+      serviceComment(payload).then((value) => {
+        console.log('serviceComment_value = ', value);
+        if (value.code === 0) {
+          setCommentModalVisible(false);
+          const payload = {
+            book_id: parseInt(bookInfo),
+            page: 1,
+            page_size: 4,
+            orderTypes: 'create_time',
+          };
+          getComments(payload).then(() => {
+            setCommentModalLoading(false);
+            message.success('发表成功，感谢您的评价！');
+          });
+        }
+      });
+    }
   };
   //取消评论
   const cancelComment = () => {
@@ -267,23 +274,27 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   //点赞评论
   const isLikeComment = (comment_id: number, is_like: boolean) => {
     console.log('isLikeComment_comment_id&is_like = ', comment_id, is_like);
-    likeComment({ comment_id, is_like }).then((value) => {
-      console.log('isLikeComment_value = ', value);
-      if (value.code === 0) {
-        if (is_like) {
-          message.success('取消点赞');
-        } else {
-          message.success('点赞成功');
+    if (isLogin) {
+      likeComment({ comment_id, is_like }).then((value) => {
+        console.log('isLikeComment_value = ', value);
+        if (value.code === 0) {
+          if (is_like) {
+            message.success('取消点赞');
+          } else {
+            message.success('点赞成功');
+          }
+          const payload = {
+            book_id: parseInt(bookInfo),
+            page,
+            page_size,
+            orderTypes,
+          };
+          getComments(payload);
         }
-        const payload = {
-          book_id: parseInt(bookInfo),
-          page,
-          page_size,
-          orderTypes,
-        };
-        getComments(payload);
-      }
-    });
+      });
+    } else {
+      setLoginModalVisible(true);
+    }
   };
 
   const customIcons = <StarFilled style={{ fontSize: 15 }} />;
@@ -454,6 +465,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                               className={userStyles.bookMsg_comment_update}
                               onClick={() =>
                                 onClickWriteOrUpdateComment({
+                                  comment_id: item.id,
                                   rate: item.rate,
                                   content: item.content,
                                 })

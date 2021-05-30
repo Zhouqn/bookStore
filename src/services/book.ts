@@ -130,6 +130,7 @@ export const user_getOneBook = async ({
   return doRequest(url);
 };
 //评论
+//发表评论
 export const publishComment = async ({
   book_id,
   rate,
@@ -151,12 +152,13 @@ export const publishComment = async ({
   };
   return doRequest(url, options);
 };
+//更新评论
 export const updateComment = async ({
-  book_id,
+  comment_id,
   rate,
   content,
 }: {
-  book_id: number;
+  comment_id: number;
   rate: number;
   content: string;
 }) => {
@@ -165,13 +167,14 @@ export const updateComment = async ({
   const options = {
     method: 'post',
     data: {
-      book_id,
+      comment_id,
       rate,
       content,
     },
   };
   return doRequest(url, options);
 };
+//删除评论
 export const deleteComment = async ({ comment_id }: { comment_id: number }) => {
   const url = `/api/comment/delete`;
   console.log(url);
@@ -183,6 +186,7 @@ export const deleteComment = async ({ comment_id }: { comment_id: number }) => {
   };
   return doRequest(url, options);
 };
+
 //点赞/取消点赞
 export const likeComment = async ({
   comment_id,
