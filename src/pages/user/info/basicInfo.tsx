@@ -15,10 +15,16 @@ const User_BasicInfo: FC<Admin_BasicInfoProps> = (props) => {
 
   const onSubmitInfo = (info: userPartType) => {
     console.log('onSubmitInfo = ', info);
+    const { avatar, gender, nickname, signature } = info;
     dispatch({
       type: 'user/goUpdate',
       payload: {
-        info,
+        info: {
+          avatar: avatar === '' ? null : avatar,
+          gender,
+          nickname: nickname === '' ? null : nickname,
+          signature: signature === '' ? null : signature,
+        },
         userRole: '1',
       },
     });
