@@ -183,11 +183,12 @@ const BookInfo: FC<BookMsgProps> = (props) => {
           setCommentModalVisible(false);
           const payload = {
             book_id: parseInt(bookInfo),
-            page: 1,
+            page: addComment ? 1 : page,
             page_size: 4,
-            orderTypes: 'create_time',
+            orderTypes: addComment ? 'create_time' : orderTypes,
           };
           getComments(payload).then(() => {
+            setOrderTypes(addComment ? 'create_time' : orderTypes); // 如果是新评论就是要转到最新评论，如果是编辑，则不需要
             setCommentModalLoading(false);
             message.success('发表成功，感谢您的评价！');
           });

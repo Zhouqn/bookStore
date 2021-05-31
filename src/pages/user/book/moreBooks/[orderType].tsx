@@ -62,27 +62,29 @@ const MoreBooks: FC<MoreBooksProps> = (props) => {
 
   return (
     <React.Fragment>
-      {loadingFlag ? (
-        <div className={userStyles.moreBooks_middle}>
-          <div className={userStyles.moreBooks_top}>
-            <span className={userStyles.moreBooks_title}>
-              {order === '时间' ? (
-                <FieldTimeOutlined style={{ marginRight: '5px' }} />
-              ) : order === '热度' ? (
-                <StarOutlined style={{ marginRight: '5px' }} />
-              ) : (
-                <CommentOutlined style={{ marginRight: '5px' }} />
-              )}
-              按{order}排序
-            </span>
-            <Link to="/user/book/list">
-              前往分类列表
-              <ArrowRightOutlined style={{ marginLeft: '5px' }} />
-            </Link>
+      <div className={userStyles.moreBooks_middle}>
+        {loadingFlag ? (
+          <div className={userStyles.moreBooks_Info}>
+            <div className={userStyles.moreBooks_top}>
+              <span className={userStyles.moreBooks_title}>
+                {order === '时间' ? (
+                  <FieldTimeOutlined style={{ marginRight: '5px' }} />
+                ) : order === '热度' ? (
+                  <StarOutlined style={{ marginRight: '5px' }} />
+                ) : (
+                  <CommentOutlined style={{ marginRight: '5px' }} />
+                )}
+                按{order}排序
+              </span>
+              <Link to="/user/book/list">
+                前往分类列表
+                <ArrowRightOutlined style={{ marginLeft: '5px' }} />
+              </Link>
+            </div>
+            <AdminBookList orderTypes={orderTypes} />
           </div>
-          <AdminBookList orderTypes={orderTypes} />
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </React.Fragment>
   );
 };
