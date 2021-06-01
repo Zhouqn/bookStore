@@ -5,8 +5,9 @@ import {
   getUserInfo,
   goUpdate,
   goLogoff,
+  getMyComments,
 } from '@/services/user';
-import { userAllType } from '@/pages/data';
+import { userAllType, myCommentsType } from '@/pages/data';
 import { message } from 'antd';
 
 export interface UserModelState {
@@ -16,6 +17,7 @@ export interface UserModelState {
   admin_sider_menu: string;
   admin_info_menu: string;
   user_info_menu: string;
+  myComments: myCommentsType[];
 }
 
 interface UserModelType {
@@ -31,6 +33,7 @@ interface UserModelType {
     getUserInfo: Effect;
     goUpdate: Effect;
     goLogoff: Effect;
+    // getMyComments: Effect
   };
   subscriptions: {
     // setup: Subscription;
@@ -58,6 +61,7 @@ const UserModel: UserModelType = {
     admin_sider_menu: '1',
     admin_info_menu: '1',
     user_info_menu: '1',
+    myComments: [],
   },
   reducers: {
     setUserInfo(state, { payload }) {
@@ -152,10 +156,9 @@ const UserModel: UserModelType = {
         message.error(res.msg);
       }
     },
+    //退出登录
     *goLogoff({ payload }, { put, call }) {
-      console.log('goLogoff_model');
       const res = yield call(goLogoff);
-      console.log('goLogoff_res = ', res);
       if (res.code === 0) {
         yield put({
           type: 'setUserInfo',
@@ -167,6 +170,31 @@ const UserModel: UserModelType = {
         history.push('/');
       }
     },
+    //获取我的评论
+    // *getMyComments({ payload }, { put, call }) {
+    //   console.log('getMyComments');
+    //   const res = yield call(getMyComments)
+    //   console.log('getMyComments_effect_res = ', res);
+    //   if(res.code === 0) {
+    //     yield put({
+    //       type: 'setUserInfo',
+    //       payload: {
+    //         isLogin: true,
+    //         userInfo: res.data,
+    //         isAdmin: res.data.role === '2',
+    //         admin_sider_menu: payload.admin_sider_menu
+    //           ? payload.admin_sider_menu
+    //           : '1',
+    //         admin_info_menu: payload.admin_info_menu
+    //           ? payload.admin_info_menu
+    //           : '1',
+    //         user_info_menu: payload.user_info_menu
+    //           ? payload.user_info_menu
+    //           : '1',
+    //       },
+    //     });
+    //   }
+    // }
   },
   subscriptions: {
     admin_Info({ dispatch, history }) {
@@ -234,6 +262,14 @@ const UserModel: UserModelType = {
             payload: {
               user_info_menu: '4',
             },
+          });
+        } else if (
+          pathname === '/user/login' ||
+          pathname === '/user/register'
+        ) {
+          dispatch({
+            type: 'getUserInfo',
+            payload: {},
           });
         }
       });

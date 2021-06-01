@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { connect, Dispatch, Link } from 'umi';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { appName } from '@/config';
 import styles from '@/asset/css/user.css';
@@ -10,16 +10,16 @@ import Footer from '@/components/Footer';
 // @ts-ignore
 import md5 from 'md5';
 import { UserModelState } from '@/models/user';
-import { FormValues } from '@/pages/data';
+import { FormValues, userAllType } from '@/pages/data';
 
 interface LoginProps {
   dispatch: Dispatch;
   isLogin: boolean;
+  userInfo: userAllType;
 }
 
 const Login: FC<LoginProps> = (props) => {
-  // console.log("userInfo= ", userInfo)
-  const { dispatch, isLogin } = props;
+  const { dispatch, isLogin, userInfo } = props;
 
   const onFinish = (values: FormValues) => {
     console.log('Success:', values);
@@ -36,9 +36,26 @@ const Login: FC<LoginProps> = (props) => {
     console.log('Failed:', errorInfo);
   };
 
+  //确认退出
+  const onConfirmLogoff = () => {
+    dispatch({
+      type: 'user/goLogoff',
+      payload: {},
+    });
+  };
+  //取消退出
+  const onCancelLogoff = () => {
+    message.error('取消退出');
+  };
+
   return (
     <div className={styles.login}>
-      <Header isLogin={isLogin} />
+      <Header
+        isLogin={isLogin}
+        onConfirmLogoff={onConfirmLogoff}
+        onCancelLogoff={onCancelLogoff}
+        userInfo={userInfo}
+      />
 
       <div className={styles.loginForm_title}>
         <img alt="" src={bookImg} className={styles.login_bookImg} />
@@ -106,5 +123,6 @@ export default connect(({ user }: { user: UserModelState }) => {
   console.log('user = ', user);
   return {
     isLogin: user.isLogin,
+    userInfo: user.userInfo,
   };
 })(Login);

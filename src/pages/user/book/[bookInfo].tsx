@@ -45,7 +45,7 @@ import {
 // @ts-ignore
 import md5 from 'md5';
 import noAvatar from '@/asset/imgs/avatar.png';
-import { render } from 'react-dom';
+import CommentModal from '@/components/user/commentModal';
 
 interface BookMsgProps {
   dispatch: Dispatch;
@@ -59,8 +59,6 @@ interface BookMsgProps {
   // page_size: number;
   // total_count: number;
 }
-
-const desc = ['差', '较差', '一般', '好', '很好'];
 
 const BookInfo: FC<BookMsgProps> = (props) => {
   const {
@@ -190,7 +188,9 @@ const BookInfo: FC<BookMsgProps> = (props) => {
           getComments(payload).then(() => {
             setOrderTypes(addComment ? 'create_time' : orderTypes); // 如果是新评论就是要转到最新评论，如果是编辑，则不需要
             setCommentModalLoading(false);
-            message.success('发表成功，感谢您的评价！');
+            message.success(
+              `${addComment ? '发表成功' : '修改成功'}，感谢您的评价！`,
+            );
           });
         }
       });
@@ -272,7 +272,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
     getComments(payload);
   };
 
-  //点赞评论
+  //点赞/取消点赞评论
   const isLikeComment = (comment_id: number, is_like: boolean) => {
     console.log('isLikeComment_comment_id&is_like = ', comment_id, is_like);
     if (isLogin) {
@@ -533,50 +533,17 @@ const BookInfo: FC<BookMsgProps> = (props) => {
       />
       {/*写评论的Modal*/}
       {bookRecord ? (
-        <Modal
-          title={`当前评价的书籍：${bookRecord.title}`}
-          visible={commentModalVisible}
-          onOk={handleComment}
-          onCancel={cancelComment}
-          okText="发表"
-          cancelText="取消"
-          confirmLoading={commentModalLoading}
-        >
-          <div className={userStyles.bookMsg_doRate}>
-            <FormOutlined style={{ marginRight: '5px' }} />
-            <span>评价：</span>
-            <span>
-              <Rate
-                tooltips={desc}
-                onChange={rateHandleChange}
-                value={rateValue}
-              />
-              {rateValue ? (
-                <span style={{ marginLeft: '10px' }}>
-                  {desc[rateValue - 1]}
-                </span>
-              ) : (
-                ''
-              )}
-            </span>
-          </div>
-          <div className={userStyles.bookMsg_writeComment}>
-            <div>
-              <EditOutlined style={{ marginRight: '5px' }} />
-              写评价：
-            </div>
-            <div>
-              <Input.TextArea
-                style={{ width: '390px' }}
-                rows={4}
-                maxLength={300}
-                showCount
-                value={writeCommentText}
-                onChange={(e) => writeCommentTextChange(e.target.value)}
-              />
-            </div>
-          </div>
-        </Modal>
+        <CommentModal
+          book_title={bookRecord.title}
+          commentModalVisible={commentModalVisible}
+          handleComment={handleComment}
+          cancelComment={cancelComment}
+          commentModalLoading={commentModalLoading}
+          rateHandleChange={rateHandleChange}
+          rateValue={rateValue}
+          writeCommentText={writeCommentText}
+          writeCommentTextChange={writeCommentTextChange}
+        />
       ) : null}
     </React.Fragment>
   );

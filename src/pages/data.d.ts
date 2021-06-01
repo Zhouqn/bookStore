@@ -34,18 +34,6 @@ export interface userAllType extends userPartType {
   register_time: string;
 }
 
-// export interface singleUserType {
-//   id: number;
-//   avatar: string;
-//   username: string;
-//   password: string;
-//   gender: string;
-//   role: string;
-//   nickname: string;
-//   signature: string;
-//   register_time: string;
-// }
-
 export interface commentType {
   avatar: string | null;
   content: string;
@@ -56,4 +44,12 @@ export interface commentType {
   rate: number;
   user_id: number;
   user_name: string;
+}
+
+interface myCommentsType extends commentType {
+  book_info: {
+    book_id: number;
+    title: string;
+    cover_url: string;
+  };
 }

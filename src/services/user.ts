@@ -70,3 +70,17 @@ export const goLogoff = async () => {
   const url = `/api/user/logoff`;
   return doRequest(url);
 };
+
+//获取我的评论
+export const getMyComments = async ({
+  page,
+  page_size,
+  order_by,
+}: {
+  page: number;
+  page_size: number;
+  order_by: string;
+}) => {
+  const url = `/api/comment/fetchMyComments?page=${page}&page_size=${page_size}&order_by=${order_by}`;
+  return doRequest(url);
+};

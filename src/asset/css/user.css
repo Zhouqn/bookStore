@@ -199,7 +199,7 @@
   margin: auto;
   display: flex;
   width: 1500px;
-  height: 743px;
+  /*height: 743px;*/
   top: 25px;
   background: white;
   border-radius: 20px 20px 0 0;
@@ -208,7 +208,7 @@
 .commonUser_content_left{
   flex: 1;
   background: whitesmoke;
-  border-radius: 20px 0 0 20px;
+  border-radius: 20px 0 0 0;
 }
 .commonUser_content_menu{
   margin-top: 100px;
@@ -217,33 +217,45 @@
 .commonUser_content_right{
   flex: 5;
   /*background: linen;*/
+  height: 741px;
+  overflow-y: auto;
 }
 .commonUser_user_basicInfo{
   position: relative;
   top: 40px;
   margin: auto;
   width: 800px;
-  height: 650px;
+  /*height: 743px;*/
   /*background: gold;*/
 }
 .commonUser_user_changePassword{
   width: 600px;
   margin: auto;
+  /*height: 743px;*/
 }
 
 /*likeComments*/
 /*myComments*/
 .comments_list{
   position: relative;
-  top: 55px;
+  top: 20px;
   margin: auto;
   width: 1000px;
+  /*height: 743px;*/
+  padding: 20px 10px;
 }
 .comments_list_title{
   color:cornflowerblue;
   border-bottom:1px solid #dedddd;
   padding-bottom: 5px;
   font-size:17px
+}
+.comments_list_action{
+  font-size: 10px;
+  cursor: pointer;
+}
+.comments_list_action a{
+  margin: 0 5px;
 }
 
 /*moreBooks*/

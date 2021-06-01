@@ -1,4 +1,4 @@
-import { Form, Input, Button, Radio } from 'antd';
+import { Form, Input, Button, Radio, message } from 'antd';
 import { connect, Link, Dispatch } from 'umi';
 import styles from '@/asset/css/user.css';
 import Header from '@/components/Header';
@@ -8,17 +8,18 @@ import React, { FC } from 'react';
 import { useState } from 'react';
 import { appName } from '@/config';
 import { UserModelState } from '@/models/user';
-import { FormValues } from '@/pages/data';
+import { FormValues, userAllType } from '@/pages/data';
 // @ts-ignore
 import md5 from 'md5';
 
 interface RegisterProps {
   dispatch: Dispatch;
   isLogin: boolean;
+  userInfo: userAllType;
 }
 
 const Register: FC<RegisterProps> = (props) => {
-  const { dispatch, isLogin } = props;
+  const { dispatch, isLogin, userInfo } = props;
   const [value, setValue] = useState(1);
   const onFinish = (values: FormValues) => {
     console.log(values);
@@ -37,9 +38,26 @@ const Register: FC<RegisterProps> = (props) => {
     setValue(e.target.value);
   };
 
+  //确认退出
+  const onConfirmLogoff = () => {
+    dispatch({
+      type: 'user/goLogoff',
+      payload: {},
+    });
+  };
+  //取消退出
+  const onCancelLogoff = () => {
+    message.error('取消退出');
+  };
+
   return (
     <div className={styles.register}>
-      <Header isLogin={isLogin} />
+      <Header
+        isLogin={isLogin}
+        onConfirmLogoff={onConfirmLogoff}
+        onCancelLogoff={onCancelLogoff}
+        userInfo={userInfo}
+      />
       <div className={styles.registerForm_title}>
         <img alt="" src={bookImg} className={styles.register_bookImg} />
         欢迎注册{appName}
@@ -133,5 +151,6 @@ export default connect(({ user }: { user: UserModelState }) => {
   console.log('user = ', user);
   return {
     isLogin: user.isLogin,
+    userInfo: user.userInfo,
   };
 })(Register);
