@@ -17,6 +17,7 @@ import AdminSider from '@/components/admin/AdminSider';
 import { UserModelState } from '@/models/user';
 import defaultAvatarImg from '@/asset/imgs/avatar.png';
 import { userAllType } from '@/pages/data';
+import { timeCall } from '@/config';
 
 const { Header, Content, Footer } = Layout;
 
@@ -39,7 +40,7 @@ const AdminBookList: FC<ListProps> = (props) => {
     admin_sider_menu,
     userInfo,
   } = props;
-  console.log('_layout_userInfo = ', userInfo);
+
   //加载图标
   const antIcon = <LoadingOutlined style={{ fontSize: 45 }} spin />;
 
@@ -56,29 +57,10 @@ const AdminBookList: FC<ListProps> = (props) => {
   };
 
   //5秒后页面跳转
-  let timeInterval: any;
-  const timeChange = () => {
-    // 获取初始时间
-    let time = document.getElementById('timeChange');
-    // 获取到id为timeChange标签中的数字时间
-    if (time) {
-      if (parseInt(time.innerHTML) === 1) {
-        // 等于0时清除计时，并跳转该指定页面
-        history.push('/user/login');
-        window.clearInterval(timeInterval);
-      } else {
-        time.innerHTML = String(parseInt(time.innerHTML) - 1);
-      }
+  window.onload = () => {
+    if (!isLogin) {
+      timeCall();
     }
-  };
-  const timeCall = () => {
-    // 1000毫秒调用一次
-    window.onload = () => {
-      timeInterval = window.setInterval(() => {
-        console.log('setInterval');
-        timeChange();
-      }, 1000);
-    };
   };
 
   return userModelLoading ? (
@@ -144,7 +126,6 @@ const AdminBookList: FC<ListProps> = (props) => {
               <Link to="/user/login">去登陆</Link>
             </div>
           </Modal>
-          {timeCall()}
         </div>
       )}
     </React.Fragment>

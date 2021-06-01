@@ -1,133 +1,26 @@
+import { history } from 'umi';
+
 export const appName = '轻书评';
 
-export const newBooks = [
-  {
-    id: 1,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    authors: '安徒生',
-    pub: '大地出版社',
-    pub_date: '2020-3-21',
-    price: 40.5,
-    retail_price: 35.8,
-    describe:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 2,
-    cover_uri: '/image/book1',
-    title: 'python',
-    authors: 'jack',
-    pub: '大地出版社',
-    pub_date: '2020-3-21',
-    price: 30,
-    retail_price: 25.5,
-    describe: '这本书讲了很多适合小朋友的故事, 生动有趣！',
-    rate: 4.3,
-  },
-  {
-    id: 3,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    authors: '安徒生',
-    pub: '大地出版社',
-    pub_date: '2020-3-21',
-    price: 47.5,
-    retail_price: 36,
-    describe:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 4,
-    cover_uri: '/image/book1',
-    title: 'Java',
-    authors: 'nick',
-    pub: '大地出版社',
-    pub_date: '2020-3-21',
-    price: 35.8,
-    retail_price: 34.8,
-    describe:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 5,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    authors: '安徒生',
-    pub: '大地出版社',
-    pub_date: '2020-3-21',
-    price: 45.8,
-    retail_price: 32.5,
-    describe:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 6,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    authors: '安徒生',
-    pub: '大地出版社',
-    pub_date: '2020-3-21',
-    price: 55.0,
-    retail_price: 37.8,
-    describe:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 7,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    authors: '安徒生',
-    pub: '大地出版社',
-    pub_date: '2020-3-21',
-    price: 40.5,
-    retail_price: 35.8,
-    describe:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 8,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    authors: '安徒生',
-    pub: '大地出版社',
-    pub_date: '2020-3-21',
-    price: 35.8,
-    retail_price: 34.8,
-    describe:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 9,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    authors: '安徒生',
-    pub: '大地出版社',
-    pub_date: '2020-3-21',
-    price: 30,
-    retail_price: 25.8,
-    describe:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-  {
-    id: 10,
-    cover_uri: '/image/book1',
-    title: '格林童话',
-    authors: '安徒生',
-    pub: '大地出版社',
-    pub_date: '2020-3-21',
-    price: 40.5,
-    retail_price: 30.2,
-    describe:
-      '这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣，这本书讲了很多适合小朋友的故事, 生动有趣',
-    rate: 4.3,
-  },
-];
+//5秒后页面跳转
+let timeInterval: any;
+const timeChange = (timeInterval: any) => {
+  // 获取初始时间
+  let time = document.getElementById('timeChange');
+  // 获取到id为timeChange标签中的数字时间
+  if (time) {
+    if (parseInt(time.innerHTML) === 1) {
+      // 等于0时清除计时，并跳转该指定页面
+      history.push('/user/login');
+      window.clearInterval(timeInterval);
+    } else {
+      time.innerHTML = String(parseInt(time.innerHTML) - 1);
+    }
+  }
+};
+export const timeCall = () => {
+  //1s调用一次
+  timeInterval = window.setInterval(() => {
+    timeChange(timeInterval);
+  }, 1000);
+};

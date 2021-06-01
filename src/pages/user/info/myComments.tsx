@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { List, Avatar, Space, Divider } from 'antd';
 import { CommentOutlined, HeartOutlined } from '@ant-design/icons';
 import userStyles from '@/asset/css/user.css';
 import noBookCoverImg from '@/asset/imgs/noBookCover.png';
+import { connect } from 'umi';
+import { UserModelState } from '@/models/user';
+import { userAllType } from '@/pages/data';
 
 const listData: any = [];
 for (let i = 0; i < 23; i++) {
@@ -24,7 +27,14 @@ const IconText = ({ icon, text }: { icon: any; text: string }) => (
   </Space>
 );
 
-const MyComments = () => {
+// interface MyCommentsProps{
+//   userInfo: userAllType,
+//
+// }
+
+const MyComments: FC = () => {
+  // useEffect()
+
   return (
     <div className={userStyles.comments_list}>
       <div className={userStyles.comments_list_title}>
@@ -81,4 +91,9 @@ const MyComments = () => {
   );
 };
 
-export default MyComments;
+// export default connect(({user}: {user: UserModelState}) => {
+//   return{
+//     userInfo: user.userInfo
+//   }
+// })(MyComments);
+export default connect()(MyComments);

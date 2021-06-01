@@ -220,7 +220,7 @@ const UserModel: UserModelType = {
             },
           });
         } else if (pathname === '/user/info/myComments') {
-          console.log('subscriptions_/admin/info/basicInfo');
+          console.log('subscriptions_/admin/info/myComments');
           dispatch({
             type: 'getUserInfo',
             payload: {
@@ -228,7 +228,7 @@ const UserModel: UserModelType = {
             },
           });
         } else if (pathname === '/user/info/likeComments') {
-          console.log('subscriptions_/admin/info/basicInfo');
+          console.log('subscriptions_/admin/info/likeComments');
           dispatch({
             type: 'getUserInfo',
             payload: {

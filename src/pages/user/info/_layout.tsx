@@ -4,7 +4,7 @@ import { UserModelState } from '@/models/user';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import userStyles from '@/asset/css/user.css';
-import { Menu, message, Spin } from 'antd';
+import { Menu, message, Spin, Modal, Result, Divider } from 'antd';
 import {
   EditOutlined,
   SnippetsOutlined,
@@ -13,6 +13,7 @@ import {
   LoadingOutlined,
 } from '@ant-design/icons';
 import { userAllType } from '@/pages/data';
+import { timeCall } from '@/config';
 
 interface UserInfoProps {
   dispatch: Dispatch;
@@ -30,11 +31,11 @@ const commonUser: FC<UserInfoProps> = (props) => {
     userModelLoading,
     user_info_menu,
   } = props;
+  const antIcon = <LoadingOutlined style={{ fontSize: 45 }} spin />;
+
   useEffect(() => {
     history.push('/user/info/basicInfo');
   }, []);
-
-  const antIcon = <LoadingOutlined style={{ fontSize: 45 }} spin />;
 
   //确认退出
   const onConfirmLogoff = () => {
@@ -48,12 +49,19 @@ const commonUser: FC<UserInfoProps> = (props) => {
     message.error('取消退出');
   };
 
+  //倒计时 5秒后页面跳转
+  window.onload = () => {
+    if (!isLogin) {
+      timeCall();
+    }
+  };
+
   return userModelLoading ? (
     <Spin
       indicator={antIcon}
       style={{ position: 'absolute', top: '40%', left: '50%' }}
     />
-  ) : (
+  ) : isLogin ? (
     <div className={userStyles.commonUser}>
       <Header
         isLogin={isLogin}
@@ -96,6 +104,16 @@ const commonUser: FC<UserInfoProps> = (props) => {
       </div>
       <Footer />
     </div>
+  ) : (
+    <Modal visible={true} footer={false} closable={false}>
+      <Result status="warning" title="您当前没有登录，请先进行登录！" />
+      <Divider />
+      <div style={{ color: 'grey' }}>
+        请稍后，<span id="timeChange">5</span>秒后会自动跳转到登录页面！
+        <Link to="/user/login">去登陆</Link>
+      </div>
+      {/*{timeCall()}*/}
+    </Modal>
   );
 };
 
