@@ -1,15 +1,32 @@
 /*login*/
   .login, .register{
     position: absolute;
-  //background: no-repeat center url("../../asset/imgs/bookStore.jpg");
+    /*background: no-repeat center url("../../asset/imgs/bookStore.jpg");*/
     width: 100%;
     height: 100%;
   }
+.login_middle, .register_middle{
+  position: fixed;
+  top: 50px;
+  bottom: 50px;
+  width: 100%;
+  /*background: #888888;*/
+  overflow-y: auto;
+}
+.loginForm_middle, .registerForm_middle{
+  position: relative;
+  margin: auto;
+  top: 50px;
+  bottom: 50px;
+  width: 1500px;
+  /*background: #F5F5DC;*/
+}
 .loginForm_title, .registerForm_title{
   position: relative;
   text-align: center;
-  height: 8%;
-  top:20%;
+  /*height: 8%;*/
+  /*top:20%;*/
+  margin-top: 70px;
   font-size: 60px;
   color: rgb(255,165,79);
 }
@@ -95,6 +112,12 @@
   background: rgba(255, 255, 255, 0.5) ;
   overflow-y: auto;
 }
+.bookMsg_content{
+  position: relative;
+  width: 1500px;
+  margin: auto;
+  /*background: #F5F5DC;*/
+}
 .bookMsg, .bookMsg_comment{
   width: 1000px;
   margin:auto;
@@ -129,8 +152,8 @@
   margin: 12px 0;
 }
 .bookMsg_bookRate{
-  position: relative;
-  left: 300px;
+  position: absolute;
+  left: 950px;
   padding: 20px;
   height: 100px;
   border-left: 1px solid #c6bfbf;
@@ -185,10 +208,18 @@
   width: 100%;
   overflow-y: auto;
 }
+.info_content{
+  position:relative;
+  margin: auto;
+  top: 25px;
+  /*bottom: 50px;*/
+  width: 1700px;
+  /*background: #F5F5DC;*/
+}
 .commonUser_goBookList{
   position: relative;
-  top: 20px;
-  margin-left: 230px;
+  /*top: 20px;*/
+  margin-left: 125px;
   color: cornflowerblue;
   text-decoration: underline;
   font-size: 18px;
@@ -200,7 +231,7 @@
   display: flex;
   width: 1500px;
   /*height: 743px;*/
-  top: 25px;
+  /*top: 25px;*/
   background: white;
   border-radius: 20px 20px 0 0;
   border: 1px solid lightgray;

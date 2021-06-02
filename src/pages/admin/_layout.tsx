@@ -102,7 +102,7 @@ const AdminBookList: FC<ListProps> = (props) => {
           <Content className={adminStyles.layout_content}>
             {props.children}
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
+          <Footer style={{ textAlign: 'center', width: '1720px' }}>
             京ICP备2021015788号©2021
           </Footer>
         </Layout>

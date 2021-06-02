@@ -311,7 +311,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
             style={{ position: 'relative', left: '47% ', top: '40%' }}
           />
         ) : bookRecord ? (
-          <div>
+          <div className={userStyles.bookMsg_content}>
             <div className={userStyles.bookMsg}>
               <div className={userStyles.bookMsg_goBack} onClick={goBack}>
                 <RollbackOutlined style={{ marginRight: '5px' }} />
@@ -348,7 +348,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                 </div>
                 <div className={userStyles.bookMsg_bookRate}>
                   <div style={{ fontSize: '15px' }}>
-                    {appName}评分：
+                    {appName} 评分：
                     {bookRecord.rate ? null : (
                       <span style={{ color: 'grey' }}>暂无评分</span>
                     )}

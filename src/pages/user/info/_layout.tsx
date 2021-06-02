@@ -70,35 +70,37 @@ const commonUser: FC<UserInfoProps> = (props) => {
         onCancelLogoff={onCancelLogoff}
       />
       <div className={userStyles.info_middle}>
-        <div className={userStyles.commonUser_goBookList}>
-          <Link to="/user/book/list">前往书分类列表</Link>
-        </div>
-        <div className={userStyles.commonUser_content}>
-          <div className={userStyles.commonUser_content_left}>
-            <div className={userStyles.commonUser_content_menu}>
-              <Menu
-                defaultSelectedKeys={['1']}
-                selectedKeys={[user_info_menu]}
-                mode="inline"
-                style={{ textAlign: 'center' }}
-              >
-                <Menu.Item key="1" icon={<SnippetsOutlined />}>
-                  <Link to="/user/info/basicInfo">基本信息</Link>
-                </Menu.Item>
-                <Menu.Item key="2" icon={<EditOutlined />}>
-                  <Link to="/user/info/changePassword">修改密码</Link>
-                </Menu.Item>
-                <Menu.Item key="3" icon={<UnorderedListOutlined />}>
-                  <Link to="/user/info/myComments">我的评论</Link>
-                </Menu.Item>
-                <Menu.Item key="4" icon={<HeartOutlined />}>
-                  <Link to="/user/info/likeComments">我的点赞</Link>
-                </Menu.Item>
-              </Menu>
-            </div>
+        <div className={userStyles.info_content}>
+          <div className={userStyles.commonUser_goBookList}>
+            <Link to="/user/book/list">前往书分类列表</Link>
           </div>
-          <div className={userStyles.commonUser_content_right}>
-            {props.children}
+          <div className={userStyles.commonUser_content}>
+            <div className={userStyles.commonUser_content_left}>
+              <div className={userStyles.commonUser_content_menu}>
+                <Menu
+                  defaultSelectedKeys={['1']}
+                  selectedKeys={[user_info_menu]}
+                  mode="inline"
+                  style={{ textAlign: 'center' }}
+                >
+                  <Menu.Item key="1" icon={<SnippetsOutlined />}>
+                    <Link to="/user/info/basicInfo">基本信息</Link>
+                  </Menu.Item>
+                  <Menu.Item key="2" icon={<EditOutlined />}>
+                    <Link to="/user/info/changePassword">修改密码</Link>
+                  </Menu.Item>
+                  <Menu.Item key="3" icon={<UnorderedListOutlined />}>
+                    <Link to="/user/info/myComments">我的评论</Link>
+                  </Menu.Item>
+                  <Menu.Item key="4" icon={<HeartOutlined />}>
+                    <Link to="/user/info/likeComments">我的点赞</Link>
+                  </Menu.Item>
+                </Menu>
+              </div>
+            </div>
+            <div className={userStyles.commonUser_content_right}>
+              {props.children}
+            </div>
           </div>
         </div>
       </div>
