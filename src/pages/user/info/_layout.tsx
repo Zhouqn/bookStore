@@ -33,9 +33,9 @@ const commonUser: FC<UserInfoProps> = (props) => {
   } = props;
   const antIcon = <LoadingOutlined style={{ fontSize: 45 }} spin />;
 
-  useEffect(() => {
-    history.push('/user/info/basicInfo');
-  }, []);
+  // useEffect(() => {
+  //   history.push('/user/info/basicInfo');
+  // }, []);
 
   //确认退出
   const onConfirmLogoff = () => {

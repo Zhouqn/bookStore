@@ -1,10 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
-import { List, Avatar, Space, Divider, Rate, Spin, message } from 'antd';
+import { List, Avatar, Space, Divider, Rate, Spin, message, Image } from 'antd';
 import {
   CommentOutlined,
   HeartFilled,
   LoadingOutlined,
   StarFilled,
+  LikeOutlined,
 } from '@ant-design/icons';
 import userStyles from '@/asset/css/user.css';
 import noBookCoverImg from '@/asset/imgs/noBookCover.png';
@@ -19,6 +20,7 @@ import {
   updateComment,
 } from '@/services/book';
 import CommentModal from '@/components/user/commentModal';
+import avatarImg from '@/asset/imgs/avatar.png';
 
 interface MyCommentsProps {
   // userInfo: userAllType,
@@ -145,7 +147,7 @@ const MyComments: FC<MyCommentsProps> = (props) => {
   //取消评论
   const cancelComment = () => {
     setCommentModalVisible(false);
-    message.error('取消评论');
+    // message.error('取消评论');
   };
   //删除评论
   const clickDeleteComment = (comment_id: number) => {
@@ -220,7 +222,7 @@ const MyComments: FC<MyCommentsProps> = (props) => {
             actions={[
               <span style={{ marginLeft: '50px' }}>
                 <Space>
-                  <HeartFilled
+                  <LikeOutlined
                     style={{ color: item.is_like ? 'red' : '' }}
                     onClick={() => isLikeComment(item.id, item.is_like)}
                   />
@@ -241,27 +243,53 @@ const MyComments: FC<MyCommentsProps> = (props) => {
               <a onClick={() => clickDeleteComment(item.id)}>删除</a>,
             ]}
             extra={
-              <img
-                width={110}
-                height={160}
-                alt="logo"
-                src={
-                  item.book_info.cover_url
-                    ? item.book_info.cover_url
-                    : noBookCoverImg
-                }
-                style={{ border: '1px solid lightgrey', cursor: 'pointer' }}
-                onClick={() => goToThisBook(item.book_info.book_id)}
-              />
+              <div>
+                <div
+                  style={{
+                    marginBottom: '5px',
+                    color: 'cornflowerblue',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => goToThisBook(item.book_info.book_id)}
+                >
+                  {item.book_info.title}
+                </div>
+                <Image
+                  width={89}
+                  height={130}
+                  alt="logo"
+                  src={
+                    item.book_info.cover_url
+                      ? item.book_info.cover_url
+                      : noBookCoverImg
+                  }
+                  style={{ border: '1px solid lightgrey', cursor: 'pointer' }}
+                  fallback={noBookCoverImg}
+                  // onClick={() => goToThisBook(item.book_info.book_id)}
+                />
+              </div>
             }
           >
             <List.Item.Meta
-              avatar={<Avatar src={item.avatar} />}
+              avatar={
+                <Avatar
+                  src={item.avatar ? item.avatar : avatarImg}
+                  style={{ border: '1px solid whitesmoke' }}
+                />
+              }
               title={
-                <a>
-                  {item.title}
-                  {item.create_time}
-                </a>
+                <span>
+                  <span style={{ color: 'grey' }}>{item.user_name}</span>
+                  <span
+                    style={{
+                      marginLeft: '15px',
+                      color: 'lightgrey',
+                      fontSize: '15px',
+                    }}
+                  >
+                    {item.create_time}
+                  </span>
+                </span>
               }
               description={
                 <Rate value={item.rate} character={rateIcons} disabled />

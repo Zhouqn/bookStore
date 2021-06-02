@@ -21,6 +21,7 @@ import {
   LoadingOutlined,
   RollbackOutlined,
   StarFilled,
+  LikeOutlined,
 } from '@ant-design/icons';
 import { appName } from '@/config';
 import noBookCover from '@/asset/imgs/noBookCover.png';
@@ -199,7 +200,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   //取消评论
   const cancelComment = () => {
     setCommentModalVisible(false);
-    message.error('取消评论');
+    // message.error('取消评论');
   };
   //删除评论
   const clickDeleteComment = (comment_id: number) => {
@@ -236,7 +237,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   //Modal 取消登录
   const LoginModalHandleCancel = () => {
     setLoginModalVisible(false);
-    message.error('已取消');
+    // message.error('已取消');
   };
 
   //页码变换
@@ -484,7 +485,7 @@ const BookInfo: FC<BookMsgProps> = (props) => {
                         ) : null
                       ) : null}
                       <div className={userStyles.bookMsg_comment_like}>
-                        <HeartFilled
+                        <LikeOutlined
                           style={{
                             color: item.is_like ? 'red' : 'lightgrey',
                             marginRight: '7px',

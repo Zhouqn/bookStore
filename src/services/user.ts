@@ -84,3 +84,15 @@ export const getMyComments = async ({
   const url = `/api/comment/fetchMyComments?page=${page}&page_size=${page_size}&order_by=${order_by}`;
   return doRequest(url);
 };
+
+//获取我的点赞
+export const getLikeComments = async ({
+  page,
+  page_size,
+}: {
+  page: number;
+  page_size: number;
+}) => {
+  const url = `/api/comment/myLikes?page=${page}&page_size=${page_size}`;
+  return doRequest(url);
+};
