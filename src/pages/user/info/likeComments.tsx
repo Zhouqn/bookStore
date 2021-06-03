@@ -104,6 +104,7 @@ const LikeComments = () => {
           current: page,
           pageSize: 3,
           total: totalCount,
+          showSizeChanger: false,
           hideOnSinglePage: true,
           showTotal: (total) => {
             return `共 ${total} 条`;
@@ -134,7 +135,7 @@ const LikeComments = () => {
               </span>,
             ]}
             extra={
-              <div>
+              <div style={{ width: '100px' }}>
                 <div
                   style={{
                     marginBottom: '5px',
@@ -145,19 +146,21 @@ const LikeComments = () => {
                 >
                   {item.book_info.title}
                 </div>
-                <Image
-                  width={89}
-                  height={130}
-                  alt="book"
-                  src={
-                    item.book_info.cover_url
-                      ? item.book_info.cover_url
-                      : noBookCoverImg
-                  }
-                  style={{ border: '1px solid lightgrey' }}
-                  fallback={noBookCoverImg}
-                  // onClick={() => goToThisBook(item.book_info.book_id)}
-                />
+                <div>
+                  <Image
+                    width={89}
+                    height={130}
+                    alt="book"
+                    src={
+                      item.book_info.cover_url
+                        ? item.book_info.cover_url
+                        : noBookCoverImg
+                    }
+                    style={{ border: '1px solid lightgrey' }}
+                    fallback={noBookCoverImg}
+                    // onClick={() => goToThisBook(item.book_info.book_id)}
+                  />
+                </div>
               </div>
             }
           >

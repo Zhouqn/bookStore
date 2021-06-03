@@ -96,3 +96,35 @@ export const getLikeComments = async ({
   const url = `/api/comment/myLikes?page=${page}&page_size=${page_size}`;
   return doRequest(url);
 };
+
+//验证密码
+export const verifyPassword = async ({ password }: { password: string }) => {
+  console.log('verifyPassword_service_password = ', password);
+  const url = `/api/user/verifyPassword`;
+  const options = {
+    method: 'post',
+    data: {
+      password,
+    },
+  };
+  return doRequest(url, options);
+};
+
+//修改密码
+export const modifyPassword = async ({
+  old_password,
+  new_password,
+}: {
+  old_password: string;
+  new_password: string;
+}) => {
+  const url = `/api/user/modifyPassword`;
+  const options = {
+    method: 'post',
+    data: {
+      old_password,
+      new_password,
+    },
+  };
+  return doRequest(url, options);
+};

@@ -209,6 +209,7 @@ const MyComments: FC<MyCommentsProps> = (props) => {
           current: page,
           pageSize: 3,
           total: totalCount,
+          showSizeChanger: false,
           hideOnSinglePage: true,
           showTotal: (total) => {
             return `共 ${total} 条`;
