@@ -1,14 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import {
-  Button,
-  Modal,
-  Form,
-  Input,
-  DatePicker,
-  Upload,
-  message,
-  InputNumber,
-} from 'antd';
+import { Button, Modal, Form, Input, DatePicker, Upload, message } from 'antd';
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import { bookRecordValue, FormValues } from '@/pages/data';
 import moment from 'moment';
@@ -39,10 +30,8 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
 
   useEffect(() => {
     if (bookRecord === undefined) {
-      console.log('useEffectAddBookRecord', bookRecord);
       form.resetFields();
     } else {
-      console.log('useEffectEditBookRecord', bookRecord);
       form.setFieldsValue({
         cover_uri: null,
         title: bookRecord.title,
@@ -61,7 +50,6 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
   //上传封面
   const [bookCoverLoading, setBookCoverLoading] = useState(false);
   const bookCoverFile = (e: any) => {
-    console.log('Upload event:', e);
     if (Array.isArray(e)) {
       return e;
     }
@@ -78,13 +66,11 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
       return isJpgOrPng && isLt2M ? true : Upload.LIST_IGNORE;
     },
     onChange: (info: any) => {
-      console.log(info.fileList);
       if (info.file.status === 'uploading') {
         setBookCoverLoading(true);
         return;
       }
       if (info.file.status === 'done') {
-        console.log(info.file.response);
         if (info.file.response.code === 0) {
           message.success('上传成功');
         } else {
@@ -119,7 +105,6 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
 
   const submitBookModalFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
-    // message.error(errorInfo.errorFields[0].errors[0])
   };
 
   return (
@@ -208,10 +193,7 @@ const Add_Edit_BookModal: FC<Add_Edit_BookModalProps> = (props) => {
         <Form.Item
           name="price"
           label="原价"
-          rules={
-            // bookRecord ? [] : [{ required: true, message: '原价不能为空!' }]
-            [{ required: !bookRecord, message: '原价不能为空!' }]
-          }
+          rules={[{ required: !bookRecord, message: '原价不能为空!' }]}
         >
           <Input type="number" />
         </Form.Item>

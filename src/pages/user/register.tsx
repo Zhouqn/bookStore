@@ -22,7 +22,6 @@ const Register: FC<RegisterProps> = (props) => {
   const { dispatch, isLogin, userInfo } = props;
   const [value, setValue] = useState(1);
   const onFinish = (values: FormValues) => {
-    console.log(values);
     dispatch({
       type: 'user/goRegister',
       payload: {
@@ -34,7 +33,6 @@ const Register: FC<RegisterProps> = (props) => {
   };
 
   const onGenderChange = (e: any) => {
-    console.log('radio checked', e.target.value);
     setValue(e.target.value);
   };
 
@@ -152,7 +150,6 @@ const Register: FC<RegisterProps> = (props) => {
 };
 
 export default connect(({ user }: { user: UserModelState }) => {
-  console.log('user = ', user);
   return {
     isLogin: user.isLogin,
     userInfo: user.userInfo,

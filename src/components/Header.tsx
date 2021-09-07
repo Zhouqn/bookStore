@@ -1,9 +1,8 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import bookImg from '@/asset/imgs/book.png';
 import { appName } from '@/config';
-import { Dispatch, Link, connect } from 'umi';
-import { Avatar, Image, message, Popconfirm } from 'antd';
-import { UserModelState } from '@/models/user';
+import { Link } from 'umi';
+import { Avatar, Image, Popconfirm } from 'antd';
 import defaultAvatarImg from '@/asset/imgs/avatar.png';
 import { userAllType } from '@/pages/data';
 
@@ -42,7 +41,6 @@ const Header: FC<HeaderProps> = (props) => {
               }
               className="header_avatar"
             />
-            {/*<a className="header_mine">个人中心</a>*/}
             <Link to="/user/info/basicInfo" className="header_mine">
               个人中心
             </Link>

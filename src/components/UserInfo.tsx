@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { Avatar, Button, Divider, Input, Radio } from 'antd';
-import { CloseCircleOutlined } from '@ant-design/icons';
 import defaultAvatarImg from '@/asset/imgs/avatar.png';
 import UploadFile from '@/components/UploadFile';
 import { userAllType, userPartType } from '@/pages/data';
@@ -14,7 +13,6 @@ interface UserInfoProps {
 
 const UserInfo: FC<UserInfoProps> = (props) => {
   const { userInfo, onSubmitInfo } = props;
-  console.log('userInfo = ', userInfo);
   const [isUpdate, setIsUpdate] = useState(false);
   const [nicknameValue, setNicknameValue] = useState(
     userInfo ? userInfo.nickname : '',
@@ -27,7 +25,6 @@ const UserInfo: FC<UserInfoProps> = (props) => {
   );
 
   const genderOnChange = (e: any) => {
-    console.log('radio checked', e.target.value);
     setGenderValue(e.target.value);
   };
   const onNicknameInputChange = (e: any) => {
@@ -38,11 +35,8 @@ const UserInfo: FC<UserInfoProps> = (props) => {
   };
 
   //更换头像
-  // const [avatarUri, setAvatarUri] = useState('');
   const [avatarUrl, setAvatarUrl] = useState(userInfo ? userInfo.avatar : '');
   const setUri_Url = (data: any) => {
-    // console.log("data = ",data)
-    // setAvatarUri(data.file_uri);
     setAvatarUrl(data.file_url);
   };
 
@@ -57,7 +51,6 @@ const UserInfo: FC<UserInfoProps> = (props) => {
       gender: `${genderValue}`,
       signature: signatureValue,
     };
-    console.log(userUpdateInfo);
     onSubmitInfo(userUpdateInfo);
     setIsUpdate(false);
   };

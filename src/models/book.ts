@@ -1,9 +1,7 @@
 import { Reducer, Effect, Subscription, history } from 'umi';
 import { bookRecordValue, commentType } from '@/pages/data';
 import {
-  admin_deleteBookRecord,
   getBooks,
-  // user_getHighRateOrHotBooks,
   user_getOneBook,
   getBookById,
   getBookByAuthorOrTitle,
@@ -35,8 +33,6 @@ interface BookModelType {
     getBookList: Effect;
     getBook_byId: Effect;
     goSearch_byAuthorOrTitle: Effect;
-    //管理员
-    // admin_deleteBook: Effect;
     //用户
     user_getBookList: Effect;
     user_getABookRecord: Effect;
@@ -67,23 +63,19 @@ const BookModel: BookModelType = {
   },
   reducers: {
     setBookList(state, { payload }) {
-      // console.log('getBookList_reducers', payload);
       return payload;
     },
     setCommentList(state, { payload }) {
-      // console.log('getBookList_reducers', payload);
       return payload;
     },
   },
   effects: {
     //获取书列表 / 【按最新时间顺序】
     *getBookList({ payload }, { put, call }) {
-      console.log('getBookList_effects_payload', payload);
       const res = yield call(getBooks, {
         ...payload,
         orderTypes: payload.orderTypes ? payload.orderTypes : 'pub_date',
       });
-      // console.log('getBookList_res = ', res);
       if (res.code === 0) {
         yield put({
           type: 'setBookList',
@@ -98,9 +90,7 @@ const BookModel: BookModelType = {
     },
     //通过id获取书
     *getBook_byId({ payload }, { put, call }) {
-      console.log('getBookById_effects_payload', payload);
       const res = yield call(getBookById, payload);
-      console.log('getBook_byId_res = ', res);
       if (res.code === 0) {
         yield put({
           type: 'setBookList',
@@ -116,7 +106,6 @@ const BookModel: BookModelType = {
     //通过作者获取
     *goSearch_byAuthorOrTitle({ payload }, { put, call }) {
       const res = yield call(getBookByAuthorOrTitle, payload);
-      // console.log("goSearch_byAuthorOrTitle = ",res)
       if (res.code === 0) {
         yield put({
           type: 'setBookList',
@@ -127,18 +116,9 @@ const BookModel: BookModelType = {
       }
     },
 
-    //管理员
-    // *admin_deleteBook({ payload }, { call }) {
-    //   console.log('deleteBook_payload', payload);
-    //   const res = yield call( admin_deleteBookRecord, payload  );
-    //   if(res === 0){
-    //     history.goBack()
-    //   }
-    // },
     //用户
     //获取书列表
     *user_getBookList({ payload }, { call, put }) {
-      // console.log('user_getBookList_payload', payload);
       const res_newBooks = yield call(getBooks, {
         ...payload,
         orderTypes: 'pub_date',
@@ -151,9 +131,6 @@ const BookModel: BookModelType = {
         ...payload,
         orderTypes: 'comment_count',
       });
-      // console.log('res_newBooks = ', res_newBooks);
-      // console.log('res_highRateBooks = ', res_highRateBooks);
-      // console.log('res_hotBooks = ', res_hotBooks);
       if (
         res_newBooks.code === 0 &&
         res_highRateBooks.code === 0 &&
@@ -176,7 +153,6 @@ const BookModel: BookModelType = {
     },
     //  获取单个书信息
     *user_getABookRecord({ payload }, { call, put }) {
-      // console.log('user_getABookRecord_payload = ', payload);
       const { bookRecord, page, page_size, orderTypes } = payload;
       const res = yield call(user_getOneBook, {
         book_id: bookRecord.id,
@@ -184,7 +160,6 @@ const BookModel: BookModelType = {
         page_size,
         orderTypes,
       });
-      // console.log(' user_getABookRecord_res = ', res);
       if (res.code === 0) {
         const { comments, page, page_size, total_count } = res.data;
         yield put({
@@ -208,7 +183,6 @@ const BookModel: BookModelType = {
     admin_showBookList({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/admin/book/list') {
-          // console.log('/admin/book/list_subscriptions');
           dispatch({
             type: 'getBookList',
             payload: {
@@ -224,7 +198,6 @@ const BookModel: BookModelType = {
     user_showBookList({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/user/book/list') {
-          console.log('subscriptions_/user/book/list');
           dispatch({
             type: 'user_getBookList',
             payload: {

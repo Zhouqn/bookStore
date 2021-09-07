@@ -99,7 +99,6 @@ export const getLikeComments = async ({
 
 //验证密码
 export const verifyPassword = async ({ password }: { password: string }) => {
-  console.log('verifyPassword_service_password = ', password);
   const url = `/api/user/verifyPassword`;
   const options = {
     method: 'post',

@@ -3,7 +3,7 @@ import bookImg from '@/asset/imgs/book.png';
 import { appName } from '@/config';
 import { Layout, Menu } from 'antd';
 import { AlignCenterOutlined, UserOutlined } from '@ant-design/icons';
-import { history, Link } from 'umi';
+import { Link } from 'umi';
 import React, { FC } from 'react';
 const { Sider } = Layout;
 
@@ -13,7 +13,6 @@ interface AdminSiderProps {
 
 const AdminSider: FC<AdminSiderProps> = (props) => {
   const { admin_sider_menu } = props;
-  console.log('admin_sider_menu = ', admin_sider_menu);
   return (
     <Sider
       breakpoint="lg"

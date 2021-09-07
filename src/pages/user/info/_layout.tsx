@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from 'react';
-import { connect, Link, history, Loading, Dispatch } from 'umi';
+import React, { FC } from 'react';
+import { connect, Link, Loading, Dispatch } from 'umi';
 import { UserModelState } from '@/models/user';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -24,18 +24,9 @@ interface UserInfoProps {
 }
 
 const commonUser: FC<UserInfoProps> = (props) => {
-  const {
-    dispatch,
-    isLogin,
-    userInfo,
-    userModelLoading,
-    user_info_menu,
-  } = props;
+  const { dispatch, isLogin, userInfo, userModelLoading, user_info_menu } =
+    props;
   const antIcon = <LoadingOutlined style={{ fontSize: 45 }} spin />;
-
-  // useEffect(() => {
-  //   history.push('/user/info/basicInfo');
-  // }, []);
 
   //确认退出
   const onConfirmLogoff = () => {
@@ -114,7 +105,6 @@ const commonUser: FC<UserInfoProps> = (props) => {
         请稍后，<span id="timeChange">5</span>秒后会自动跳转到登录页面！
         <Link to="/user/login">去登陆</Link>
       </div>
-      {/*{timeCall()}*/}
     </Modal>
   );
 };

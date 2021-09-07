@@ -10,14 +10,10 @@ import {
   Empty,
   Spin,
   Pagination,
-  Modal,
-  Input,
 } from 'antd';
 import {
-  FormOutlined,
   EditOutlined,
   FileTextOutlined,
-  HeartFilled,
   LoadingOutlined,
   RollbackOutlined,
   StarFilled,
@@ -55,10 +51,6 @@ interface BookMsgProps {
   isLogin: boolean;
   userInfo: userAllType;
   bookRecord: bookRecordValue | undefined;
-  // comments: commentType[];
-  // page: number;
-  // page_size: number;
-  // total_count: number;
 }
 
 const BookInfo: FC<BookMsgProps> = (props) => {
@@ -70,12 +62,10 @@ const BookInfo: FC<BookMsgProps> = (props) => {
     userInfo,
     bookRecord,
   } = props;
-  console.log('BookInfo_isLogin_userInfo = ', isLogin, userInfo);
   const [bookId, setBookId] = useState(0);
   const [orderTypes, setOrderTypes] = useState('create_time');
   const [rateValue, setRateValue] = useState(0);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
-  // const [loginModalLoading, setLoginModalLoading] = useState(false);
   const bookListLoadingIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />;
   const [commentModalVisible, setCommentModalVisible] = useState(false);
   const [commentModalLoading, setCommentModalLoading] = useState(false);
@@ -95,7 +85,6 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   //后台直接获取评论
   const getComments = async (payload: any) => {
     user_getOneBook(payload).then((value) => {
-      console.log('value = ', value);
       if (value.code === 0) {
         const { page, page_size, total_count, comments } = value.data;
         setPage(page);
@@ -132,7 +121,6 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   //评分/评论modal
   const onClickWriteOrUpdateComment = (payload?: any) => {
     if (isLogin) {
-      console.log('onClickWriteOrUpdateComment_payload = ', payload);
       if (payload.rate && payload.content && payload.comment_id) {
         setRateValue(payload.rate);
         setWriteCommentText(payload.content);
@@ -150,7 +138,6 @@ const BookInfo: FC<BookMsgProps> = (props) => {
   };
   //评分
   const rateHandleChange = (rateValue: number) => {
-    // console.log(rateValue)
     setRateValue(rateValue);
   };
   //评论内容
@@ -163,7 +150,6 @@ const BookInfo: FC<BookMsgProps> = (props) => {
       message.error('评分为空或者评论为空');
     } else {
       setCommentModalLoading(true);
-      console.log('handleComment = ', rateValue, writeCommentText);
       const payload = {
         book_id: bookRecord ? bookRecord.id : 0,
         comment_id: commentId,
@@ -177,7 +163,6 @@ const BookInfo: FC<BookMsgProps> = (props) => {
         serviceComment = updateComment;
       }
       serviceComment(payload).then((value) => {
-        console.log('serviceComment_value = ', value);
         if (value.code === 0) {
           setCommentModalVisible(false);
           const payload = {
@@ -222,7 +207,6 @@ const BookInfo: FC<BookMsgProps> = (props) => {
 
   //提交登录
   const submitLoginModal = (formValues: FormValues) => {
-    console.log('submitLoginModal_formValues = ', formValues);
     dispatch({
       type: 'user/goLogin',
       payload: {
@@ -232,12 +216,10 @@ const BookInfo: FC<BookMsgProps> = (props) => {
       },
     });
     setLoginModalVisible(false);
-    // message.success("登陆成功")
   };
   //Modal 取消登录
   const LoginModalHandleCancel = () => {
     setLoginModalVisible(false);
-    // message.error('已取消');
   };
 
   //页码变换
@@ -275,10 +257,8 @@ const BookInfo: FC<BookMsgProps> = (props) => {
 
   //点赞/取消点赞评论
   const isLikeComment = (comment_id: number, is_like: boolean) => {
-    console.log('isLikeComment_comment_id&is_like = ', comment_id, is_like);
     if (isLogin) {
       likeComment({ comment_id, is_like }).then((value) => {
-        console.log('isLikeComment_value = ', value);
         if (value.code === 0) {
           if (is_like) {
             message.success('取消点赞');
@@ -566,10 +546,6 @@ export default connect(
       userModelLoading: loading.models.user,
       bookModelLoading: loading.models.book,
       bookRecord: book.bookRecord,
-      // comments: book.comments,
-      // page: book.page,
-      // page_size: book.page_size,
-      // total_count: book.total_count,
     };
   },
 )(BookInfo);

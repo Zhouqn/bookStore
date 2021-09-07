@@ -21,13 +21,11 @@ const UploadFile: FC<UploadFileProps> = (props) => {
       return isJpgOrPng && isLt2M ? true : Upload.LIST_IGNORE;
     },
     onChange: (info: any) => {
-      console.log('info.fileList = ', info.fileList);
       if (info.file.status === 'uploading') {
         setFileLoading(true);
         return;
       }
       if (info.file.status === 'done') {
-        console.log('info.file.response', info.file.response);
         if (info.file.response.code === 0) {
           setUri_Url(info.file.response.data);
           message.success('上传成功');

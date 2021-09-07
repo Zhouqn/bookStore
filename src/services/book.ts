@@ -18,13 +18,11 @@ export const getBooks = async ({
   page_size: number;
   orderTypes: string;
 }) => {
-  console.log('getBooks = ', page, page_size);
   const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
   return doRequest(url);
 };
 //通过id查找书
 export const getBookById = async ({ book_id }: { book_id: number }) => {
-  console.log('getBookById = ', book_id);
   const url = `/api/book/fetch_books?id=${book_id}`;
   return doRequest(url);
 };
@@ -42,7 +40,6 @@ export const getBookByAuthorOrTitle = async ({
   author: string;
   title: string;
 }) => {
-  console.log('getBookByAuthor_service = ', author);
   const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&order_by=${orderTypes}&author=${author}&title=${title}`;
   return doRequest(url);
 };
@@ -54,7 +51,6 @@ export const admin_addBookRecord = async ({
 }: {
   values: FormValues;
 }) => {
-  console.log('service_addBookRecord_values = ', values);
   const url = `/api/book/add`;
   const options = {
     method: 'post',
@@ -70,7 +66,6 @@ export const admin_editBookRecord = async ({
   book_id: number;
   values: FormValues;
 }) => {
-  console.log('service_editBookRecord_id&values = ', book_id, values);
   const url = `/api/book/update`;
   const options = {
     method: 'post',
@@ -87,7 +82,6 @@ export const admin_deleteBookRecord = async ({
 }: {
   book_id: number;
 }) => {
-  console.log('deleteBookRecord_id= ', book_id);
   const url = `/api/book/delete`;
   const options = {
     method: 'post',
@@ -109,7 +103,6 @@ export const admin_deleteBookRecord = async ({
 //   page_size: number;
 //   orderTypes: string;
 // }) => {
-//   console.log('getBooks = ', orderTypes);
 //   const url = `/api/book/fetch_books?page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
 //   return doRequest(url);
 // };
@@ -126,7 +119,6 @@ export const user_getOneBook = async ({
   orderTypes: string;
 }) => {
   const url = `/api/comment/fetchByBookId?book_id=${book_id}&page=${page}&page_size=${page_size}&order_by=${orderTypes}`;
-  console.log(url);
   return doRequest(url);
 };
 //评论
@@ -141,7 +133,6 @@ export const publishComment = async ({
   content: string;
 }) => {
   const url = `/api/comment/publish`;
-  console.log(url);
   const options = {
     method: 'post',
     data: {
@@ -163,7 +154,6 @@ export const updateComment = async ({
   content: string;
 }) => {
   const url = `/api/comment/update`;
-  console.log(url);
   const options = {
     method: 'post',
     data: {
@@ -177,7 +167,6 @@ export const updateComment = async ({
 //删除评论
 export const deleteComment = async ({ comment_id }: { comment_id: number }) => {
   const url = `/api/comment/delete`;
-  console.log(url);
   const options = {
     method: 'post',
     data: {
@@ -196,7 +185,6 @@ export const likeComment = async ({
   is_like: boolean;
 }) => {
   const url = `/api/comment/like`;
-  console.log(url);
   const options = {
     method: 'post',
     data: {

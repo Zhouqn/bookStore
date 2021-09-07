@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { connect, Dispatch, Loading } from 'umi';
+import { connect, Dispatch } from 'umi';
 import UserInfo from '@/components/UserInfo';
 import { UserModelState } from '@/models/user';
 import { userAllType, userPartType } from '@/pages/data';
@@ -13,7 +13,6 @@ const Admin_BasicInfo: FC<Admin_BasicInfoProps> = (props) => {
   const { dispatch, userInfo } = props;
 
   const onSubmitInfo = (info: userPartType) => {
-    console.log('onSubmitInfo = ', info);
     dispatch({
       type: 'user/goUpdate',
       payload: {

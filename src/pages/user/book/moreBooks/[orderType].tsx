@@ -9,12 +9,9 @@ import {
   StarOutlined,
   CommentOutlined,
 } from '@ant-design/icons';
-// import { userAllType } from '@/pages/data';
 
 interface MoreBooksProps {
   dispatch: Dispatch;
-  // userInfo: userAllType;
-  // userModelLoading: boolean
   bookModelLoading: boolean;
 }
 
@@ -26,26 +23,20 @@ const MoreBooks: FC<MoreBooksProps> = (props) => {
   const [loadingFlag, setLoadingFlag] = useState(false);
 
   const getMoreBookParams = async () => {
-    console.log('MoreBooks_orderType = ', orderType);
     if (orderType === 'byPubDate') {
-      console.log('MoreBooks = ', 'byPubDate');
       setOrderTypes('pub_date');
       setOrder('时间');
     } else if (orderType === 'byRate') {
-      console.log('MoreBooks = ', 'byRate');
       setOrderTypes('rate');
       setOrder('评分');
     } else if (orderType === 'byHot') {
-      console.log('MoreBooks = ', 'byHot');
       setOrderTypes('comment_count');
       setOrder('热度');
     }
   };
 
   useEffect(() => {
-    console.log('useEffect');
     getMoreBookParams().then(() => {
-      console.log('useEffect_orderTypes = ', orderTypes);
       if (orderTypes !== '') {
         dispatch({
           type: 'book/getBookList',
@@ -92,8 +83,6 @@ const MoreBooks: FC<MoreBooksProps> = (props) => {
 export default connect(
   ({ user, loading }: { user: UserModelState; loading: Loading }) => {
     return {
-      // userInfo: user.userInfo,
-      // userModelLoading: loading.models.user
       bookModelLoading: loading.models.book,
     };
   },

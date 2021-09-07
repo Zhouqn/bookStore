@@ -1,9 +1,9 @@
 import React, { useState, FC, useEffect } from 'react';
 import { connect, Dispatch, Loading } from 'umi';
-import { Layout, message, Alert, Spin } from 'antd';
+import { Layout, message, Spin } from 'antd';
 import Add_Edit_BookModal from '@/components/admin/Add_Edit_BookModal';
 import BookList from '@/components/admin/BookList';
-import { bookRecordValue, FormValues, userAllType } from '@/pages/data';
+import { bookRecordValue, FormValues } from '@/pages/data';
 import { BookModelState } from '@/models/book';
 import moment from 'moment';
 import {
@@ -33,29 +33,27 @@ const AdminBookList: FC<ListProps> = (props) => {
     page_size,
     total_count,
     dispatch,
-    orderTypes,
+    orderTypes, //
   } = props;
-
-  console.log('AdminBookList_orderTypes　＝　', orderTypes);
 
   //判断是不是管理员，是否能有增加删除修改书的操作
   const [adminAction, setAdminAction] = useState(false);
   useEffect(() => {
     getUserInfo().then((value) => {
-      console.log('AdminBookList_value = ', value);
       if (value.code === 0 && value.data.role === '2') {
         setAdminAction(true);
       }
     });
   }, []);
 
-  const [add_edit_BookModalVisible, setAdd_edit_BookModalVisible] = useState(
-    false,
-  ); //添加书Modal是否可见
+  const [add_edit_BookModalVisible, setAdd_edit_BookModalVisible] =
+    useState(false); //添加书Modal是否可见
   const [bookRecord, setBookRecord] = useState<bookRecordValue | undefined>(
     undefined,
   ); //一条书信息
   const [bookSubmitLoading, setBookSubmitLoading] = useState(false);
+  // 书排序类型
+  // const [orderTypes, setOrderTypes] = useState('pub_date');
 
   //获取所有书
   const getAllBook = () => {
@@ -79,8 +77,6 @@ const AdminBookList: FC<ListProps> = (props) => {
 
   //页码变换
   const onPageChange = (page: number, pageSize?: number) => {
-    console.log('searchAuthorOrTitle = ', searchAuthorOrTitle);
-    console.log('onPageChange', page, page_size);
     if (pageSize) {
       if (searchAuthorOrTitle === '') {
         getBookList(page, pageSize);
@@ -121,7 +117,6 @@ const AdminBookList: FC<ListProps> = (props) => {
   //提交
   const onSubmitBookModal = async (formValues: FormValues) => {
     setBookSubmitLoading(true);
-    console.log('FormValues = ', formValues);
     const {
       cover_uri,
       title,
@@ -156,7 +151,6 @@ const AdminBookList: FC<ListProps> = (props) => {
       serviceFun = admin_addBookRecord;
     }
     const result = await serviceFun({ book_id, values });
-    console.log('addResult = ', result);
     if (result.code === 0) {
       setAdd_edit_BookModalVisible(false);
       setBookRecord(bookRecord);
@@ -170,16 +164,8 @@ const AdminBookList: FC<ListProps> = (props) => {
   };
   //删除书
   const deleteBookConfirm = (bookRecord: bookRecordValue) => {
-    console.log('deleteBookConfirm = ', bookRecord);
     const { id } = bookRecord;
-    // dispatch({
-    //   type: 'book/admin_deleteBook',
-    //   payload: {
-    //     book_id: id,
-    //   },
-    // });
     admin_deleteBookRecord({ book_id: id }).then((value) => {
-      console.log('admin_deleteBookRecord_value = ', value);
       if (value.code === 0) {
         message.success('删除成功');
         getBookList(1, 4);
@@ -192,13 +178,11 @@ const AdminBookList: FC<ListProps> = (props) => {
   const clickEditBook = (bookRecord: bookRecordValue) => {
     setAdd_edit_BookModalVisible(true);
     setBookRecord(bookRecord);
-    console.log('clickEditBook', bookRecord);
   };
 
   //监听搜索框 按书id
   const [searchId, setSearchId] = useState('');
   const idOnChange = (value: string) => {
-    // console.log("searchValueChange = ",value)
     if (value === '') {
       getBookList(1, 4);
       setSearchAuthorOrTitle('');
@@ -208,7 +192,6 @@ const AdminBookList: FC<ListProps> = (props) => {
   //监听搜索框 按作者和书名
   const [searchAuthorOrTitle, setSearchAuthorOrTitle] = useState('');
   const authorOrTitleOnChange = (value: string) => {
-    // console.log("searchValueChange = ",value)
     if (value === '') {
       getBookList(1, 4);
       setSearchId('');
@@ -219,14 +202,12 @@ const AdminBookList: FC<ListProps> = (props) => {
   //搜索类别
   const [searchOption, setSearchOption] = useState('author');
   const selectOnChange = (option: any) => {
-    console.log('selectOnChange = ', option);
     if (option === 'title') {
       setSearchOption(option);
     }
   };
   //通过id查找书
   const goSearchById = (id: string) => {
-    // console.log("goSearchById_id = ", id)
     setSearchAuthorOrTitle('');
     const idTrim = id.trim(); //去除字符前后空格
     const regId = /^\d+$/; //判断为数字类型
@@ -245,7 +226,6 @@ const AdminBookList: FC<ListProps> = (props) => {
   };
   //通过作者或书名查找书
   const goSearchByAuthorOrTitle = (value: string) => {
-    console.log('goSearchByAuthorOrTitle = ', value.trim());
     setSearchId('');
     const valueTrim = value.trim();
     setSearchAuthorOrTitle(value.trim());
@@ -306,7 +286,6 @@ export default connect(
       page: book.page,
       page_size: book.page_size,
       total_count: book.total_count,
-      // orderTypes: book.orderTypes,
     };
   },
 )(AdminBookList);

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Link } from 'umi';
 import {
   Button,
@@ -10,12 +10,10 @@ import {
   Rate,
   Select,
   Image,
-  Spin,
 } from 'antd';
 import noBookCover from '@/asset/imgs/noBookCover.png';
 import adminStyles from '@/asset/css/admin.css';
-import { bookRecordValue, userAllType } from '@/pages/data';
-import { LoadingOutlined } from '@ant-design/icons';
+import { bookRecordValue } from '@/pages/data';
 const { Search } = Input;
 const { Option } = Select;
 
@@ -42,7 +40,6 @@ interface BookListProps {
 
 const BookList: FC<BookListProps> = (props) => {
   const {
-    // bookModelLoading,
     books,
     clickAddButton,
     clickEditBook,
@@ -61,8 +58,6 @@ const BookList: FC<BookListProps> = (props) => {
     authorOrTitleOnChange,
     adminAction,
   } = props;
-
-  console.log('adminAction = ', adminAction);
 
   return (
     <React.Fragment>

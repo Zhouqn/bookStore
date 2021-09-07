@@ -19,7 +19,6 @@ const UserBookList: FC<UserBookListProps> = (props) => {
 
   useEffect(() => {
     dispatch({ type: 'user/getUserInfo', payload: {} });
-    // history.push('/user/book/list');
   }, []);
 
   //确认退出
@@ -48,12 +47,10 @@ const UserBookList: FC<UserBookListProps> = (props) => {
   );
 };
 
-export default connect(
-  ({ user, loading }: { user: UserModelState; loading: Loading }) => {
-    return {
-      //user
-      isLogin: user.isLogin,
-      userInfo: user.userInfo,
-    };
-  },
-)(UserBookList);
+export default connect(({ user }: { user: UserModelState }) => {
+  return {
+    //user
+    isLogin: user.isLogin,
+    userInfo: user.userInfo,
+  };
+})(UserBookList);

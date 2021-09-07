@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Form, Input, Button } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import adminStyles from '@/asset/css/admin.css';
 
 interface ChangePasswordProps {
   onFinishChangePassword: (value: any) => void;

@@ -4,21 +4,13 @@ import {
   List,
   Avatar,
   Space,
-  Divider,
   Image,
   Rate,
   message,
   Spin,
-  Modal,
   Popconfirm,
 } from 'antd';
-import {
-  HeartOutlined,
-  HeartFilled,
-  LoadingOutlined,
-  StarFilled,
-  LikeOutlined,
-} from '@ant-design/icons';
+import { LoadingOutlined, StarFilled, LikeOutlined } from '@ant-design/icons';
 import userStyles from '@/asset/css/user.css';
 import noBookCoverImg from '@/asset/imgs/noBookCover.png';
 import avatarImg from '@/asset/imgs/avatar.png';
@@ -47,7 +39,6 @@ const LikeComments = () => {
     };
     getLikeComments(payload).then((value) => {
       setLikeCommentsLoading(false);
-      console.log('getLikeComments = ', value);
       if (value.code === 0) {
         setLikeComments(value.data.comments);
         setTotalCount(value.data.total_count);
@@ -68,9 +59,7 @@ const LikeComments = () => {
 
   //点赞和取消点赞
   const isLikeComment = (comment_id: number, is_like: boolean) => {
-    console.log('isLikeComment_comment_id&is_like = ', comment_id, is_like);
     likeComment({ comment_id, is_like }).then((value) => {
-      console.log('isLikeComment_value = ', value);
       if (value.code === 0) {
         if (is_like) {
           message.success('取消点赞');
@@ -98,7 +87,6 @@ const LikeComments = () => {
         size="large"
         pagination={{
           onChange: (page) => {
-            console.log(page);
             pageOnChange(page);
           },
           current: page,

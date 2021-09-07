@@ -19,7 +19,6 @@ const User_changePassword: FC<User_changePasswordProps> = (props) => {
   const [oldPassword, setOldPassword] = useState('');
 
   const onBlurVerifyPassword = (e: any) => {
-    console.log('onBlurVerifyPassword: ', e.target.value);
     const { value } = e.target;
     if (value === '') {
       setVerifyTrueFlag(false);
@@ -30,7 +29,6 @@ const User_changePassword: FC<User_changePasswordProps> = (props) => {
         password: md5(value),
       };
       verifyPassword(payload).then((value) => {
-        console.log('verifyPassword_value = ', value);
         if (value.code === 0) {
           setVerifyTrueFlag(true);
           setVerifyFalseFlag(false);
@@ -42,20 +40,17 @@ const User_changePassword: FC<User_changePasswordProps> = (props) => {
     }
   };
   const onChangeVerifyPassword = (e: any) => {
-    console.log('onChangeVerifyPassword: ', e.target.value);
     const { value } = e.target;
     setVerifyFalseFlag(false);
     setVerifyTrueFlag(false);
   };
   const onFinishChangePassword = (values: any) => {
     if (verifyTrueFlag) {
-      console.log('onFinishChangePassword: ', values.password);
       const payload = {
         old_password: oldPassword,
         new_password: md5(values.password),
       };
       modifyPassword(payload).then((value) => {
-        console.log('modifyPassword_value = ', value);
         if (value.code === 0) {
           dispatch({
             type: 'user/goLogoff',

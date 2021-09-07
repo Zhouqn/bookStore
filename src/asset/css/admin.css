@@ -7,7 +7,6 @@
 .logo{
   height:50px;
   margin: 16px;
-  /*background: rgba(255, 255, 255, 0.2);*/
   display: flex;
 }
 .logo img{
@@ -34,24 +33,16 @@
   width: 1720px;
 }
 .adminUser_logoff{
-  /*position: absolute;*/
-  /*right: 40px;*/
   position: relative;
   top: 2px;
   left: 725px;
 }
 .adminUser_avatar{
-  /*position: absolute;*/
-  /*right: 150px;*/
-  /*top: 15px;*/
   position: relative;
   left: 710px;
   background: lightgray;
 }
 .layout_content {
-  /*min-height: 360px;*/
-  /*min-width: 1000px;*/
-  /*height: 100%;*/
   background: #fff;
   padding: 24px;
   height: 360px;
@@ -90,7 +81,6 @@
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  /*height: 255px;*/
   width: 100%;
   margin: 20px;
 }
@@ -107,7 +97,6 @@
 .oneBookRecord_img{
   width: 110px;
   height: 160px;
-  /*border:1px solid lightgray;*/
 }
 .bookInfo{
   margin: 0 10px;
@@ -131,7 +120,6 @@
 }
 .bookList_pagination{
   position:relative;
-  /*background: #F5F5DC;*/
   left: 30%;
   width: 550px;
   margin:auto;

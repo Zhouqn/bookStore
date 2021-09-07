@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { connect, Dispatch, Loading, history, Link } from 'umi';
+import { connect, Dispatch, Loading, Link } from 'umi';
 import adminStyles from '@/asset/css/admin.css';
 import {
   Avatar,

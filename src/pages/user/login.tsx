@@ -22,7 +22,6 @@ const Login: FC<LoginProps> = (props) => {
   const { dispatch, isLogin, userInfo } = props;
 
   const onFinish = (values: FormValues) => {
-    console.log('Success:', values);
     dispatch({
       type: 'user/goLogin',
       payload: {
@@ -72,7 +71,6 @@ const Login: FC<LoginProps> = (props) => {
               size="large"
             >
               <Form.Item
-                // style={{marginTop:"10px"}}
                 name="username"
                 rules={[{ required: true, message: '用户名不能为空 !' }]}
               >
@@ -127,7 +125,6 @@ const Login: FC<LoginProps> = (props) => {
 };
 
 export default connect(({ user }: { user: UserModelState }) => {
-  console.log('user = ', user);
   return {
     isLogin: user.isLogin,
     userInfo: user.userInfo,

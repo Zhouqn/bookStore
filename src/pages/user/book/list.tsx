@@ -20,17 +20,8 @@ interface UserBookListProps {
 }
 
 const UserBookList: FC<UserBookListProps> = (props) => {
-  const {
-    dispatch,
-    isLogin,
-    total_count,
-    newBooks,
-    highRateBooks,
-    hotBooks,
-    bookModelLoading,
-  } = props;
-  console.log('book = ', newBooks, highRateBooks, hotBooks);
-  console.log('total_count = ', total_count);
+  const { total_count, newBooks, highRateBooks, hotBooks, bookModelLoading } =
+    props;
   const booksType = [
     {
       type: '最新书籍',
@@ -54,7 +45,6 @@ const UserBookList: FC<UserBookListProps> = (props) => {
   //跳转页面
   let order: any = '';
   const getOrderBooks = (type: string) => {
-    console.log('setBooksOrder_type = ', type);
     if (type === '最新书籍') {
       order = 'byPubDate';
       history.push(`/user/book/moreBooks/${order}`);

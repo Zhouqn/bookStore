@@ -1,7 +1,6 @@
 /*login*/
   .login, .register{
     position: absolute;
-    /*background: no-repeat center url("../../asset/imgs/bookStore.jpg");*/
     width: 100%;
     height: 100%;
   }
@@ -10,7 +9,6 @@
   top: 50px;
   bottom: 50px;
   width: 100%;
-  /*background: #888888;*/
   overflow-y: auto;
 }
 .loginForm_middle, .registerForm_middle{
@@ -19,13 +17,10 @@
   top: 50px;
   bottom: 50px;
   width: 1500px;
-  /*background: #F5F5DC;*/
 }
 .loginForm_title, .registerForm_title{
   position: relative;
   text-align: center;
-  /*height: 8%;*/
-  /*top:20%;*/
   margin-top: 70px;
   font-size: 60px;
   color: rgb(255,165,79);
@@ -36,7 +31,6 @@
   margin: 0 20px;
 }
 .login_form, .register_form{
-/*border: 1px solid;*/
   position: relative;
   top: 20%;
   left: 30%;
@@ -48,7 +42,6 @@
 /*userBookList*/
 .userBookList{
   position: fixed;
-  /*background: #888888;*/
   width: 100%;
   top: 50px ;
   bottom: 50px;
@@ -61,34 +54,26 @@
   margin: auto;
 }
 .differentTypesBookList{
-  /*width: 800px;*/
-  /*background: white;*/
   margin-top: 40px;
 }
 .bookRecords{
   display: flex;
   flex-wrap: wrap;
   margin:30px 0;
-  /*background: #888888;*/
 }
 .bookRecord{
   width: 120px;
   margin: 10px 25px 40px;
-  /*border: 1px solid black;*/
-  /*background: gray;*/
 }
 .tooltipDescribe{
   width:230px;
   overflow: hidden;
-  /*white-space:nowrap;*/ /*只能显示一行*/
   display: -webkit-box;
   text-overflow:ellipsis;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 .bookList_bookCover{
-  /*width: 110px;*/
-  /*height: 165px;*/
   border: 1px solid #c2c0c0;
   cursor: pointer;
 }
@@ -108,7 +93,6 @@
   top: 50px;
   bottom: 50px;
   width: 100%;
-  /*border: 2px solid;*/
   background: rgba(255, 255, 255, 0.5) ;
   overflow-y: auto;
 }
@@ -116,7 +100,6 @@
   position: relative;
   width: 1500px;
   margin: auto;
-  /*background: #F5F5DC;*/
 }
 .bookMsg, .bookMsg_comment{
   width: 1000px;
@@ -134,19 +117,15 @@
   font-size:25px;
   color:darkorange;
   margin-bottom: 15px;
-  /*border: 1px solid;*/
 }
 .bookMsg_BookInfos{
   display: flex;
 }
 .bookMsg_bookCover{
-  /*width: 130px;*/
-  /*height: 190px;*/
   border: 1px solid gray;
 }
 .bookMsg_partBookInfo{
   margin-left: 10px;
-  /*border: 1px solid;*/
 }
 .bookMsg_partBookInfo div{
   margin: 12px 0;
@@ -212,13 +191,10 @@
   position:relative;
   margin: auto;
   top: 25px;
-  /*bottom: 50px;*/
   width: 1700px;
-  /*background: #F5F5DC;*/
 }
 .commonUser_goBookList{
   position: relative;
-  /*top: 20px;*/
   margin-left: 125px;
   color: cornflowerblue;
   text-decoration: underline;
@@ -230,8 +206,6 @@
   margin: auto;
   display: flex;
   width: 1500px;
-  /*height: 743px;*/
-  /*top: 25px;*/
   background: white;
   border-radius: 20px 20px 0 0;
   border: 1px solid lightgray;
@@ -247,7 +221,6 @@
 }
 .commonUser_content_right{
   flex: 5;
-  /*background: linen;*/
   height: 741px;
   overflow-y: auto;
 }
@@ -256,13 +229,10 @@
   top: 40px;
   margin: auto;
   width: 800px;
-  /*height: 743px;*/
-  /*background: gold;*/
 }
 .commonUser_user_changePassword{
   width: 600px;
   margin: auto;
-  /*height: 743px;*/
 }
 
 /*likeComments*/
@@ -272,7 +242,6 @@
   top: 20px;
   margin: auto;
   width: 1000px;
-  /*height: 743px;*/
   padding: 15px 10px;
 }
 .comments_list_title{

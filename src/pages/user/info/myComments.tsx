@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { List, Avatar, Space, Divider, Rate, Spin, message, Image } from 'antd';
+import { List, Avatar, Space, Rate, Spin, message, Image } from 'antd';
 import {
   CommentOutlined,
-  HeartFilled,
   LoadingOutlined,
   StarFilled,
   LikeOutlined,
@@ -11,25 +10,16 @@ import userStyles from '@/asset/css/user.css';
 import noBookCoverImg from '@/asset/imgs/noBookCover.png';
 import { connect, Dispatch, history } from 'umi';
 import { getMyComments } from '@/services/user';
-import { UserModelState } from '@/models/user';
-import { userAllType, myCommentsType } from '@/pages/data';
-import {
-  deleteComment,
-  likeComment,
-  publishComment,
-  updateComment,
-} from '@/services/book';
+import { myCommentsType } from '@/pages/data';
+import { deleteComment, likeComment, updateComment } from '@/services/book';
 import CommentModal from '@/components/user/commentModal';
 import avatarImg from '@/asset/imgs/avatar.png';
 
 interface MyCommentsProps {
-  // userInfo: userAllType,
   dispatch: Dispatch;
 }
 
 const MyComments: FC<MyCommentsProps> = (props) => {
-  const { dispatch } = props;
-
   const [myCommentsLoading, setMyCommentsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(1);
@@ -55,7 +45,6 @@ const MyComments: FC<MyCommentsProps> = (props) => {
     getMyComments(value).then((value) => {
       setMyCommentsLoading(false);
       if (value.code === 0) {
-        console.log('getMyComments_value = ', value);
         setMyComments(value.data.comments);
         setTotalCount(value.data.total_count);
       }
@@ -68,15 +57,12 @@ const MyComments: FC<MyCommentsProps> = (props) => {
 
   //页码变化
   const pageChange = (page: number) => {
-    console.log(page);
     setPage(page);
     goGetMyComments(page);
   };
   //是否点赞和取消赞
   const isLikeComment = (comment_id: number, is_like: boolean) => {
-    console.log('isLikeComment_comment_id&is_like = ', comment_id, is_like);
     likeComment({ comment_id, is_like }).then((value) => {
-      console.log('isLikeComment_value = ', value);
       if (value.code === 0) {
         if (is_like) {
           message.success('取消点赞');
@@ -114,7 +100,6 @@ const MyComments: FC<MyCommentsProps> = (props) => {
   };
   //评分
   const rateHandleChange = (rateValue: number) => {
-    // console.log(rateValue)
     setRateValue(rateValue);
   };
   //评论内容
@@ -127,14 +112,12 @@ const MyComments: FC<MyCommentsProps> = (props) => {
       message.error('评分为空或者评论为空');
     } else {
       setCommentModalLoading(true);
-      console.log('handleComment = ', rateValue, writeCommentText);
       const payload = {
         comment_id: commentId,
         rate: rateValue,
         content: writeCommentText,
       };
       updateComment(payload).then((value) => {
-        console.log('updateComment = ', value);
         if (value.code === 0) {
           goGetMyComments();
           setCommentModalVisible(false);
@@ -315,9 +298,4 @@ const MyComments: FC<MyCommentsProps> = (props) => {
   );
 };
 
-// export default connect(({user}: {user: UserModelState}) => {
-//   return{
-//     userInfo: user.userInfo
-//   }
-// })(MyComments);
 export default connect()(MyComments);
